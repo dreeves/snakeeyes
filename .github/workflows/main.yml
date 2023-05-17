@@ -11,15 +11,12 @@ jobs:
     - name: Set up Git repository
       uses: actions/checkout@v2
 
-    - name: Install LaTeX
+    - name: Compile LaTeX
       uses: xu-cheng/latex-action@v2
       with:
-       root_file: main.tex
-
-    - name: Compile LaTeX document
-      run: |
-        export TZ='America/Los_Angeles'
-        latexmk -pdf main.tex
+        root_file: main.tex
+      env:
+        TZ: 'America/Los_Angeles'
 
     - name: Commit PDF
       run: |

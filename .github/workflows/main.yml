@@ -20,4 +20,4 @@ jobs:
         git config --local user.name "GitHub Action"
         git add main.pdf
         git commit -m "Add generated PDF" -a || echo "No changes to commit"
-        git push
+        git push https://${{ secrets.PAT }}@github.com/dreeves/snakeeyes.git

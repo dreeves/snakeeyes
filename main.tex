@@ -27,6 +27,8 @@
 \usepackage[utf8]{inputenc} % needed?
 \usepackage{graphicx}
 \usepackage{hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue}
+\usepackage{emoji}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMANDS AND MACROS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -102,16 +104,18 @@ Then I take 2 people and have them play together, where they share a dice roll a
 Then I do the same with 4 people, and then 8, 16, and so on.
 
 At some point one of those groups will be devoured by snakes and then I stop.
-
 Is the probability that you'll die, given that you're chosen to play, still 1/36?
 
-Argument for NO: 
+\textbf{Argument for NO:}
 Due to the doubling, the final group of people that die is slightly bigger than all the surviving groups put together. 
 So if you're chosen to play you have about a 50\% chance of dying!
+\emoji{grimacing-face}
+\emoji{snake}
 
-Argument for YES: 
-The dice rolls are independent and whenever you're chosen, whatever happened in earlier rounds is irrelevant.
+\textbf{Argument for YES:}
+The dice rolls are independent and whenever you're chosen, what happened in earlier rounds is irrelevant.
 Your chances of death are the chances of snake eyes on your round: 1/36.
+\emoji{grinning-face-with-sweat}
 
 So which is it? 
 What's your probability of dying, conditional on being chosen to play?

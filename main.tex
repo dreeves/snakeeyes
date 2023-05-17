@@ -2,11 +2,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%% TOGGLES, CONSTANTS, SETTINGS %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcount\Onymous % whether to show our names (opposite of anonymous)
 \newcount\Chatty  % whether to show our notes-to-selves in the pdf
 \newcount\Stampy  % whether to show a timestamp in the pdf
 \newcount\Heady   % whether to show headers on each page
-\Onymous = 1 % 0 for submission; 1 for camera-ready
 \Chatty  = 1 % 0 for final copy; 1 for draft
 \Stampy  = 1 % 0 for final copy; 1 for draft
 \Heady   = 1 % 0 for final copy; 1 for draft
@@ -14,12 +12,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT CLASS AND PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\ifnum\Onymous=0
-%  \documentclass[sigconf,anonymous]{aamas}   % this one for submission
-%\fi\ifnum\Onymous=1 % something weird with aamas.cls preventing an \else here
-%  \documentclass[sigconf]{aamas}             % this one for final version
-%\fi
 
 \documentclass[article,twocolumn]{memoir}
 %\usepackage[utf8]{inputenc} % probably needed if this file has non-ascii chars?

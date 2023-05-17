@@ -1,23 +1,25 @@
-
-
-
-%TODO
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%% TOGGLES, CONSTANTS, SETTINGS %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcount\Chatty  % whether to show notes-to-selves in the pdf
+\newcount\Onymous % whether to show our names (opposite of anonymous)
+\newcount\Chatty  % whether to show our notes-to-selves in the pdf
 \newcount\Stampy  % whether to show a timestamp in the pdf
+\newcount\Heady   % whether to show headers on each page
+\Onymous = 1 % 0 for submission; 1 for camera-ready
 \Chatty  = 1 % 0 for final copy; 1 for draft
 \Stampy  = 1 % 0 for final copy; 1 for draft
+\Heady   = 1 % 0 for final copy; 1 for draft
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT CLASS AND PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\ifnum\Onymous=0
+%  \documentclass[sigconf,anonymous]{aamas}   % this one for submission
+%\fi\ifnum\Onymous=1 % something weird with aamas.cls preventing an \else here
+%  \documentclass[sigconf]{aamas}             % this one for final version
+%\fi
 
 \documentclass[article,twocolumn]{memoir}
 %\usepackage[utf8]{inputenc} % probably needed if this file has non-ascii chars?
@@ -26,6 +28,8 @@
 \usepackage{amsthm}
 %\usepackage{lipsum} % for dummy text
 \usepackage[showseconds=false, showzone=false]{datetime2} % for draft timestamps
+% also needs a line like the following in the file latexmkrc:
+% $ENV{'TZ'}='America/New_York';
 \usepackage{xcolor} % used in chatty macros
 \usepackage{tikz}
 \usepackage[utf8]{inputenc} % needed?
@@ -37,25 +41,42 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\dreev} [1]{\ifnum\Chatty=1 \textcolor{purple}{dreev:  [#1]} \fi}
-% Possible colors: red, blue, purple, orange, teal, etc
+\newcommand{\alice} [1]{\ifnum\Chatty=1 \textcolor{red}   {alice:  [#1]} \fi}
+\newcommand{\bob}   [1]{\ifnum\Chatty=1 \textcolor{blue}  {bob:    [#1]} \fi}
+\newcommand{\carol} [1]{\ifnum\Chatty=1 \textcolor{orange}{carol:  [#1]} \fi}
+\newcommand{\daphne}[1]{\ifnum\Chatty=1 \textcolor{teal}  {daphne: [#1]} \fi}
 
 \newcommand{\tstamp}{\textcolor{red}{DRAFT~\DTMnow}}
+
+\hfuzz=2pt % Don't bother to report overfull hboxes if over-edge is < 2pt
+\vfuzz=2pt % Same for overfull vboxes (maybe just works for hfuzz?)
+
+%\newcommand{\BibTeX}{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em\TeX}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%% TITLE, AUTHORS, ABSTRACT, KEYWORDS %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\title[
+%\ifnum\Stampy=1 \tstamp\quad \fi
+%Snake Eyes Paradox]{  % short version of title for page headers
+%The Snake Eyes Paradox} % full title
+
+%\author{Daniel M. Reeves}
+%\affiliation{\institution{Beeminder}}
+%\email{dreev@beeminder.com}
 
 \newcommand{\longtitle}{The Snake Eyes Paradox}
 %\newcommand{\shorttitle}{Title Of This Paper}
 
 \title{\HUGE\textbf{\longtitle}}
 \author{Daniel M. Reeves\\dreev@beeminder.com}
-\date{Last updated: 2023-05-16}
+\date{\tstamp}
 
-% TODO: how to add keywords?
-%\keywords{\LaTeX, Templates, Dummy text}
+%\begin{abstract}
+%\end{abstract}
 
-% TODO: how to add a short version of the title for inclusion in page headers?
+%\keywords{Probability, Math puzzles}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%% START DOCUMENT, SET UP HEADERS, DO MAKETITLE %%%%%%%%%%%%%%%%%
@@ -187,16 +208,18 @@ Writing that out as an equation gives this:
 & = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
 \end{align*}
 
-%\begin{equation*}
-%\begin{split}
-%\Pr(\text{chosen}) & = \tfrac{1}{M} + (1-p)\tfrac{2}{M} \\
-%& \phantom{mmii} + (1-p)^2\tfrac{4}{M} \\
-%& \phantom{mmii} + (1-p)^3\tfrac{8}{M} \\
-%& \phantom{mmii} + ... \\
-%& \phantom{mmii} + (1-p)^{N-1}\frac{2^{N-1}}{M} \\
-%& = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
-%\end{split}
-%\end{equation*}
+\begin{comment}
+\begin{equation*}
+\begin{split}
+\Pr(\text{chosen}) & = \tfrac{1}{M} + (1-p)\tfrac{2}{M} \\
+& \phantom{mmii} + (1-p)^2\tfrac{4}{M} \\
+& \phantom{mmii} + (1-p)^3\tfrac{8}{M} \\
+& \phantom{mmii} + ... \\
+& \phantom{mmii} + (1-p)^{N-1}\frac{2^{N-1}}{M} \\
+& = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
+\end{split}
+\end{equation*}
+\end{comment}
 
 For $\Pr(\text{death})$ the calculation is very similar but every term is multiplied by $p$.
 To die, you have to be chosen and then roll snake eyes.

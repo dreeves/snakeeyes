@@ -15,8 +15,9 @@ jobs:
       uses: xu-cheng/latex-action@v2
       with:
         root_file: main.tex
+        compiler: lualatex
       env:
-        TZ: 'America/Los_Angeles'
+        TZ: 'America/Los_Angeles' # this also doesn't seem to do anything :(
 
     - name: Commit PDF
       run: |

@@ -5,7 +5,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      TZ: 'America/Los_Angeles'
+      TZ: 'America/Los_Angeles' # this doesn't seem to do anything :(
 
     steps:
     - name: Set up Git repository
@@ -15,6 +15,8 @@ jobs:
       uses: xu-cheng/latex-action@v2
       with:
         root_file: main.tex
+        args: >
+          /bin/bash -c "export TZ='America/Los_Angeles' && latexmk"
 
     - name: Commit PDF
       run: |

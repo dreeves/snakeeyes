@@ -15,8 +15,9 @@ jobs:
       uses: xu-cheng/latex-action@v2
       with:
         root_file: main.tex
-        args: >
-          /bin/bash -c "export TZ='America/Los_Angeles' && latexmk"
+        run: |
+          export TZ='America/Los_Angeles'
+          latexmk -pdf main.tex
 
     - name: Commit PDF
       run: |

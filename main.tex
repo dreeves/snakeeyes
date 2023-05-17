@@ -135,7 +135,7 @@ To get a feel for it, suppose I'm 1 person in a huge but finite pool.
 Now suppose I'm actually chosen. 
 There are two ways that can happen: 
 the pool runs out and everyone survives, or 
-the pool doesn't run out and I have about a 50% chance of dying. 
+the pool doesn't run out and I have about a 50\% chance of dying. 
 But knowing that I'm chosen is Bayesian evidence that we had many, many rounds of survival. 
 If an early group died then most of the pool wasn't chosen, so probably I wasn't chosen.
 
@@ -146,7 +146,7 @@ If *no* group died then everyone was chosen and in that universe I'm fully unsur
 That's the sense in which being chosen is Bayesian evidence that more people survived. 
 In particular it's at least weak evidence that everyone survived.
 
-So even with an absurdly huge pool of people, where there's *essentially* a zero percent chance of everyone surviving, if I know I was chosen -- which itself has near zero probability -- then that means we're more likely in that essentially-zero-percent probability universe where everyone survives.
+So even with an absurdly huge pool of people, where there's \emph{essentially} a zero percent chance of everyone surviving, if I know I was chosen---which itself has near zero probability---then that means we're more likely in that essentially-zero-percent probability universe where everyone survives.
 
 So now it's just a matter of Bayes-ing it out to see what Pr(death | chosen) is exactly, in the version where we stop after N rounds.
 Once we have that, we can take the limit as n goes to infinity.
@@ -201,7 +201,7 @@ Which means
 \begin{equation}
 \begin{split}
 \Pr(\text{death} \mid \text{chosen}) & = 
-\frac{\Pr(\text{death})}{\Pr(\text{chosen})} \\\\
+\frac{\Pr(\text{death})}{\Pr(\text{chosen})} \\
 & = \frac{p\cdot\Pr(\text{chosen})}{\Pr(\text{chosen})} = 
 p.
 \end{split}
@@ -222,6 +222,8 @@ Bethany Soule,
 Christopher Moravec,
 and Stan Wagon, as well as
 CesiumLifeJacket and Nix and others in the PEAR Discord for helpful discussion.
+
+Thanks also to Manifold Markets.
 
 \end{document}
 

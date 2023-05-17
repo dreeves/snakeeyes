@@ -19,12 +19,11 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 %\usepackage{lipsum} % for dummy text
-\usepackage[showseconds=false, showzone=false]{datetime2} % for draft timestamps
+\usepackage[calc, useregional, showseconds=false, showzone=false]{datetime2}
 % also needs a line like the following in the file latexmkrc:
 % $ENV{'TZ'}='America/New_York';
 \usepackage{xcolor} % used in chatty macros
 \usepackage{tikz}
-\usepackage[utf8]{inputenc} % needed?
 \usepackage{graphicx}
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,urlcolor=blue}
@@ -40,7 +39,10 @@
 \newcommand{\carol} [1]{\ifnum\Chatty=1 \textcolor{orange}{carol:  [#1]} \fi}
 \newcommand{\daphne}[1]{\ifnum\Chatty=1 \textcolor{teal}  {daphne: [#1]} \fi}
 
-\newcommand{\tstamp}{\textcolor{red}{DRAFT~\DTMnow}}
+% Utter black magic for doing timezone conversion...
+\newcommand{\DTMtznow}[2]{\DTMsavenow{now}\DTMtozulu{now}{currzulu}\DTMsaveaszulutime{currcest}{\DTMfetchyear{currzulu}}{\DTMfetchmonth{currzulu}}{\DTMfetchday{currzulu}}{\DTMfetchhour{currzulu}}{\DTMfetchminute{currzulu}}{\DTMfetchsecond{currzulu}}{#2}{00}\DTMdisplay{\DTMfetchyear{currcest}}{\DTMfetchmonth{currcest}}{\DTMfetchday{currcest}}{}{\DTMfetchhour{currcest}}{\DTMfetchminute{currcest}}{\DTMfetchsecond{currcest}}{#1}{00}}
+\newcommand{\tstamp}{\textcolor{red}{DRAFT~\DTMtznow{-07}{+07}}}
+% NB: Set that to -08/+08 for Pacific Time in winter, -07/+07 in summer. Woof.
 
 \hfuzz=2pt % Don't bother to report overfull hboxes if over-edge is < 2pt
 \vfuzz=2pt % Same for overfull vboxes (maybe just works for hfuzz?)
@@ -65,7 +67,7 @@
 
 \title{\HUGE\textbf{\longtitle}}
 \author{Daniel M. Reeves\\dreev@beeminder.com}
-\date{\tstamp}
+\date{\protect\tstamp} % need protection from black magic, apparently
 
 %\begin{abstract}
 %\end{abstract}
@@ -91,6 +93,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter*{Problem Statement}
+
+%\tstamp
 
 You are offered a gamble where a pair of six-sided dice are rolled and unless they come up snake eyes you get a bajillion dollars. 
 If they do come up snake eyes, you're devoured by snakes.
@@ -152,8 +156,7 @@ It's true that roughly half the people who are chosen die, but let's Bayes it ou
 \end{equation*}
 
 In the uncapped case, that conditional probability is undefined. 
-If there's no cap then you're part of an infinite pool. 
-So you have a 0\% chance of being chosen and a 0\% chance of dying. 
+You're part of an infinite pool so you have a 0\% chance of being chosen and a 0\% chance of dying. 
 The probability we want is 0/0. 
 \emph{*robot-with-smoke-coming-out-of-its-ears-emoji*}
 

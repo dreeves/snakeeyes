@@ -1,3 +1,11 @@
+
+
+
+%TODO
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%% TOGGLES, CONSTANTS, SETTINGS %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -20,6 +28,9 @@
 \usepackage[showseconds=false, showzone=false]{datetime2} % for draft timestamps
 \usepackage{xcolor} % used in chatty macros
 \usepackage{tikz}
+\usepackage[utf8]{inputenc} % needed?
+\usepackage{graphicx}
+\usepackage{hyperref}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMANDS AND MACROS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -115,13 +126,13 @@ We want the probability that you die given that you're chosen to play,
 $\Pr(\text{death} \mid \text{chosen})$.
 It's true that roughly half the people who are chosen die, but let's Bayes it out carefully:
 
-\begin{equation}
+\begin{equation*}
 \begin{split}
 \Pr(\text{death} \mid \text{chosen}) & =
 \frac{\Pr(\text{chosen} \mid \text{death}) \Pr(\text{death})}{\Pr(\text{chosen})} \\
 & = \frac{1\cdot\Pr(\text{death})}{\Pr(\text{chosen})}.
 \end{split}
-\end{equation}
+\end{equation*}
 
 In the uncapped case, that conditional probability is undefined. 
 If there's no cap then you're part of an infinite pool. 
@@ -142,7 +153,7 @@ If an early group died then most of the pool wasn't chosen, so probably I wasn't
 Or, using the old think-like-a-Bayesian trick where you shift your probability in light of evidence by seeing how surprised you'd be in various universes by that evidence:
 
 If an early group died then most people aren't chosen and in that universe I'm surprised to be chosen. 
-If *no* group died then everyone was chosen and in that universe I'm fully unsurprised that I was chosen. 
+If \emph{no} group died then everyone was chosen and in that universe I'm fully unsurprised that I was chosen. 
 That's the sense in which being chosen is Bayesian evidence that more people survived. 
 In particular it's at least weak evidence that everyone survived.
 
@@ -176,16 +187,16 @@ Writing that out as an equation gives this:
 & = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
 \end{align*}
 
-\begin{equation}
-\begin{split}
-\Pr(\text{chosen}) & = \tfrac{1}{M} + (1-p)\tfrac{2}{M} \\
-& \phantom{mmii} + (1-p)^2\tfrac{4}{M} \\
-& \phantom{mmii} + (1-p)^3\tfrac{8}{M} \\
-& \phantom{mmii} + ... \\
-& \phantom{mmii} + (1-p)^{N-1}\frac{2^{N-1}}{M} \\
-& = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
-\end{split}
-\end{equation}
+%\begin{equation*}
+%\begin{split}
+%\Pr(\text{chosen}) & = \tfrac{1}{M} + (1-p)\tfrac{2}{M} \\
+%& \phantom{mmii} + (1-p)^2\tfrac{4}{M} \\
+%& \phantom{mmii} + (1-p)^3\tfrac{8}{M} \\
+%& \phantom{mmii} + ... \\
+%& \phantom{mmii} + (1-p)^{N-1}\frac{2^{N-1}}{M} \\
+%& = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
+%\end{split}
+%\end{equation*}
 
 For $\Pr(\text{death})$ the calculation is very similar but every term is multiplied by $p$.
 To die, you have to be chosen and then roll snake eyes.
@@ -198,14 +209,14 @@ $$
 
 Which means
 
-\begin{equation}
+\begin{equation*}
 \begin{split}
 \Pr(\text{death} \mid \text{chosen}) & = 
 \frac{\Pr(\text{death})}{\Pr(\text{chosen})} \\
 & = \frac{p\cdot\Pr(\text{chosen})}{\Pr(\text{chosen})} = 
 p.
 \end{split}
-\end{equation}
+\end{equation*}
 
 It doesn't depend on $N$ at all!
 So the limit as $N$ goes to infinity is just... 
@@ -223,7 +234,20 @@ Christopher Moravec,
 and Stan Wagon, as well as
 CesiumLifeJacket and Nix and others in the PEAR Discord for helpful discussion.
 
-Thanks also to Manifold Markets.
+Thanks also to Manifold Markets where I 
+\href{https://manifold.markets/dreev/is-the-probability-of-dying-in-the}{posed this question}.
+The market converged to the correct answer amidst heated discussion in the comments:
+
+\vspace{2em}
+
+\noindent
+\includegraphics[width=\linewidth]{manifold-snakeeyes}
+
+%\begin{figure*}[htp]
+%\centering
+%\label{fig:manifold}
+%\caption{Price graph}
+%\end{figure*}
 
 \end{document}
 

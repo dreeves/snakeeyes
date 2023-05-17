@@ -1,0 +1,241 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% TOGGLES, CONSTANTS, SETTINGS %%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcount\Chatty  % whether to show notes-to-selves in the pdf
+\newcount\Stampy  % whether to show a timestamp in the pdf
+\Chatty  = 1 % 0 for final copy; 1 for draft
+\Stampy  = 1 % 0 for final copy; 1 for draft
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT CLASS AND PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[article,twocolumn]{memoir}
+%\usepackage[utf8]{inputenc} % probably needed if this file has non-ascii chars?
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+%\usepackage{lipsum} % for dummy text
+\usepackage[showseconds=false, showzone=false]{datetime2} % for draft timestamps
+\usepackage{xcolor} % used in chatty macros
+\usepackage{tikz}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMANDS AND MACROS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\dreev} [1]{\ifnum\Chatty=1 \textcolor{purple}{dreev:  [#1]} \fi}
+% Possible colors: red, blue, purple, orange, teal, etc
+
+\newcommand{\tstamp}{\textcolor{red}{DRAFT~\DTMnow}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%% TITLE, AUTHORS, ABSTRACT, KEYWORDS %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\longtitle}{The Snake Eyes Paradox}
+%\newcommand{\shorttitle}{Title Of This Paper}
+
+\title{\HUGE\textbf{\longtitle}}
+\author{Daniel M. Reeves\\dreev@beeminder.com}
+\date{Last updated: 2023-05-16}
+
+% TODO: how to add keywords?
+%\keywords{\LaTeX, Templates, Dummy text}
+
+% TODO: how to add a short version of the title for inclusion in page headers?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%% START DOCUMENT, SET UP HEADERS, DO MAKETITLE %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\pagestyle{headings}
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MAIN DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{abstract}
+%The answer is 1/36.
+%\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter*{Problem Statement}
+
+You are offered a gamble where a pair of six-sided dice are rolled and unless they come up snake eyes you get a bajillion dollars. 
+If they do come up snake eyes, you're devoured by snakes.
+
+So far it sounds like you have a 1/36 chance of dying, right?
+
+Now the twist. 
+First, I gather up an unlimited number of people willing to play the game. 
+I take 1 person from that pool and let them play. 
+Then I take 2 people and have them play together, where they share a dice roll and either get the bajillion dollars each or both get devoured. 
+Then I do the same with 4 people, and then 8, 16, and so on.
+
+At some point one of those groups will be devoured by snakes and then I stop.
+
+Is the probability that you'll die, given that you're chosen to play, still 1/36?
+
+Argument for NO: 
+Due to the doubling, the final group of people that die is slightly bigger than all the surviving groups put together. 
+So if you're chosen to play you have about a 50\% chance of dying!
+
+Argument for YES: 
+The dice rolls are independent and whenever you're chosen, whatever happened in earlier rounds is irrelevant.
+Your chances of death are the chances of snake eyes on your round: 1/36.
+
+So which is it? 
+What's your probability of dying, conditional on being chosen to play?
+
+\newpage
+
+Some clarifications:
+
+\begin{enumerate}
+\item The game is not adversarial and the dice rolls are independent and truly random.
+\item Choosing each group also happens uniformly x randomly and without replacement.
+\item The question is about the unrealistic case of an unbounded number of people but we can cap it and say that if no one has died after N rounds then the game ends and no one dies. 
+We just need to then find the limit as N goes to infinity, in which case the probability that no one dies goes to zero.
+\item Importantly, in the finite version it's possible for no one to die. 
+But the probability of that approaches zero as the size of the pool approaches infinity.
+\end{enumerate}
+
+\emph{Don't turn the page until you're ready for the solution!}
+
+\newpage
+
+\chapter*{Solution}
+
+We want the probability that you die given that you're chosen to play, 
+$\Pr(\text{death} \mid \text{chosen})$.
+It's true that roughly half the people who are chosen die, but let's Bayes it out carefully:
+
+\begin{equation}
+\begin{split}
+\Pr(\text{death} \mid \text{chosen}) & =
+\frac{\Pr(\text{chosen} \mid \text{death}) \Pr(\text{death})}{\Pr(\text{chosen})} \\
+& = \frac{1\cdot\Pr(\text{death})}{\Pr(\text{chosen})}.
+\end{split}
+\end{equation}
+
+In the uncapped case, that conditional probability is undefined. 
+If there's no cap then you're part of an infinite pool. 
+So you have a 0\% chance of being chosen and a 0\% chance of dying. 
+The probability we want is 0/0. 
+\emph{*robot-with-smoke-coming-out-of-its-ears-emoji*}
+
+Since we can't directly calculate the probability in the infinite case, we have to take a limit.
+
+To get a feel for it, suppose I'm 1 person in a huge but finite pool. 
+Now suppose I'm actually chosen. 
+There are two ways that can happen: 
+the pool runs out and everyone survives, or 
+the pool doesn't run out and I have about a 50% chance of dying. 
+But knowing that I'm chosen is Bayesian evidence that we had many, many rounds of survival. 
+If an early group died then most of the pool wasn't chosen, so probably I wasn't chosen.
+
+Or, using the old think-like-a-Bayesian trick where you shift your probability in light of evidence by seeing how surprised you'd be in various universes by that evidence:
+
+If an early group died then most people aren't chosen and in that universe I'm surprised to be chosen. 
+If *no* group died then everyone was chosen and in that universe I'm fully unsurprised that I was chosen. 
+That's the sense in which being chosen is Bayesian evidence that more people survived. 
+In particular it's at least weak evidence that everyone survived.
+
+So even with an absurdly huge pool of people, where there's *essentially* a zero percent chance of everyone surviving, if I know I was chosen -- which itself has near zero probability -- then that means we're more likely in that essentially-zero-percent probability universe where everyone survives.
+
+So now it's just a matter of Bayes-ing it out to see what Pr(death | chosen) is exactly, in the version where we stop after N rounds.
+Once we have that, we can take the limit as n goes to infinity.
+
+So here it is.
+
+Let $M$ be the size of the pool:
+
+$$M = \sum_{i=0}^{N-1} 2^i = 2^N-1$$
+
+And let $p$ be the probability of snake eyes, 1/36.
+We can now compute the probability of being chosen by summing up 
+(1) the probability you're chosen for the first round, $1/M$ plus 
+(2) the probability that the first group survives, $1-p$, and that you're chosen for the 2nd round, $2/M$ plus 
+(3) the probability that the first two groups survive and you're chosen for the 3rd round, etc.
+Writing that out as an equation gives this:
+
+\begin{align*}
+\Pr(\text{chosen}) & = 
+\begin{aligned}[t]
+\tfrac{1}{M} & + (1-p)\tfrac{2}{M} \\
+& + (1-p)^2\tfrac{4}{M} \\
+& + (1-p)^3\tfrac{8}{M} \\
+& + \ldots \\
+& + (1-p)^{N-1}\frac{2^{N-1}}{M}
+\end{aligned} \\
+& = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
+\end{align*}
+
+\begin{equation}
+\begin{split}
+\Pr(\text{chosen}) & = \tfrac{1}{M} + (1-p)\tfrac{2}{M} \\
+& \phantom{mmii} + (1-p)^2\tfrac{4}{M} \\
+& \phantom{mmii} + (1-p)^3\tfrac{8}{M} \\
+& \phantom{mmii} + ... \\
+& \phantom{mmii} + (1-p)^{N-1}\frac{2^{N-1}}{M} \\
+& = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
+\end{split}
+\end{equation}
+
+For $\Pr(\text{death})$ the calculation is very similar but every term is multiplied by $p$.
+To die, you have to be chosen and then roll snake eyes.
+This can happen on any round, all of which are mutually exclusive.
+We can then factor that $p$ out and we have
+
+$$
+\Pr(\text{death}) = p\cdot\Pr(\text{chosen}).
+$$
+
+Which means
+
+\begin{equation}
+\begin{split}
+\Pr(\text{death} \mid \text{chosen}) & = 
+\frac{\Pr(\text{death})}{\Pr(\text{chosen})} \\\\
+& = \frac{p\cdot\Pr(\text{chosen})}{\Pr(\text{chosen})} = 
+p.
+\end{split}
+\end{equation}
+
+It doesn't depend on $N$ at all!
+So the limit as $N$ goes to infinity is just... 
+$p$ or 1/36, the probability of rolling snake eyes.
+\qedsymbol{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\chapter*{Acknowledgments}
+
+Thanks to 
+Greta Goodwin, 
+Bethany Soule, 
+Christopher Moravec,
+and Stan Wagon, as well as
+CesiumLifeJacket and Nix and others in the PEAR Discord for helpful discussion.
+
+\end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SCRATCH NOTES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+To review, the uncapped version of the problem is not well posed because we have to condition on something (being chosen to play out of an infinite pool) that has probability zero.
+Relatedly, the expected value of the number of people chosen to play is infinite, as is the expected number of deaths.
+So we need to consider a finite version and take the limit.
+But in the finite version there are two ways you can survive.
+First, if the game ends in death and you're chosen to play then you have about a 50% chance.
+Second, if the game ends by exhausting the pool, you definitely are chosen and definitely survive.
+The probability of exhausting the pool is $(1-p)^N$ -- not rolling snake eyes $N$ times in a row.
+
+
+https://link.springer.com/article/10.1023/A:1005100407551

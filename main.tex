@@ -41,6 +41,7 @@
 \newcommand{\daphne}[1]{\ifnum\Chatty=1 \textcolor{teal}  {daphne: [#1]} \fi}
 
 % Utter black magic for doing timezone conversion...
+% Via https://tex.stackexchange.com/questions/634804/how-to-change-the-timezone-of-my-latex-document-irrespective-of-my-computer-time
 \newcommand{\DTMtznow}[2]{\DTMsavenow{now}\DTMtozulu{now}{currzulu}\DTMsaveaszulutime{currcest}{\DTMfetchyear{currzulu}}{\DTMfetchmonth{currzulu}}{\DTMfetchday{currzulu}}{\DTMfetchhour{currzulu}}{\DTMfetchminute{currzulu}}{\DTMfetchsecond{currzulu}}{#2}{00}\DTMdisplay{\DTMfetchyear{currcest}}{\DTMfetchmonth{currcest}}{\DTMfetchday{currcest}}{}{\DTMfetchhour{currcest}}{\DTMfetchminute{currcest}}{\DTMfetchsecond{currcest}}{#1}{00}}
 \newcommand{\tstamp}{\ifnum\Drafty=1 \textcolor{red}{DRAFT~\DTMtznow{-07}{+07}} \else \today \fi}
 % NB: Set that to -08/+08 for Pacific Time in winter, -07/+07 in summer. Woof.
@@ -146,11 +147,9 @@ But the probability of that approaches zero as the size of the pool approaches i
 \noindent
 \emph{Don't turn the page until you're ready for the solution!}
 
-\vfill
-
 \vspace{2em}
 \noindent
-\emph{Btw, this is only a veridical paradox. There's an unambiguously correct answer.}
+\emph{(Btw, this is only a veridical paradox. There's an unambiguously correct answer.)}
 
 \newpage
 
@@ -263,6 +262,11 @@ The limit as $N$ goes to infinity is just...
 $p$ or 1/36, the probability of rolling snake eyes.
 \qedsymbol{}
 
+\vspace{2em}
+\noindent
+\emph{Source: This is a variant of the Shooting-Room Paradox.
+Googling that yields a sea of confusion and wrongness and paywalled philosophy papers so I wrote this.}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter*{Acknowledgments}
@@ -279,9 +283,10 @@ Thanks also to Manifold Markets where I
 The market converged to the correct answer amidst heated discussion in the comments:
 
 \vspace{2em}
-
 \noindent
 \includegraphics[width=\linewidth]{manifold-snakeeyes}
+
+
 
 %\begin{figure*}[htp]
 %\centering

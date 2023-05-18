@@ -16,7 +16,6 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{amsthm}
-%\usepackage{lipsum} % for dummy text
 \usepackage[calc, useregional, showseconds=false, showzone=false]{datetime2}
 % also needs a line like the following in the file latexmkrc:
 % $ENV{'TZ'}='America/New_York';
@@ -40,11 +39,13 @@
 \newcommand{\carol} [1]{\ifnum\Chatty=1 \textcolor{orange}{carol:  [#1]} \fi}
 \newcommand{\daphne}[1]{\ifnum\Chatty=1 \textcolor{teal}  {daphne: [#1]} \fi}
 
-% Utter black magic for doing timezone conversion...
+% Utter black magic for doing timezone conversion for the draft timestamp...
 % Via https://tex.stackexchange.com/questions/634804/how-to-change-the-timezone-of-my-latex-document-irrespective-of-my-computer-time
-\newcommand{\DTMtznow}[2]{\DTMsavenow{now}\DTMtozulu{now}{currzulu}\DTMsaveaszulutime{currcest}{\DTMfetchyear{currzulu}}{\DTMfetchmonth{currzulu}}{\DTMfetchday{currzulu}}{\DTMfetchhour{currzulu}}{\DTMfetchminute{currzulu}}{\DTMfetchsecond{currzulu}}{#2}{00}\DTMdisplay{\DTMfetchyear{currcest}}{\DTMfetchmonth{currcest}}{\DTMfetchday{currcest}}{}{\DTMfetchhour{currcest}}{\DTMfetchminute{currcest}}{\DTMfetchsecond{currcest}}{#1}{00}}
-\newcommand{\tstamp}{\ifnum\Drafty=1 \textcolor{red}{DRAFT~\DTMtznow{-07}{+07}} \else \today \fi}
-% NB: Set that to -08/+08 for Pacific Time in winter, -07/+07 in summer. Woof.
+\newcommand{\DTMtznow}[2]{\DTMsavenow{now}\DTMtozulu{now}{cz}\DTMsaveaszulutime{cx}{\DTMfetchyear{cz}}{\DTMfetchmonth{cz}}{\DTMfetchday{cz}}{\DTMfetchhour{cz}}{\DTMfetchminute{cz}}{\DTMfetchsecond{cz}}{#2}{00}\DTMdisplay{\DTMfetchyear{cx}}{\DTMfetchmonth{cx}}{\DTMfetchday{cx}}{}{\DTMfetchhour{cx}}{\DTMfetchminute{cx}}{\DTMfetchsecond{cx}}{#1}{00}}
+
+% Set this to, eg, -08/+08 for Pacific Time in winter, -07/+07 in summer. Woof.
+\newcommand{\tstamp}{\ifnum\Drafty=1 \textcolor{red}{DRAFT~\DTMtznow{-07}{+07}} 
+\else \today \fi}
 
 \hfuzz=2pt % Don't bother to report overfull hboxes if over-edge is < 2pt
 \vfuzz=2pt % Same for overfull vboxes (maybe just works for hfuzz?)
@@ -308,5 +309,10 @@ First, if the game ends in death and you're chosen to play then you have about a
 Second, if the game ends by exhausting the pool, you definitely are chosen and definitely survive.
 The probability of exhausting the pool is $(1-p)^N$ -- not rolling snake eyes $N$ times in a row.
 
+The key intuition here is that, first, if there's a small pool of people then there's a good chance we exhaust the pool and everyone survives.
+Second, if the pool is huge then probably you won't be chosen but \emph{if} you're chosen, that's Bayesian evidence that a lot of the pool got used up, which is Bayesian evidence that everyone survives.
+The probability of both you being chosen and everyone surviving go to zero as the pool size grows, but the conditional probability stays fixed.
+In the limit you have a 0\% chance of being chosen and
+... I seem to be repeating myself here...
 
 https://link.springer.com/article/10.1023/A:1005100407551

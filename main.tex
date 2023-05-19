@@ -56,23 +56,16 @@
 %%%%%%%%%%%%%%%%%%%%%% TITLE, AUTHORS, ABSTRACT, KEYWORDS %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%\title[
-%\ifnum\Stampy=1 \tstamp\quad \fi
-%Snake Eyes Paradox]{  % short version of title for page headers
-%The Snake Eyes Paradox} % full title
-
-%\author{Daniel M. Reeves}
-%\affiliation{\institution{Beeminder}}
-%\email{dreev@beeminder.com}
-
 \newcommand{\longtitle}{The Snake Eyes Paradox}
-%\newcommand{\shorttitle}{Title Of This Paper}
+%\newcommand{\shorttitle}{Snake Eyes} % for page headers
 
 \title{\HUGE\textbf{\longtitle}}
 \author{Daniel M. Reeves\\dreev@beeminder.com}
+%\affiliation{\institution{Beeminder}}
 \date{\protect\tstamp} % need protection from black magic, apparently
 
 %\begin{abstract}
+%The answer is 1/36.
 %\end{abstract}
 
 %\keywords{Probability, Math puzzles}
@@ -87,12 +80,6 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MAIN DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\begin{abstract}
-%The answer is 1/36.
-%\end{abstract}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter*{Problem Statement}
@@ -215,27 +202,14 @@ Writing that out as an equation gives this:
 \begin{align*}
 \Pr(\text{chosen}) & = 
 \begin{aligned}[t]
-\tfrac{1}{M} & + (1-p)\tfrac{2}{M} \\
-& + (1-p)^2\tfrac{4}{M} \\
-& + (1-p)^3\tfrac{8}{M} \\
-& + \ldots \\
-& + (1-p)^{N-1}\frac{2^{N-1}}{M}
+\tfrac{1}{M} & + (1-p)      \tfrac{2}{M} \\
+             & + (1-p)^2    \tfrac{4}{M} \\
+             & + (1-p)^3    \tfrac{8}{M} \\
+             & + \ldots                  \\
+             & + (1-p)^{N-1}\frac{2^{N-1}}{M}
 \end{aligned} \\
 & = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
 \end{align*}
-
-\begin{comment}
-\begin{equation*}
-\begin{split}
-\Pr(\text{chosen}) & = \tfrac{1}{M} + (1-p)\tfrac{2}{M} \\
-& \phantom{mmii} + (1-p)^2\tfrac{4}{M} \\
-& \phantom{mmii} + (1-p)^3\tfrac{8}{M} \\
-& \phantom{mmii} + ... \\
-& \phantom{mmii} + (1-p)^{N-1}\frac{2^{N-1}}{M} \\
-& = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
-\end{split}
-\end{equation*}
-\end{comment}
 
 For $\Pr(\text{death})$ the calculation is very similar but every term is multiplied by $p$.
 To die, you have to be chosen and then roll snake eyes.
@@ -287,14 +261,6 @@ The market converged to the correct answer amidst heated discussion in the comme
 \noindent
 \includegraphics[width=\linewidth]{manifold-snakeeyes}
 
-
-
-%\begin{figure*}[htp]
-%\centering
-%\label{fig:manifold}
-%\caption{Price graph}
-%\end{figure*}
-
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -314,5 +280,14 @@ Second, if the pool is huge then probably you won't be chosen but \emph{if} you'
 The probability of both you being chosen and everyone surviving go to zero as the pool size grows, but the conditional probability stays fixed.
 In the limit you have a 0\% chance of being chosen and
 ... I seem to be repeating myself here...
+
+This really is quite subtle. 
+I think that if we condition on some group dying then you do get an answer of 1/2. 
+And in the unbounded case we know a group will eventually die. 
+So how the heck does it change anything by conditioning on something that we know is definitely going to happen anyway?
+
+And I think the answer is that it does matter. 
+"No one ever dies" is one of the possible outcomes of an infinite sequence of dice rolls, even though it has probability zero.
+
 
 https://link.springer.com/article/10.1023/A:1005100407551

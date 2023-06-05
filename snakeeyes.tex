@@ -5,7 +5,7 @@
 \newcount\Chatty  % whether to show our notes-to-selves in the pdf
 \newcount\Drafty  % whether to show a timestamp in the pdf
 \Chatty  = 1 % 0 for final copy; 1 for draft
-\Drafty  = 1 % 0 for final copy; 1 for draft
+\Drafty  = 0 % 0 for final copy; 1 for draft
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT CLASS AND PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -97,7 +97,8 @@
 
 \chapter*{Problem Statement}
 
-You are offered a gamble where a pair of six-sided dice are rolled and unless they come up snake eyes you get a bajillion dollars. 
+You are offered a gamble.
+A pair of six-sided dice are rolled and unless they come up snake eyes you get a bajillion dollars. 
 If they do come up snake eyes, you're devoured by snakes.
 
 So far it sounds like you have a 1/36 chance of dying, right?
@@ -108,7 +109,7 @@ I take 1 person from that pool and let them play.
 Then I take 2 people and have them play together, where they share a dice roll and either get the bajillion dollars each or both get devoured. 
 Then I do the same with 4 people, and then 8, 16, and so on.
 
-At some point one of those groups will be devoured by snakes---hopefully not the group you're in---and then I stop.
+At some point we expect one of those groups will be devoured by snakes---hopefully not the group you're in---and then I stop.
 Is the probability that you'll die, given that you're chosen to play, still 1/36?
 
 \vspace{1em}

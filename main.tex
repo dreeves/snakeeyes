@@ -5,7 +5,7 @@
 \newcount\Chatty  % whether to show our notes-to-selves in the pdf
 \newcount\Drafty  % whether to show a timestamp in the pdf
 \Chatty  = 1 % 0 for final copy; 1 for draft
-\Drafty  = 1 % 0 for final copy; 1 for draft
+\Drafty  = 0 % 0 for final copy; 1 for draft
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT CLASS AND PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -126,9 +126,10 @@ Some clarifications:
 \item The game is not adversarial and the dice rolls are independent and truly random.
 \item Choosing each group also happens uniformly randomly and without replacement.
 \item The question is about the unrealistic case of an unbounded number of people but we can cap it and say that if no one has died after $N$ rounds then the game ends and no one dies. 
-We just need to then find the limit as $N$ goes to infinity, in which case the probability that no one dies goes to zero.
+We just need to then find the limit as $N$ goes to infinity. 
+% SCHDEL in which case the probability that no one dies goes to zero.
 \item Importantly, in the finite version it's possible for no one to die. 
-But the probability of that approaches zero as the size of the pool approaches infinity.
+The probability of that approaches zero as the size of the pool approaches infinity.
 \end{enumerate}
 
 \vspace{2em}
@@ -164,7 +165,7 @@ Since we can't directly calculate the probability in the infinite case, we have 
 
 \vspace{2em}
 
-To get a feel for it, suppose you're 1 person in a huge but finite pool.
+To get a feel for where we're going, suppose you're 1 person in a huge but finite pool.
 Now suppose you're actually chosen. 
 There are two ways that can happen: 
 \begin{enumerate}
@@ -174,20 +175,22 @@ There are two ways that can happen:
 But knowing that you're chosen is Bayesian evidence that we had many, many rounds of survival. 
 If an early group died then most of the pool wasn't chosen, so probably you weren't chosen.
 
-Or use the old think-like-a-Bayesian trick where you shift your probability in light of evidence by seeing how surprised you'd be in various universes by that evidence.
+Thinking like a Bayesian means shifting your probability in light of evidence by seeing how surprised you'd be in various universes by that evidence.
 If an early group died then most people aren't chosen and in that universe you're surprised to be chosen. 
 If \emph{no} group died then everyone was chosen and in that universe you're fully unsurprised that you were chosen. 
 That's the sense in which being chosen is Bayesian evidence that more people survived. 
 In particular it's at least weak evidence that everyone survived.
 
-So even with an absurdly huge pool of people, where there's \emph{essentially} a 0\% chance of everyone surviving, if you know you was chosen---which itself has near zero probability---then that means we're more likely in that essentially-0\% probability universe where everyone survives.
+So even with an absurdly huge pool of people, where there's \emph{essentially} a 0\% chance of everyone surviving, if you know you were chosen---which itself has near zero probability---then that means you're more likely in that essentially-0\% probability universe where everyone survives.
 
 \vspace{2em}
 
-Now it's just a matter of Bayes-ing it out to see what Pr(death | chosen) is exactly, in the version where we stop after $N$ rounds.
+Enough hand-waving and appeals to intuition.
+Let's Bayes it out to see what 
+$\Pr(\text{death} \mid \text{chosen})$
+is exactly, in the version where we stop after $N$ rounds.
 Once we have that, we can take the limit as $N$ goes to infinity.
 
-So here it is.
 First, let $M$ be the size of the pool:
 
 $$M = \sum_{i=0}^{N-1} 2^i = 2^N-1.$$
@@ -260,6 +263,12 @@ The market converged to the correct answer amidst heated discussion in the comme
 \vspace{2em}
 \noindent
 \includegraphics[width=\linewidth]{manifold-snakeeyes}
+
+
+% random unrelated thing i wanted rendered:
+%$$
+%\mathop{\mathrm{arg\,max}}_{a \in \text{Actions}} \text{EU}(a)
+%$$
 
 \end{document}
 

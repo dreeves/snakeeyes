@@ -5,7 +5,7 @@
 \newcount\Chatty  % whether to show our notes-to-selves in the pdf
 \newcount\Drafty  % whether to show a timestamp in the pdf
 \Chatty  = 1 % 0 for final copy; 1 for draft
-\Drafty  = 0 % 0 for final copy; 1 for draft
+\Drafty  = 1 % 0 for final copy; 1 for draft
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT CLASS AND PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -40,12 +40,25 @@
 \newcommand{\daphne}[1]{\ifnum\Chatty=1 \textcolor{teal}  {daphne: [#1]} \fi}
 
 % Utter black magic for doing timezone conversion for the draft timestamp...
-% Via https://tex.stackexchange.com/questions/634804/how-to-change-the-timezone-of-my-latex-document-irrespective-of-my-computer-time
-\newcommand{\DTMtznow}[2]{\DTMsavenow{now}\DTMtozulu{now}{cz}\DTMsaveaszulutime{cx}{\DTMfetchyear{cz}}{\DTMfetchmonth{cz}}{\DTMfetchday{cz}}{\DTMfetchhour{cz}}{\DTMfetchminute{cz}}{\DTMfetchsecond{cz}}{#2}{00}\DTMdisplay{\DTMfetchyear{cx}}{\DTMfetchmonth{cx}}{\DTMfetchday{cx}}{}{\DTMfetchhour{cx}}{\DTMfetchminute{cx}}{\DTMfetchsecond{cx}}{#1}{00}}
+% Via https://tex.stackexchange.com/questions/634804/how-to-change-the-timezone
+\newcommand{\datetimemagic}[2]{\DTMsavenow{now}\DTMtozulu{now}{cz}
+  \DTMsaveaszulutime{cx}{\DTMfetchyear{cz}}{\DTMfetchmonth{cz}}
+  {\DTMfetchday{cz}}{\DTMfetchhour{cz}}{\DTMfetchminute{cz}}
+  {\DTMfetchsecond{cz}}{#2}{00}\DTMdisplay{\DTMfetchyear{cx}}
+  {\DTMfetchmonth{cx}}{\DTMfetchday{cx}}{}{\DTMfetchhour{cx}}
+  {\DTMfetchminute{cx}}{\DTMfetchsecond{cx}}{#1}{00}}
+% And here's even more unDRY ugliness because I don't know what I'm doing...
+\newcommand{\datemagic}[2]{\DTMsavenow{now}\DTMtozulu{now}{cz}
+  \DTMsaveaszulutime{cx}{\DTMfetchyear{cz}}{\DTMfetchmonth{cz}}
+  {\DTMfetchday{cz}}{\DTMfetchhour{cz}}{\DTMfetchminute{cz}}
+  {\DTMfetchsecond{cz}}{#2}{00}\DTMdisplaydate{\DTMfetchyear{cx}}
+  {\DTMfetchmonth{cx}}{\DTMfetchday{cx}}{}}
 
 % Set this to, eg, -08/+08 for Pacific Time in winter, -07/+07 in summer. Woof.
-\newcommand{\tstamp}{\ifnum\Drafty=1 \textcolor{red}{DRAFT~\DTMtznow{-07}{+07}} 
-\else \today \fi}
+\newcommand{\tstamp}{\ifnum\Drafty=1 
+  \textcolor{red}{DRAFT~\datetimemagic{-07}{+07}} \else 
+  \datemagic{-07}{+07}
+\fi}
 
 \hfuzz=2pt % Don't bother to report overfull hboxes if over-edge is < 2pt
 \vfuzz=2pt % Same for overfull vboxes (maybe just works for hfuzz?)

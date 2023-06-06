@@ -28,6 +28,9 @@
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,urlcolor=blue}
 \usepackage{emoji}
+\usepackage{decorule} % makes a cool squiggly divider
+\usepackage{fourier-orns} % for fancy decorations
+\usepackage{pgfornament}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMANDS AND MACROS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,8 +60,19 @@
 % Set this to, eg, -08/+08 for Pacific Time in winter, -07/+07 in summer. Woof.
 \newcommand{\tstamp}{\ifnum\Drafty=1 
   \textcolor{red}{DRAFT~\datetimemagic{-07}{+07}} \else 
-  \datemagic{-07}{+07}
+  \datetimemagic{-07}{+07}
 \fi}
+
+% SCHDEL
+%\usetikzlibrary{decorations.pathmorphing}
+%\newcommand{\squigglyline}{
+%\begin{center}
+%\begin{tikzpicture}
+%\pgfmathsetmacro\seglen{0.5*0.1}
+%\draw [line width=0.4mm, decoration={snake, amplitude=1mm, segment length=\seglen\linewidth}, decorate] (0,0) -- (0.5\linewidth,0);
+%\end{tikzpicture}
+%\end{center}
+%}
 
 \hfuzz=2pt % Don't bother to report overfull hboxes if over-edge is < 2pt
 \vfuzz=2pt % Same for overfull vboxes (maybe just works for hfuzz?)
@@ -109,7 +123,7 @@ I take 1 person from that pool and let them play.
 Then I take 2 people and have them play together, where they share a dice roll and either get the bajillion dollars each or both get devoured. 
 Then I do the same with 4 people, and then 8, 16, and so on.
 
-At some point we expect one of those groups will be devoured by snakes---hopefully not the group you're in---and then I stop.
+Eventually one of those groups will be devoured by snakes---hopefully not the group you're in---and then I stop.
 Is the probability that you'll die, given that you're chosen to play, still 1/36?
 
 \vspace{1em}
@@ -143,7 +157,9 @@ Some clarifications:
 We just need to then find the limit as $N$ goes to infinity. 
 % SCHDEL in which case the probability that no one dies goes to zero.
 \item Importantly, in the finite version it's possible for no one to die. 
-The probability of that approaches zero as the size of the pool approaches infinity.
+Just that the probability of that approaches zero as the size of the pool approaches infinity.
+\item We want the conditional probability that you die given that you're chosen to play.
+If you're not chosen to play, you don't care.
 \end{enumerate}
 
 \vspace{2em}
@@ -177,7 +193,17 @@ The probability we want is 0/0.
 
 Since we can't directly calculate the probability in the infinite case, we have to take a limit.
 
-\vspace{2em}
+\begin{center}\decorule\end{center}
+% Other divider lines I've tried out:
+%\vspace{1em}
+%\fancybreak{\decofourleft \quad \decofourright}
+%\vspace{1em}
+%\begin{center}\emoji{thought-balloon}\end{center}
+%\vspace{1em}
+%\rput[r](-3pt,3pt){\pgfornament[scale=.35]{72}}
+%\rput[l](3pt,3pt){\pgfornament[scale=.35]{73}}\\
+%\begin{center}\pgfornament[scale=.4]{85}\end{center}
+%\vspace{1em}
 
 To get a feel for where we're going, suppose you're 1 person in a huge but finite pool.
 Now suppose you're actually chosen. 
@@ -195,9 +221,9 @@ If \emph{no} group died then everyone was chosen and in that universe you're ful
 That's the sense in which being chosen is Bayesian evidence that more people survived. 
 In particular it's at least weak evidence that everyone survived.
 
-So even with an absurdly huge pool of people, where there's \emph{essentially} a 0\% chance of everyone surviving, if you know you were chosen (which itself has near zero probability, but if) then that means you're more likely in that essentially-0\%-probability universe where everyone survives.
+So even with an absurdly huge pool of people, where there's \emph{essentially} a 0\% chance of everyone surviving, if you know you were chosen (which itself has near zero probability, but if) then that means you're more likely to be in that essentially-0\%-probability universe where everyone survives.
 
-\vspace{2em}
+\begin{center}\decorule\end{center}
 
 Enough hand-waving and appeals to intuition.
 Let's Bayes it out to see what 

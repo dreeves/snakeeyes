@@ -63,7 +63,23 @@
   \datetimemagic{-07}{+07}
 \fi}
 
-% SCHDEL
+\newcommand{\snakedivider}{
+\vspace{.2em}
+\begin{center}
+\includegraphics[width=.25\linewidth]{snake}
+\end{center}
+\vspace{.1em}
+}
+% Other divider lines I've tried out:
+%\begin{center}\pgfornament[scale=.18]{85}\end{center}\vspace{.5em}
+%\begin{center}\decorule\end{center}
+%\vspace{1em}
+%\fancybreak{\decofourleft \quad \decofourright}
+%\vspace{1em}
+%\begin{center}\emoji{thought-balloon}\end{center}
+%\vspace{1em}
+%\vspace{1em}
+% SCHDEL:
 %\usetikzlibrary{decorations.pathmorphing}
 %\newcommand{\squigglyline}{
 %\begin{center}
@@ -73,6 +89,7 @@
 %\end{tikzpicture}
 %\end{center}
 %}
+
 
 \hfuzz=2pt % Don't bother to report overfull hboxes if over-edge is < 2pt
 \vfuzz=2pt % Same for overfull vboxes (maybe just works for hfuzz?)
@@ -195,17 +212,7 @@ The probability we want is 0/0.
 
 Since we can't directly calculate the probability in the infinite case, we have to take a limit.
 
-\begin{center}\decorule\end{center}
-% Other divider lines I've tried out:
-%\vspace{1em}
-%\fancybreak{\decofourleft \quad \decofourright}
-%\vspace{1em}
-%\begin{center}\emoji{thought-balloon}\end{center}
-%\vspace{1em}
-%\rput[r](-3pt,3pt){\pgfornament[scale=.35]{72}}
-%\rput[l](3pt,3pt){\pgfornament[scale=.35]{73}}\\
-%\begin{center}\pgfornament[scale=.4]{85}\end{center}
-%\vspace{1em}
+\snakedivider
 
 To get a feel for where we're going, suppose you're 1 person in a huge but finite pool.
 Now suppose you're actually chosen. 
@@ -225,7 +232,7 @@ In particular it's at least weak evidence that everyone survived.
 
 So even with an absurdly huge pool of people, where there's \emph{essentially} a 0\% chance of everyone surviving, if you know you were chosen (which itself has near zero probability, but if) then that means you're more likely to be in that essentially-0\%-probability universe where everyone survives.
 
-\begin{center}\decorule\end{center}
+\snakedivider
 
 Enough hand-waving and appeals to intuition.
 Let's Bayes it out to see what 

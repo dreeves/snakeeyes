@@ -177,7 +177,7 @@ We just need to then find the limit as $N$ goes to infinity.
 \item Importantly, in the finite version it's possible for no one to die. 
 Just that the probability of that approaches zero as the size of the pool approaches infinity.
 \item Again, we want the conditional probability that you die given that you're chosen to play.
-In other words, of the people chosen, what fraction die?
+In other words, of the people chosen, what fraction, in expectation, die?
 In the unbounded case there's a 0\% chance of infinitely many people being chosen and none dying; in the bounded case it's a tiny chance of a huge number chosen and none dying.
 \end{enumerate}
 
@@ -349,3 +349,24 @@ And I think the answer is that it does matter.
 
 
 https://link.springer.com/article/10.1023/A:1005100407551
+
+https://www.lesswrong.com/posts/ox3RFPGriL2dtg8TR/snake-eyes-paradox
+
+Thanks for writing this up! And I like your epistemic snake version but the spirit of the original is a decision theory question. Namely, should you volunteer to play this game? We take it as an assumption that you do want to play in the one-shot version with a 1/36 chance of dying. If it were closer to a coin flip then you would not want to. 
+
+(We could make this more concrete/specific and say you have utility -100 for dying and utility 10 for the bajillion dollars -- that makes it positive expected value (EV) for 1/36 and negative EV if the probability of death is anywhere close to 1/2. But we can also just focus on the probability of dying conditional on being chosen to play, i.e., being in one of the groups, i.e., rolling the dice. That's what the EV calculation hinges on.)
+
+So what's the optimal choice?
+
+There's a compelling argument for playing which is that you're either chosen for one of the doubling groups or you're not. If not, then your utility is zero. If you are then you'll go into the room with a group of people and you'll die iff snake eyes are rolled. That's independent of all past rolls and your EV in this scenario is the same positive number as in the one-shot version.
+
+The seeming paradox is that half the people who roll the dice die.
+
+The resolution of the paradox is that it's possible (in the technical sense of "possible") for no one to ever die. We can just keep rolling non-snake-eyes indefinitely. 
+
+~~
+
+"Roughly, of the people chosen, what fraction die?"
+
+But what about the inescapable fact that half the people die?
+

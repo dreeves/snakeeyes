@@ -170,13 +170,13 @@ Some clarifications:
 \begin{enumerate}
 \item The game is not adversarial and the dice rolls are independent and truly random.
 \item Choosing each group also happens uniformly randomly and without replacement.
-\item The question is about the unrealistic case of an unbounded number of people but we can cap it and say that if no one has died after $N$ rounds then the game ends and no one dies. 
+\item This is technically undefined with an infinite pool of people but we can cap it and say that if no one has died after $N$ rounds then the game ends and no one dies. 
 We just need to then find the limit as $N$ goes to infinity. 
 %That way, instead of a 0\% chance of infinitely many people being chosen and none dying, we have a tiny chance of huge number of people being chosen and none dying.
 % SCHDEL in which case the probability that no one dies goes to zero.
 \item Importantly, in the finite version it's possible for no one to die. 
 Just that the probability of that approaches zero as the size of the pool approaches infinity.
-\item Again, we want the conditional probability that you die given that you're chosen to play.
+\item Again, we want the conditional probability that you die given that you are chosen to play.
 In other words, of the people chosen, what fraction, in expectation, die?
 In the unbounded case there's a 0\% chance of infinitely many people being chosen and none dying; in the bounded case it's a tiny chance of a huge number chosen and none dying.
 \end{enumerate}
@@ -193,7 +193,7 @@ In the unbounded case there's a 0\% chance of infinitely many people being chose
 
 \chapter*{Solution}
 
-We want the probability that you die given that you're chosen to play, 
+We want the probability that you die given that you are chosen to play, 
 $\Pr(\text{death} \mid \text{chosen})$.
 It seems like we can ignore the 0\% chance of rolling not-snake-eyes forever and say that eventually about half the people who are chosen die, but let's Bayes it out carefully:
 
@@ -215,13 +215,13 @@ Since we can't directly calculate the probability in the infinite case, we have 
 \snakedivider
 
 To get a feel for where we're going, suppose you're 1 person in a huge but finite pool.
-Now suppose you're actually chosen. 
+Now suppose you are actually chosen. 
 There are two ways that can happen: 
 \begin{enumerate}
 \item The pool runs out and everyone survives.
 \item The pool doesn't run out and you have about a 50\% chance of dying. 
 \end{enumerate}
-But knowing that you're chosen is Bayesian evidence that we had many, many rounds of survival. 
+But knowing that you are chosen is Bayesian evidence that we had many, many rounds of survival. 
 If an early group died then most of the pool wasn't chosen, so probably you weren't chosen.
 
 Thinking like a Bayesian means shifting your probability in light of evidence by seeing how surprised you'd be in various universes by that evidence.

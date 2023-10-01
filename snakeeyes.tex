@@ -33,9 +33,10 @@
 %\usepackage{pgfornament} % thing I tried for fancy decorations
 \usepackage{float}
 \usepackage[english]{babel}      % Apparently these 3 lines are the trick for
-\usepackage[autostyle]{csquotes} % letting you type quotes "like this" instead
-\usepackage[normalem]{ulem}
-\MakeOuterQuote{"}               % of the LaTeX style ``like this''.
+\usepackage[autostyle]{csquotes} %   letting you type quotes "like this" instead
+\MakeOuterQuote{"}               %   of the LaTeX style ``like this''.
+%\usepackage[normalem]{ulem}     % Underlining? Did Wamba need this?
+\usepackage{flushend}            % Balance the columns on the last page
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMANDS AND MACROS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -362,9 +363,9 @@ In conclusion, the probability of eventually rolling snake eyes, conditional on 
 Which is to say that the conditional probability of rolling not-snake-eyes literally forever is $17/18$.
 \emoji{exploding-head}
 
-This vindicates our initial intuitive argument that being chosen is Bayesian evidence of never rolling snake eyes and contradicts the intuition that any event which occurs with an absolute probability of 1, such as rolling snake eyes eventually, must be independent of any other event.
+This vindicates our initial intuitive argument that being chosen is Bayesian evidence of never rolling snake eyes.
+And it contradicts the intuition that any event which occurs with an absolute probability of 1, such as rolling snake eyes eventually, must be independent of any other event.
 %When we condition upon this zero measure event, we can no longer assume that rolling snake eyes is independent from being chosen!
-The temptation to treat $\Pr(X)$ as $\Pr(X \mid \text{snake eyes})$ since $\Pr(\text{snake eyes}) = 1$ leads us astray!
 If being chosen and rolling snake eyes were independent then 
 \begin{align*}
   1/18 = & \frac{\Pr(\text{chosen} \land \text{snake eyes})}{\Pr(\text{chosen})}\\
@@ -373,6 +374,7 @@ If being chosen and rolling snake eyes were independent then
 \end{align*}
 which contradicts $\Pr(\text{snake eyes}) = 1$.
 %So within the context of conditioning upon being chosen, these two events cannot be independent.
+The temptation to treat $\Pr(X)$ as $\Pr(X \mid \text{snake eyes})$ since $\Pr(\text{snake eyes}) = 1$ leads us astray!
 
 \end{document}
 

@@ -1,0 +1,220 @@
+% NOT MASTER COPY -- DO NOT EDIT THIS
+% This is just for reference, a snapshot of the TeX source before merging 
+% with dreev's writeup.
+
+
+
+
+\documentclass[12pt, letterpaper]{article}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage[table]{xcolor}% http://clightgray.org/pkg/xcolor
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=magenta,
+	urlcolor=cyan,
+	}
+\urlstyle{same}
+\title{Snake Eyes "Paradox"}
+\author{ShitakiIntaki "Wamba Ivanhoe"}
+\date{July 2023}
+\begin{document}
+\maketitle
+\section{Background}
+The Snake-Eyes Paradox is presented as a gamble where a pair of six-sided dice are rolled and unless they come up with snake eyes (a result of one on both six sided dice) you win.  The odds of losing this gamble is 1/36.   To add a twist to this game, each successive round of the game is played with twice as many players and the previous round.  The game stops at the first round in which snake eyes is rolled.  But what if you run out of players you ask?  Well the game only results in a loss on a roll of snake eyes but we will assume that there are always sufficent players remaining to fill the next round of players, each round twice the size of the previous round.
+So the perential market at \url{https://manifold.markets/dreev/is-the-probability-of-dying-in-the} poses the question:Is the probability of dying int he Snake Eyes Paradox 1/36?
+
+Some clarifications: \begin{enumerate}
+\item The game is not adversarial
+\item The dice rolls are truly random and independent.
+\item The game is well defined on a finite population that can support finite N rounds.
+\item To assess the case where there is always enough people for another round we will take a llimit as N goes to infinity.
+\item People chosen to play are chosen with uniform randomness.
+\end{enumerate}
+
+One might look at this and say for any player, they will only observe a single roll of the dice and if the dice rolls are truely independent and random then the odds must be 1/36.
+
+Others might look at the fact that the rounds are doubling each time, such that the most recent round is greater than all of the prior rounds summed together by 1 and conclude that when snake eyes are finally rolled, a majority of the people who played must have lost.
+
+Daniel M. Reeves has written up a their solution which they have posted here \url{https://dreeves.github.io/snakeeyes/snakeeyes.pdf} which concludes that the probability of losing in the Snake Eyes Paradox is indeed 1/36.  Fintan Costello has written up a counter point argument which they have posted here \url{https://drive.google.com/file/d/1clOXw0iBIMpzRrsND-4Uc1SUAHs5r1E5/view} which concludes the probability of losing in the Snake Eyes Paradox is greater than 1/2 (approaching $\approx$0.5218873). We start in a similar vein as both Daniel and Fintan with Bayes Theorem.
+\section{Groundwork}
+Bayes Theorm in the context of the question asked in the Snake Eye's market.
+\[Pr(lose|chosen) = \frac{Pr(chosen|lose)Pr(lose)}{Pr(chosen)}\]
+Here we observe that $Pr(chosen|lose)$ must equal 1, because you can't lose a game you didn't even play, so the conditional probability we seek simplifies to 
+\begin{equation}Pr(lose|chosen)=\frac{Pr(lose)}{Pr(chosen)}\end{equation}
+
+For my proof we will construct upon first a finite population of willing players $M$ which we will say supports at most $m$ rounds of Snake Eyes play.
+First we will look at the probability mass of the game ending in round $i$.
+For those games that end because snake eyes was rolled, the snake eyes was rolled with a probability $p$ and $i-1$ non-snake eyes were rolled with probability $(1-p)^{i-1}$ so we will denote the probability of ending with snake eyes in round $E=i$ as
+\[Pr(E=i) = p(1-p)^{i-1} \]
+For this to be a full probabity mass function on our population size $M$ we should find that the sum across rounds 1 to $m$ equals 1
+\begin{equation}\sum_{i=1}^m p(1-p)^{i-1} = p\frac{1 - (1-p)^m}{1 - (1-p)} = 1-(1-p)^m\end{equation}
+We can see that this sum is strictly less than 1 by a term of $(1-p)^m$ which coincides exactly with the probability mass of rolling non-snake eye $m$ times in a row.  The case where after $m$ rounds no one has lost the game.
+So our full probability mass distribution for a population $M$ is comprised of $m$ cases where the game ends in snake eyes and one case where there are no snake eyes.
+\[1 = (1-p)^ m + \sum_{i=1}^m p(1-p)^{i-1} \]
+
+Next lets look at the probability mass distribution for probability that a player plays in round $j$.  The first round has 1 player and each subsequent round has twice as many players and the round preceeding it so the probability that a player is chosen in round $C=j$ we will denote as  \[Pr(C=j) = \frac{2^{j-1}}{M}\]
+This probability mass distribution must sum to 1 if we are going to use it.
+\[\sum_{j=1}^m  \frac{2^{j-1}}{M} = \frac{2^m - 1}{M}\]
+If $M\neq 2^m - 1$ then we will have a bucket where the probability mass of not being chosen at all to play must equal $1-\frac{2^{m-1}}{M}$.  Because all of the conditional probabilities we will be discussing here will condition on the player having been chosen to play we will consider the population $M=2^m -1$ because the probability masses belonging to players not chosen to play will never contribute to $Pr(lose)$ nor to $Pr(chosen)$.  With our final assumption that $M=2^m -1$ we now have two independent probability mass distribution functions which each sum to 1 when we itterate their index over the set $\{1,...,m\}$which we will use to populate a Bayes Probability Table to see the terms of the joint probability mass distribution $Pr(E=i,C=j)$.
+
+Consider the Bayes Probability Table for a finite population  $M=2^m -1$.
+
+\begin{center}
+\begin{tabular}{ r | c c c c c | }
+$Pr(E,C)$ & $\frac{1}{M}$ & $\frac{2}{M}$ & $\frac{4}{M}$ & $...$ & $\frac{2^{m -1}}{M}$ \\
+\hline
+$p$ & \cellcolor{red!25}$\frac{p}{M}$ & \cellcolor{lightgray!15}$\frac{2p}{M}$ & \cellcolor{lightgray!15}$\frac{4p}{M}$ & \cellcolor{lightgray!15}$...$ & \cellcolor{lightgray!15}$\frac{2^{m -1}p}{M}$ \\ 
+$p(1-p)$ & \cellcolor{green!25}$\frac{p(1-p)}{M}$ & \cellcolor{red!25}$\frac{2p(1-p)}{M}$ & \cellcolor{lightgray!15}$\frac{4p(1-p)}{M}$ & \cellcolor{lightgray!15}$...$ & \cellcolor{lightgray!15}$\frac{2^{m -1}p(1-p)}{M}$ \\ 
+$p(1-p)^2$ & \cellcolor{green!25}$\frac{p(1-p)^2}{M}$ &\cellcolor{green!25} $\frac{2p(1-p)^2}{M}$ & \cellcolor{red!25}$\frac{4p(1-p)^2}{M}$ & \cellcolor{lightgray!15}$...$ & \cellcolor{lightgray!15}$\frac{2^{m -1}p(1-p)^2}{M}$ \\ 
+$\vdots$ & \cellcolor{green!25}$\vdots$ & \cellcolor{green!25}$\vdots$ & \cellcolor{green!25}$\vdots$ & \cellcolor{red!25}$\ddots$ & \cellcolor{lightgray!15}$\vdots$ \\
+$p(1-p)^{m-1}$ & \cellcolor{green!25}$\frac{p(1-p)^{m-1}}{M}$ & \cellcolor{green!25}$\frac{2p(1-p)^{m-1}}{M}$ & \cellcolor{green!25}$\frac{4p(1-p)^{m-1}}{M}$ & \cellcolor{green!25}$...$ & \cellcolor{red!25}$\frac{2^{m -1}p(1-p)^{m-1}}{M}$ \\ 
+$(1-p)^m$ & \cellcolor{green!25}$\frac{(1-p)^m}{M}$ & \cellcolor{green!25}$\frac{2(1-p)^m}{M}$ & \cellcolor{green!25}$\frac{4(1-p)^m}{M}$ &\cellcolor{green!25} $...$ & \cellcolor{green!25}$\frac{2^{m -1}(1-p)^m}{M}$ \\ 
+\hline
+\end{tabular}
+\end{center}
+
+Which we can abstract to 
+\begin{center}
+\begin{tabular}{ r | c | }
+$Pr(E=i,C=j)$ & $\frac{2^{j -1}}{M}$ \\
+\hline
+$p(1-p)^{i-1}$ & $\frac{2^{j -1}p(1-p)^{i-1}}{M}$ \\ 
+$(1-p)^m$ & $\frac{2^{m -1}(1-p)^m}{M}$ \\ 
+\hline
+\end{tabular}
+\end{center}
+Here we can note if \colorbox{red!25}{$i=j$ then the player lost}.  If $j>i$ then the game ended before the player was chosen. If \colorbox{green!25}{$j<i$ then the player won} in an earlier round before the game ended in snake eyes. We also note that game where no snake eyes were rolled at is the bottom row and everyone is chosen to play in such a game.
+
+
+
+
+
+
+\section{What is the probability of losing?}
+All we need to do is sum the probabilities $Pr(E=i,C=j)$ where $i=j$, \begin{equation} Pr(lose) =
+\sum_{i=1}^m \frac{2^{j -1}p(1-p)^{i-1}}{M}\end{equation}
+We factor out $p$ and $M$ which are constant and substitute $i=j$ to arrive at 
+\begin{equation}Pr(lose)= \frac{p}{M}\sum_{i=1}^m 2^{i -1}(1-p)^{i-1}
+\end{equation}
+
+
+
+
+
+\section{What is the probability of being chosen?}
+Here we require the sum of the probabilities $Pr(E=i,C=j)$ where $i\geq j$ and the probability that the game never rolls snake eyes.
+Note that the sum of the whole bottom row $\sum_{j=1}^m \frac{2^{j -1}(1-p)^m}{M}$ is simply equal to $(1-p)^m$, since our $Pr(C=j)$ terms total to 1 (because $M=2^m-1$) which accounts for the game that ends with out rolling snake eyes so we just need to sum up the rest of the probabilites contributed by the games that do end in snake eyes.
+\begin{equation}
+Pr(chosen) = (1-p)^m + \sum_{i=1}^m\sum_{j=1}^i \frac{2^{j -1}p(1-p)^{i-1}}{M}
+\end{equation}
+Again $p$ and $M$ are constants and can be factored out from the double summation and the $(1-p)^{i-1}$ factor is a constant with respect to the summation over index $j$ so we can factor that out from the $j$ summation.
+\begin{equation}
+Pr(chosen) = (1-p)^m + \frac{p}{M}\sum_{i=1}^m (1-p)^{i-1}\sum_{j=1}^i 2^{j -1}
+\end{equation}
+
+\begin{equation}
+Pr(chosen) = (1-p)^m + \frac{p}{M}\sum_{i=1}^m (1-p)^{i-1}(2^i-1)
+\end{equation}
+
+\section{Assuming that you are chosen to play, what are the odds that you lose?}
+Recall from equation (1) that
+\[Pr(lose|chosen)=\frac{Pr(lose)}{Pr(chosen)}\]
+Substitute in the equations (4) for the numerator and (7) for the denominator yields
+\begin{equation}
+\displaystyle Pr(lose|chosen)=\frac{\frac{p}{M}\sum_{i=1}^m 2^{i -1}(1-p)^{i-1}}{(1-p)^m + \frac{p}{M}\sum_{i=1}^m (1-p)^{i-1}(2^i-1)}
+\end{equation}
+Multiply numerator and denominator by $M$
+\begin{equation}
+\displaystyle Pr(lose|chosen)=\frac{p\sum_{i=1}^m 2^{i -1}(1-p)^{i-1}}{M(1-p)^m + p\sum_{i=1}^m (1-p)^{i-1}(2^i-1)}
+\end{equation}
+and finally substitute $M=2^m-1$
+\begin{equation}
+\displaystyle Pr(lose|chosen)=\frac{p\sum_{i=1}^m 2^{i -1}(1-p)^{i-1}}{(2^m-1)(1-p)^m + p\sum_{i=1}^m (1-p)^{i-1}(2^i-1)}
+\end{equation}
+And here is where my algebra fails me so I appeal to WolframAlpha to do the algebra.
+\url{https://www.wolframalpha.com/input?i2d=true&i=Divide%5BpSum%5BPower%5B2%2Ci-1%5DPower%5B%5C%2840%291-p%5C%2841%29%2Ci-1%5D%2C%7Bi%2C1%2Cm%7D%5D%2C%5C%2840%29Power%5B2%2Cm%5D-1%5C%2841%29Power%5B%5C%2840%291-p%5C%2841%29%2Cm%5D%2BpSum%5BPower%5B%5C%2840%291-p%5C%2841%29%2Cn-1%5D%5C%2840%29Power%5B2%2Cn%5D-1%5C%2841%29%2C%7Bn%2C1%2Cm%7D%5D%5D}
+WolframAlpha reports that the conditional probability of losing given that you are selected from a population $M$ is just $p$ (see alternate form at link above).
+$M$ is an arbitrarily large population so we can take the limit as M goes to infinity and $\lim_{m\to\infty}p=p$ however we were constrained by $M=2^m-1$.  What if we go back now and relax that constraint?  The constraint  $M=2^m-1$  is what allowed us to use the whole bottom row of the Bayes Probability Table, once we relax this constraint we see that the contribution of the bottom row to $Pr(chosen)$ is reduced from $(1-p)^m$ to $\frac{2^m-1}{M}(1-p)^m$.  We use the reduced term to repair equation (8) which results in
+\begin{equation}
+\displaystyle Pr(lose|chosen)=\frac{\frac{p}{M}\sum_{i=1}^m 2^{i -1}(1-p)^{i-1}}{\frac{1}{M}(2^m-1)(1-p)^m + \frac{p}{M}\sum_{i=1}^m (1-p)^{i-1}(2^i-1)}
+\end{equation}
+However if we multiply the numerator and denominator of equation (11) by $M$ we find ourselves back at the form of equation (10) which is to say that $Pr(lose|chosen)=p$ for arbitrary $M$.
+
+
+
+\section{Other Conditionals}
+Examining the Bayes Probability Table first gives us ready access to construct other conditional probabilities.
+
+For example what is the probability of losing given that you are chosen in round j? 
+\begin{equation}
+Pr(E=j|C=j) = \frac{Pr(C=j|E=j)Pr(E=j)}{Pr(C=j)}= \frac{Pr(E=j)}{Pr(C=j)}
+\end{equation}  
+\begin{equation}\frac{\frac{2^{j -1}p(1-p)^{j-1}}{M}}{\frac{1}{M}2^{j-1}(1-p)^m+\sum_{i=j}^m \frac{2^{j -1}p(1-p)^{i-1}}{M}}
+\end{equation}\begin{equation} \frac{2^{j -1}p(1-p)^{j-1}}{2^{j-1}(1-p)^m+\sum_{n=j}^m 2^{j -1}p(1-p)^{n-1}}\end{equation}
+And WolframAlpha again evaluates equation (14) to $p$,  See alternate form at \url{https://www.wolframalpha.com/input?i2d=true&i=Divide%5BpPower%5B2%2Cj-1%5DPower%5B%5C%2840%291-p%5C%2841%29%2Cj-1%5D%2CPower%5B2%2Cj-1%5DPower%5B%5C%2840%291-p%5C%2841%29%2Cm%5D%2BpSum%5BPower%5B%5C%2840%291-p%5C%2841%29%2Cn-1%5DPower%5B2%2Cj-1%5D%2C%7Bn%2Cj%2Cm%7D%5D%5D}
+This makes sense right?  If you are selected to play in a specific round then the odds of you losing that round is $p=\frac{1}{36}$ which makes sense since the dice rolls are independent the process should be memoryless.
+
+Given that you are chosen to play, what is the probability that you are chosen to play in the game that does not roll any snake eyes?
+This one is a fun modification of Equation (10), all we do is substitute probability term which represents the bottom row of the Bayes Probability Table in lieu of the $Pr(lose)$ in the numerator.
+\begin{equation}
+\frac{(2^m-1)(1-p)^m}{(2^m-1)(1-p)^m + p\sum_{i=1}^m (1-p)^{i-1}(2^i-1)}
+\end{equation} 
+For m = 1 the probability of being in a game that never rolls snake eyes is the same odds as surviving round 1, which is to say (1-p) = 35/36.  But what happens when we take the limit as m goes to infinity?  WolframAlpha \href{https://www.wolframalpha.com/input?i2d=true&i=Limit%5BDivide%5BPower%5B%5C%2840%291-p%5C%2841%29%2Cm%5D*+%5C%2840%29Power%5B2%2Cm%5D-1%5C%2841%29%2CPower%5B%5C%2840%291-p%5C%2841%29%2Cm%5D+*+%5C%2840%29Power%5B2%2Cm%5D-1%5C%2841%29+%2BSum%5Bp*Power%5B%5C%2840%291-p%5C%2841%29%2Cn-1%5D%5C%2840%29Power%5B2%2Cn%5D-1%5C%2841%29%2C%7Bn%2C1%2Cm%7D%5D%5D%2Cm-%3Einf%5D++where+p%3DDivide%5B1%2C36%5D}{says it decreases} all the way down to 17/18, which is to say there is a pretty good odds that if you are selected to play, you are playing in the game that never rolls snake eyes.
+
+
+
+\section{Why does this $(1-p)^m$ term matter in $Pr(chosen)$?}
+So we took the time to set up a Bayes Probability Table for a finite population and found this ever decreasing residual term with a probability of $(1-p)^m$ which accounts for the games which never end in snake eyes.  Why does this term matter?  Isn't it going away to zero?  The probability of that round m of m non-snake eyes rolls in a row is increasingly improbable however this game that goes the maximal number of $m$ rounds will exhaust the player pool when $M=2^m-1$ and even if $M$ doesn't fit this constraint the game that goes $m$ rounds will select more than twice of any of the other rounds by the same virtute that any round $i$ that ends in snake eyes will have more losers than winners.
+
+What does it mean when we omit the probabilities from the bottom row?  Well it means we are exclusivly pulling from rows where the game ends in snake eyes.  So lets look at such a conditional.
+What are the odds of losing given both that you are chosen and that the game ends in snake eyes?
+We will take this conditional probability as the same as equation (8) with the exception that we omit the $(1-p)^m$ term from the denominator
+\begin{equation}
+\frac{p\sum_{i=1}^m 2^{i -1}(1-p)^{i-1}}{p\sum_{i=1}^m (1-p)^{i-1}(2^i-1)}
+\end{equation} 
+Equation (16) is a bit simpler and we could analytically solve for this but why stop using WolframAlpha? See \href{https://www.wolframalpha.com/input?i2d=true&i=Divide%5BpSum%5BPower%5B2%2Ci-1%5DPower%5B%5C%2840%291-p%5C%2841%29%2Ci-1%5D%2C%7Bi%2C1%2Cm%7D%5D%2CpSum%5BPower%5B%5C%2840%291-p%5C%2841%29%2Cn-1%5D%5C%2840%29Power%5B2%2Cn%5D-1%5C%2841%29%2C%7Bn%2C1%2Cm%7D%5D%5D}{result here}.
+Equation (16) simplifies to 
+\begin{equation}
+\frac{2^m(1-p)^m-1}{2(2^m-1)(1-p)^m+(1-p)^m-1}
+\end{equation} 
+Looking only at the terms in the numerator and denominator with the dominant factor $2^m$, when we take the limit as $m\to\infty$ equation (17) will behave like 
+\begin{equation}
+\frac{2^m(1-p)^m}{2(2^m-1)(1-p)^m}
+\end{equation}
+We can factor out $(1-p)^m$ from the numerator and denominator\begin{equation}
+\lim_{m\to\infty}\frac{2^m}{2(2^m-1)}=\frac{1}{2}
+\end{equation} 
+By looking exclusivly at the games which end in snake eyes the odds of losing aproaches 1/2 as the population grows to infinity.  Equation (19) taken together with the limit of Equation (15) as m goes to infinity and the fact that Equation (11) evalutes to $p$ gives us this fun relationship.
+Probability that you are chosen for a game that ends in snake eyes given that you are chosen to play  =  1 - probability that you are chosen for a game that does not end in snake eyes given that you are chosen to play
+Probabilitity that you lose given that you are chosen to play = probability that you are chosen for a game that ends in snake eyes given that you are chosen to play * probability that you lose given that you are chosen to play in a game that ends in snake eyes
+\begin{equation}
+	\frac{1}{36} = (1-\frac{17}{18})(\frac{1}{2})
+\end{equation}
+
+\section{Where does $\approx$0.5218873 come from?}
+Looking back at the Bayes Probability Table to try to reason out what exactly is $\approx$0.5218873 telling us?
+This value is derived from the summation
+\begin{equation}
+\sum_{n=1}^m p(1-p)^{n-1}\frac{2^{n-1}}{2^n-1} = \sum_{n=1}^m P(\text{lose}|\text{play}\cap \text{game ends in round }n)
+\end{equation}
+Some more WolframAlpha verifies that this is \href{https://www.wolframalpha.com/input?i2d=true&i=round%5C%2840%29Sum%5BPower%5B2%2Cn-1%5Dp+Divide%5BPower%5B%5C%2840%291-p%5C%2841%29%2Cn-1%5D%2CPower%5B2%2Cn%5D-1%5D%2C%7Bn%2C1%2C1000%7D%5D%5C%2844%29+0.000001%5C%2841%29%5C%2844%29+where++p+%3D+Divide%5B1%2C36%5D}{the sum that is trending towards $\approx$0.521887}.  We have the probability of rolling snake eyes in round n times the probability that someone chosen in a game ending at round n was chosen in round n.  From Equation (18) we have the conditional probability of losing in a game known to end in snake eyes is 1/2 as the population approaches infinity but this sum in equation (19) is monotonic increasing and growing away from 1/2.  To be fair this is exactly where I started when looking at the question.  I think the issue is that we are taking a weighted average of various conditional probabilities, each probability conditioned on the game ending in a different round n.  
+\[P(A|B\cap C) = \frac{P(B|A\cap C)P(A|C)}{P(B|C)}\]
+Each term being P(you lose $|$ you play $\cap$ game ends in round n ) =  P( you lose $|$ game ends in round n) / P (you play $|$ game ends in round n), because we note that P( you play $|$ you lose $\cap$ game ends in round n) = 1, however we must further make the asumption that  P (you play $|$ game ends in round n) =1 to be left with just P( you lose $|$ game ends in round n)
+\[P(A_1\cup A_2 \cup ...|B) = P(A_1|B) + P(A_2|B) + ...\]
+Each of the terms in the summation being each conditioned on a different "game ends in round n" means that we cannot simply add then all back to gether to magicily recover the original conditional statement "you play"
+Anecdotally, this construction fails because if there were, for example, a infinitely many games with no losers and exactly 1 winner chosen such games would contribute $\frac{0}{1}$ to this constructed summation, which means their existence would not lower your odds of losing.  In fact there is just one game in the infinite setting which has zero losers and infinite winners which would contribute $\frac{0}{\infty}$, and therefore have zero influence on this monotonic increasing summation but in reality any game with more winners than losers should bring weighted odds of losing down a bit.
+
+
+
+
+
+
+
+\section{Athropics}
+Martin Randal has written an argument using anthropics to argue that one should conclude the odds of losing is 1/2 here \url{https://www.lesswrong.com/posts/ox3RFPGriL2dtg8TR/snake-eyes-paradox}
+
+I dont pretend to be familar with anthropics but I do not see the need for its use when we are able to construct the Bayes Probability Table for an arbitrary population.  If you read the less wrong paper you will find that there is an underlying presumption that all games end by rolling snake eyes.  As discussed in Section 7 above, under the assumption that all games end in snake eyes we should find that the probability of losing is 1/2.
+
+\end{document}

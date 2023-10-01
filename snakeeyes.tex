@@ -249,7 +249,7 @@ Once we have that, we can take the limit as $N$ goes to infinity.
 
 First, let $M$ be the size of the pool:
 
-$$M = \sum_{i=0}^{N-1} 2^i = 2^N-1.$$
+$$M = \sum_{i=1}^{N} 2^{i-1} = 2^N-1.$$
 
 And let $p$ be the probability of snake eyes, 1/36.
 We can now compute the probability of being chosen by summing up 
@@ -267,7 +267,7 @@ Writing that out as an equation gives this:
              & + \ldots                  \\
              & + (1-p)^{N-1}\frac{2^{N-1}}{M}
 \end{aligned} \\
-& = \sum_{i=0}^{N-1} \tfrac{1}{M} 2^i(1-p)^i.
+& = \sum_{i=1}^{N} \tfrac{1}{M} 2^{i-1}(1-p)^{i-1}.
 \end{align*}
 
 For $\Pr(\text{death})$ the calculation is very similar but every term is multiplied by $p$.
@@ -314,32 +314,31 @@ In the infinite setting that's
 $\tfrac{0}{0}$
 because you have a 0\% chance of being chosen from an infinite pool.
 So let's work it out in the limit with a cap of $N$ rounds and finite pool $M$ as before:
+$$\dfrac
+{\sum\limits_{n=1}^{N}(1-p)^{n-1}p \cdot\dfrac{2^n-1}{M}}
+{\sum\limits_{i=1}^{N}\tfrac{1}{M} 2^{i-1}(1-p)^{i-1}}.
 $$
-\dfrac{\sum\limits_{n=1}^{N}(1-p)^{n-1}p \cdot\dfrac{2^n-1}{M}}
-{\tfrac{1}{M}\sum\limits_{i=0}^{N-1}2^{i}(1-p)^{i}}.
-$$
-In the numerator we're summing over every possible round $n$ at which we could roll snake eyes, saying that we need to roll $n-1$ non-snake-eyes followed by one snake eyes \emph{and} that we are chosen in any round from 1 through $n$.
+In the numerator we're summing over every possible round $n$ at which we could roll snake eyes, saying that we need to roll not-snake-eyes $n-1$ times followed by one snake eyes \emph{and} that we are chosen in any round from 1 through $n$.
 The denominator, $\Pr(\text{chosen})$, is the same as in the previous section.
 
 Now algebra ensues!
-We multiply the numerator and denominator by $M$ to get rid of the $1/M$ factor.
-Then distribute the $(1-p)^{n-1}p$ over the $2^n-1$ and split it into two summations like so:
+We multiply the numerator and denominator by $M$ to get rid of the $1/M$ factor:
+$$\dfrac
+{\sum\limits_{n=1}^{N} (1-p)^{n-1}p \cdot(2^n-1)}
+{\sum\limits_{i=1}^{N} 2^{i-1}(1-p)^{i-1}}.
 $$
-\dfrac{
+Then distribute the $(1-p)^{n-1}p$ over the $2^n-1$ and split it into two summations like so:
+$$\dfrac{
 \left(\sum\limits_{n=1}^{N}2^n(1-p)^{n-1}p\right) -
 \left(\sum\limits_{n=1}^{N}(1-p)^{n-1}p \right)
-}
-{\sum\limits_{i=0}^{N-1}2^{i}(1-p)^{i}}.
+}{\sum\limits_{i=1}^{N} 2^{i-1}(1-p)^{i-1}}.
 $$
 
 These are finite sums so that's kosher.
-As $N$ goes to $\infty$, the right side of the numerator---which is again the probability of rolling snake eyes by round $N$---goes to one.
-We also re-index the summation in the denominator and get this:
-$$
-\dfrac{
+As $N$ goes to $\infty$, the right side of the numerator---which is again the probability of rolling snake eyes by round $N$---goes to one:
+$$\dfrac{
 \left(\sum\limits_{n=1}^{N}2^n(1-p)^{n-1}p\right) - 1
-}
-{\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}}.
+}{\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}}.
 $$
 Almost there!
 Pull a $2p$ out of the sum in the numerator to get this:
@@ -364,8 +363,8 @@ Which is to say that the conditional probability of rolling not-snake-eyes liter
 \emoji{exploding-head}
 
 This vindicates our initial intuitive argument that being chosen is Bayesian evidence of never rolling snake eyes and contradicts the intuition that any event which occurs with an absolute probability of 1, such as rolling snake eyes eventually, must be independent of any other event.
-When we condition upon this zero measure event, we can no longer assume that rolling snake eyes is independent from being chosen!
-The intuition that tempts us to treat $\Pr(X)$ as $\Pr(X \mid \text{snake eyes})$ since $\Pr(\text{snake eyes}) = 1$ does not hold here.
+%When we condition upon this zero measure event, we can no longer assume that rolling snake eyes is independent from being chosen!
+The temptation to treat $\Pr(X)$ as $\Pr(X \mid \text{snake eyes})$ since $\Pr(\text{snake eyes}) = 1$ leads us astray!
 If being chosen and rolling snake eyes were independent then 
 \begin{align*}
   1/18 = & \frac{\Pr(\text{chosen} \land \text{snake eyes})}{\Pr(\text{chosen})}\\
@@ -373,7 +372,7 @@ If being chosen and rolling snake eyes were independent then
        = & \Pr(\text{snake eyes}) 
 \end{align*}
 which contradicts $\Pr(\text{snake eyes}) = 1$.
-So within the context of conditioning upon being chosen, these two events cannot be independent.
+%So within the context of conditioning upon being chosen, these two events cannot be independent.
 
 \end{document}
 

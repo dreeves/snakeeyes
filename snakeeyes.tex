@@ -299,13 +299,12 @@ $p$ or 1/36, the probability of rolling snake eyes.
 \chapter*{Discussion}
 
 What about the argument that, with unlimited people, there will necessarily be a finite round $n$ at which snake eyes is rolled?
-And for every possible value of $n$, at least half of the chosen players die.
-
-After all, the probability of rolling not-snake-eyes literally forever is zero. 
+And for every possible such $n$, at least half of the chosen players die.
+After all, the probability of rolling not-snake-eyes forever is zero. 
 (More precisely, in the limit as $n$ goes to infinity, the probability of rolling $n$ non-snake-eyes in a row goes to zero.)
 
-That's all true but let's work out the probability of rolling not-snake-eyes forever, conditional on you being chosen.
-In Bayesian terms, where $\Pr(\text{snake eyes})$ is the probability that a game rolls snake eyes, we have 
+That's all true but let's work out the probability of rolling not-snake-eyes forever \emph{conditional on you being chosen}.
+Starting with $\Pr(\text{snake eyes})$ as the probability that a game rolls snake eyes, we have the following by the definition of conditional probability:
 \begin{equation*}
 \Pr(\text{snake eyes} \mid \text{chosen} )
 = \frac{\Pr(\text{chosen} \land \text{snake eyes})}{\Pr(\text{chosen})}.
@@ -320,10 +319,10 @@ $$
 {\tfrac{1}{M}\sum\limits_{i=0}^{N-1}2^{i}(1-p)^{i}}.
 $$
 In the numerator we're summing over every possible round $n$ at which we could roll snake eyes, saying that we need to roll $n-1$ non-snake-eyes followed by one snake eyes \emph{and} that we are chosen in any round from 1 through $n$.
-The denominator is the same as in the previous section.
+The denominator, $\Pr(\text{chosen})$, is the same as in the previous section.
 
 Now algebra ensues!
-We multiply the numerator and denominator by $M$ to get rid of the $\tfrac{1}{M}$ factor.
+We multiply the numerator and denominator by $M$ to get rid of the $1/M$ factor.
 Then distribute the $(1-p)^{n-1}p$ over the $2^n-1$ and split it into two summations like so:
 $$
 \dfrac{
@@ -333,6 +332,7 @@ $$
 {\sum\limits_{i=0}^{N-1}2^{i}(1-p)^{i}}.
 $$
 
+These are finite sums so that's kosher.
 As $N$ goes to $\infty$, the right side of the numerator---which is again the probability of rolling snake eyes by round $N$---goes to one.
 We also re-index the summation in the denominator and get this:
 $$
@@ -352,11 +352,12 @@ Pull a $2p$ out of the sum in the numerator to get this:
 = & 2p - \dfrac{1} 
 {\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}} \\
 = & 2p - \dfrac{1} 
-{\sum\limits_{i=1}^{N}\left(2(1-p)\right)^{i-1}} \\
+{\sum\limits_{i=1}^{N}\left(2(1-p)\right)^{i-1}}.
 \end{split}
 \end{equation*}
 
-As long as $2(1-p) \geq 1$ (i.e., $p\leq 1/2$ which for us it does with $p=1/36$), the summation in the denominator diverges and the above approaches $2p$ in the limit as $N$ goes to $\infty$.
+The remaining summation is a finite geometric series with common ratio $2(1-p)$.
+As long as $2(1-p) \geq 1$ (i.e., $p\leq 1/2$ which for us is the case, namely $p=1/36$), the summation in the denominator diverges and the above approaches $2p$ in the limit as $N$ goes to $\infty$.
 
 In conclusion, the probability of rolling snake eyes \emph{eventually}, conditional on you being chosen to play, approaches $2p=1/18$ in the limit.
 Which is to say that the conditional probability of rolling not-snake-eyes literally forever is $17/18$.

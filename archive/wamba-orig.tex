@@ -48,13 +48,13 @@ For my proof we will construct upon first a finite population of willing players
 First we will look at the probability mass of the game ending in round $i$.
 For those games that end because snake eyes was rolled, the snake eyes was rolled with a probability $p$ and $i-1$ non-snake eyes were rolled with probability $(1-p)^{i-1}$ so we will denote the probability of ending with snake eyes in round $E=i$ as
 \[Pr(E=i) = p(1-p)^{i-1} \]
-For this to be a full probabity mass function on our population size $M$ we should find that the sum across rounds 1 to $m$ equals 1
+For this to be a full probability mass function on our population size $M$ we should find that the sum across rounds 1 to $m$ equals 1
 \begin{equation}\sum_{i=1}^m p(1-p)^{i-1} = p\frac{1 - (1-p)^m}{1 - (1-p)} = 1-(1-p)^m\end{equation}
 We can see that this sum is strictly less than 1 by a term of $(1-p)^m$ which coincides exactly with the probability mass of rolling non-snake eye $m$ times in a row.  The case where after $m$ rounds no one has lost the game.
 So our full probability mass distribution for a population $M$ is comprised of $m$ cases where the game ends in snake eyes and one case where there are no snake eyes.
 \[1 = (1-p)^ m + \sum_{i=1}^m p(1-p)^{i-1} \]
 
-Next lets look at the probability mass distribution for probability that a player plays in round $j$.  The first round has 1 player and each subsequent round has twice as many players and the round preceeding it so the probability that a player is chosen in round $C=j$ we will denote as  \[Pr(C=j) = \frac{2^{j-1}}{M}\]
+Next lets look at the probability mass distribution for probability that a player plays in round $j$.  The first round has 1 player and each subsequent round has twice as many players and the round preceding it so the probability that a player is chosen in round $C=j$ we will denote as  \[Pr(C=j) = \frac{2^{j-1}}{M}\]
 This probability mass distribution must sum to 1 if we are going to use it.
 \[\sum_{j=1}^m  \frac{2^{j-1}}{M} = \frac{2^m - 1}{M}\]
 If $M\neq 2^m - 1$ then we will have a bucket where the probability mass of not being chosen at all to play must equal $1-\frac{2^{m-1}}{M}$.  Because all of the conditional probabilities we will be discussing here will condition on the player having been chosen to play we will consider the population $M=2^m -1$ because the probability masses belonging to players not chosen to play will never contribute to $Pr(lose)$ nor to $Pr(chosen)$.  With our final assumption that $M=2^m -1$ we now have two independent probability mass distribution functions which each sum to 1 when we itterate their index over the set $\{1,...,m\}$which we will use to populate a Bayes Probability Table to see the terms of the joint probability mass distribution $Pr(E=i,C=j)$.
@@ -154,7 +154,7 @@ Pr(E=j|C=j) = \frac{Pr(C=j|E=j)Pr(E=j)}{Pr(C=j)}= \frac{Pr(E=j)}{Pr(C=j)}
 \begin{equation}\frac{\frac{2^{j -1}p(1-p)^{j-1}}{M}}{\frac{1}{M}2^{j-1}(1-p)^m+\sum_{i=j}^m \frac{2^{j -1}p(1-p)^{i-1}}{M}}
 \end{equation}\begin{equation} \frac{2^{j -1}p(1-p)^{j-1}}{2^{j-1}(1-p)^m+\sum_{n=j}^m 2^{j -1}p(1-p)^{n-1}}\end{equation}
 And WolframAlpha again evaluates equation (14) to $p$,  See alternate form at \url{https://www.wolframalpha.com/input?i2d=true&i=Divide%5BpPower%5B2%2Cj-1%5DPower%5B%5C%2840%291-p%5C%2841%29%2Cj-1%5D%2CPower%5B2%2Cj-1%5DPower%5B%5C%2840%291-p%5C%2841%29%2Cm%5D%2BpSum%5BPower%5B%5C%2840%291-p%5C%2841%29%2Cn-1%5DPower%5B2%2Cj-1%5D%2C%7Bn%2Cj%2Cm%7D%5D%5D}
-This makes sense right?  If you are selected to play in a specific round then the odds of you losing that round is $p=\frac{1}{36}$ which makes sense since the dice rolls are independent the process should be memoryless.
+This makes sense right?  If you are selected to play in a specific round then the odds of you losing that round is $p=\frac{1}{36}$ which makes sense since the dice rolls are independent the process should be memory less.
 
 Given that you are chosen to play, what is the probability that you are chosen to play in the game that does not roll any snake eyes?
 This one is a fun modification of Equation (10), all we do is substitute probability term which represents the bottom row of the Bayes Probability Table in lieu of the $Pr(lose)$ in the numerator.

@@ -5,7 +5,7 @@
 \newcount\Chatty  % whether to show our notes-to-selves in the pdf
 \newcount\Drafty  % whether to show a timestamp in the pdf
 \Chatty  = 1 % 0 for final copy; 1 for draft
-\Drafty  = 0 % 0 for final copy; 1 for draft
+\Drafty  = 1 % 0 for final copy; 1 for draft
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT CLASS AND PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -222,7 +222,7 @@ Since we can't directly calculate the probability in the infinite case, we have 
 
 \snakedivider
 
-To get a feel for where we're going, suppose you're 1 person in a huge but finite pool.
+To get a feel for where we're going, suppose you're one person in a huge but finite pool.
 Now suppose you are actually chosen. 
 There are two ways that can happen: 
 \begin{enumerate}
@@ -282,7 +282,6 @@ $$
 
 Working out that expression for $\Pr(\text{chosen})$ wasn't even necessary!
 We compute $\Pr(\text{death} \mid \text{chosen})$ like so:
-
 \begin{equation*}
 \begin{split}
 \Pr(\text{death} \mid \text{chosen}) & = 
@@ -307,7 +306,7 @@ After all, the probability of rolling not-snake-eyes forever is zero.
 That's all true but let's work out the probability of rolling not-snake-eyes forever \emph{conditional on you being chosen}.
 Starting with $\Pr(\text{snake eyes})$ as the probability that a game rolls snake eyes---unambiguously 1---we have, by the definition of conditional probability:
 \begin{equation*}
-\Pr(\text{snake eyes} \mid \text{chosen} )
+\Pr(\text{snake eyes} \mid \text{chosen})
 = \frac{\Pr(\text{chosen} \land \text{snake eyes})}{\Pr(\text{chosen})}.
 \end{equation*}
 
@@ -316,67 +315,149 @@ $\tfrac{0}{0}$
 because you have a 0\% chance of being chosen from an infinite pool.
 So let's work it out in the limit with a cap of $N$ rounds and finite pool $M$ as before:
 $$\dfrac
-{\sum\limits_{n=1}^{N}(1-p)^{n-1}p \cdot\dfrac{2^n-1}{M}}
+{\sum\limits_{i=1}^{N}(1-p)^{i-1}p \cdot\dfrac{2^i-1}{M}}
 {\sum\limits_{i=1}^{N}\tfrac{1}{M} 2^{i-1}(1-p)^{i-1}}.
 $$
-In the numerator we're summing over every possible round $n$ at which we could roll snake eyes, saying that we need to roll not-snake-eyes $n-1$ times followed by one snake eyes \emph{and} that we are chosen in any round from 1 through $n$.
+In the numerator we're summing over every possible round $i$ at which we could roll snake eyes, saying that we need to roll not-snake-eyes $i-1$ times followed by one snake eyes \emph{and} that we are chosen in any round from 1 through $i$.
 The denominator, $\Pr(\text{chosen})$, is the same as in the previous section.
 
-Now algebra ensues!
-We multiply the numerator and denominator by $M$ to get rid of the $1/M$ factor:
-$$\dfrac
-{\sum\limits_{n=1}^{N} (1-p)^{n-1}p \cdot(2^n-1)}
-{\sum\limits_{i=1}^{N} 2^{i-1}(1-p)^{i-1}}.
-$$
-Then distribute the $(1-p)^{n-1}p$ over the $2^n-1$ and split it into two summations like so:
+Now algebra ensues.
+We multiply the numerator and denominator by $M$ to get rid of the $1/M$ factor, 
+%$$\dfrac
+%{\sum\limits_{i=1}^{N} (1-p)^{i-1}p \cdot(2^i-1)}
+%{\sum\limits_{i=1}^{N} 2^{i-1}(1-p)^{i-1}}.
+%$$
+then distribute the $(1-p)^{i-1}p$ over the $2^i-1$ and split it into two summations:
 $$\dfrac{
-\left(\sum\limits_{n=1}^{N}2^n(1-p)^{n-1}p\right) -
-\left(\sum\limits_{n=1}^{N}(1-p)^{n-1}p \right)
+\left(\sum\limits_{i=1}^{N}2^i(1-p)^{i-1}p\right) -
+\left(\sum\limits_{i=1}^{N}(1-p)^{i-1}p \right)
 }{\sum\limits_{i=1}^{N} 2^{i-1}(1-p)^{i-1}}.
 $$
-
 These are finite sums so that's kosher.
-As $N$ goes to $\infty$, the right side of the numerator---which is again the probability of rolling snake eyes by round $N$---goes to one:
+The right side of the numerator is the probability of rolling snake eyes by round $N$, which is $\Pr(\text{snake eyes})$ in the limit as $N$ goes to infinity, so we replace that sum by one:
 $$\dfrac{
-\left(\sum\limits_{n=1}^{N}2^n(1-p)^{n-1}p\right) - 1
+\left(\sum\limits_{i=1}^{N}2^i(1-p)^{i-1}p\right) - 1
 }{\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}}.
 $$
 Almost there!
 Pull a $2p$ out of the sum in the numerator to get this:
-\begin{equation*}
-\begin{split}
-& \dfrac{
-2p\left(\sum\limits_{n=1}^{N}2^{n-1}(1-p)^{n-1}\right) - 1
-}
-{\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}} \\
-= & 2p - \dfrac{1} 
-{\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}} \\
-= & 2p - \dfrac{1} 
-{\sum\limits_{i=1}^{N}\left(2(1-p)\right)^{i-1}}.
-\end{split}
-\end{equation*}
-
-The remaining summation is a finite geometric series with common ratio $2(1-p)$.
-As long as $2(1-p) \geq 1$ (i.e., $p\leq 1/2$ which for us is the case, namely $p=1/36$), the summation in the denominator diverges and the above approaches $2p$ in the limit as $N$ goes to $\infty$.
+$$\dfrac{
+2p\left(\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}\right) - 1
+}{\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}}.
+$$
+Notice that the sums in the numerator and denominator are now identical.
+We distribute the denominator,
+$$2p - \dfrac{1} 
+{\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}},
+$$
+and combine the terms in the sum,
+$$2p - \dfrac{1} 
+{\sum\limits_{i=1}^{N}\left(2(1-p)\right)^{i-1}},
+$$
+to see that the denominator is a finite geometric series with common ratio $2(1-p)$.
+As long as the common ratio is greater than or equal to 1, 
+%(i.e., $p\leq 1/2$ which for us is the case, namely $p=1/36$), 
+the denominator diverges and the above approaches $2p$ in the limit as $N$ goes to infinity.
+How do we know $2(1-p) \geq 1$?
+Because we can rearrange it as $p\leq 1/2$ and that's true for us, namely $p=1/36$.\footnote{
+What would happen if we had $p>1/2$?
+In that case, by the preceding derivation, $\Pr(\text{snake eyes} \mid \text{chosen}) = 1$ so no chance of everyone surviving.
+That makes sense because the whole paradox is ruined if $p>1/2$.
+The probability of dying in the one-shot version is already greater than the fraction of people who die when the game ends in snake eyes.}
 
 In conclusion, the probability of eventually rolling snake eyes, conditional on you being chosen to play, approaches $2p=1/18$ in the limit.
 Which is to say that the conditional probability of rolling not-snake-eyes literally forever is $17/18$.
 \emoji{exploding-head}
 
-This vindicates our initial intuitive argument that being chosen is Bayesian evidence of never rolling snake eyes.
-And it contradicts the intuition that any event which occurs with an absolute probability of 1, such as rolling snake eyes eventually, must be independent of any other event.
+This vindicates our initial intuitive argument that being chosen is Bayesian evidence---strong Bayesian evidence, it turns out!---of never rolling snake eyes.
+And it invalidates the intuition that we can safely condition on snake eyes being rolled just because it definitely will be rolled (unconditionally).
+Another version of that intuition is that any event with probability 1, such as rolling snake eyes eventually, must be independent of any other event.
 %When we condition upon this zero measure event, we can no longer assume that rolling snake eyes is independent from being chosen!
-If being chosen and rolling snake eyes were independent then 
+But if being chosen and rolling snake eyes were independent then, by definition of independence,
+$\Pr(\text{chosen} \land \text{snake eyes}) = \Pr(\text{chosen})\cdot\Pr(\text{snake eyes})$.
+And if that were true, we'd conclude from the above derivation of $\Pr(\text{snake eyes}\mid\text{chosen})$ that
 \begin{align*}
-  1/18 = & \frac{\Pr(\text{chosen} \land \text{snake eyes})}{\Pr(\text{chosen})}\\
-       = & \frac{\Pr(\text{chosen})\Pr(\text{snake eyes})}{\Pr(\text{chosen})}\\
-       = & \Pr(\text{snake eyes}) 
+   & \Pr(\text{snake eyes})\\
+ = & \frac{\Pr(\text{chosen})\Pr(\text{snake eyes})}{\Pr(\text{chosen})}\\
+ = & \frac{\Pr(\text{chosen} \land \text{snake eyes})}{\Pr(\text{chosen})}\\
+ = & \Pr(\text{snake eyes}\mid\text{chosen})\\
+ = & 1/18.
 \end{align*}
-which contradicts $\Pr(\text{snake eyes}) = 1$.
+Which contradicts $\Pr(\text{snake eyes}) = 1$.
 %So within the context of conditioning upon being chosen, these two events cannot be independent.
 The temptation to treat $\Pr(X)$ as $\Pr(X \mid \text{snake eyes})$ since $\Pr(\text{snake eyes}) = 1$ leads us astray!
 
 \end{document}
+
+\appendix
+
+%\part*{Appendices}
+
+\chapter*{Appendix: Response to NO}
+
+%$p_{cs}$
+
+Let $\Pr(i,j)$ be the mutually exclusive absolute odds of an individual being selected in Round $i$ of a game that rolls snake eyes in Round $j$. 
+Since the game ends the round that we roll snake eyes we have $i\leq j \text{ }\forall \text{ } i\text{,}j \in \mathbf{N}$. 
+If $i > j$ then we were not selected because the game ended before we could play. 
+When $i=j$ then we are devoured by snakes.
+The absolute odds of dying is found by adding up all the possible games where we are selected in the final round:
+\begin{equation}
+  \sum_{j=1}^{\infty} \Pr(j,j) \label{die}
+\end{equation} 
+The absolute odds of being chosen are the games where  $i\leq j \text{ }\forall \text{ } i\text{,}j \in \mathbf{N}$:
+\begin{equation}
+  \sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j) = \sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j) \label{chosen} 
+\end{equation}
+
+The odds of dying, conditioned upon being selected is simply the ratio of \ref{die} over \ref{chosen}
+\begin{equation}
+  \frac{\sum_{j=1}^{\infty} \Pr(j,j)}{\sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j)}\label{theAnswer}
+\end{equation}
+
+NO asserts that the following is the odds of dying, conditioned upon being selected:
+\begin{align*}
+& \sum_{j=1}^{\infty} \frac{\Pr(j,j)p(1-p)^{j-1}}{\sum_{i=1}^{j} \Pr(i,j)} \\
+= & \frac{1}{1}p + \frac{2}{3}p(1-p) + \frac{4}{7}p(1-p)^2 + ... \\
+\approx & 0.5218873
+\end{align*}
+
+It is generally accepted that 
+$$\frac{\sum_{i=1}^{n} a_i}{\sum_{i=1}^{n} b_i}\nLeftrightarrow \sum_{i=1}^{n} \frac{a_i}{b_i}$$
+
+However we do know that if 
+$$\frac{a_i}{b_i}=\frac{a_j}{b_j} \text{   } \forall \text{ } i\text{,}j \in \{1...n\}$$
+then
+$$\frac{\sum_{i=1}^{n} a_i}{\sum_{i=1}^{n} b_i} = \frac{a_j}{b_j}\text{   } \forall \text{ } i\text{,}j \in \{1...n\}$$
+
+The local odds of dying knowing only that you are selected in Round $i$ and that the game may or may not continue is $p$.  This makes sense since with the locally known information it is just like you are playing a one shot game, observing just one roll of the dice.  Which means
+$$\frac{\Pr(i,i)}{\sum_{j=i}^{\infty}\Pr(i,j)} = p \text{  }\forall \text{  } i \in \mathbf{N}$$
+which, once accepted, is enough to show that \ref{theAnswer} is also $p$
+$$ \frac{\sum_{j=1}^{\infty} \Pr(j,j)}{\sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j)} = \frac{\sum_{i=1}^{\infty}\Pr(i,i)}{\sum_{i=1}^{\infty}\sum_{j=i}^{\infty}\Pr(i,j)} = p $$
+
+So lets algebra out the probability of losing, if you are chosen in Round i.
+We said that $\Pr(i,j)$ is the mutually exclusive absolute odds of an individual being selected in Round $i$ of a game that rolls snake eyes in Round $j$.  We might need to say what that looks like algebraically. 
+\begin{equation}
+  \Pr(i,j) = \frac{2^i}{M}p(1-p)^{j-1}
+\end{equation}
+M is a placeholder for the population size and $2^i$ is the number of players in Round $i$.  $p(1-p)^{j-1}$ is the probability that the game rolls $j-1$ non-snake-eyes before rolling snake eyes on Round $j$
+
+It is only possible to be chosen to play in Round $i$ if $i\leq j$.  You die when $j=i$ otherwise you live for all $j>i$. 
+\begin{align*}
+ &= \frac{\Pr(i,i)}{\sum_{j=i}^\infty \Pr(i,j)}\\
+ &=\frac{\frac{2^{i}p(1-p)^{i-1}}{M}}{\sum_{n=i}^{\infty} \frac{2^{i}p(1-p)^{n-1}}{M}}\\
+ &=\frac{p(1-p)^{i-1}}{\sum_{n=i}^{\infty}p(1-p)^{n-1}}\\
+ &=\frac{p(1-p)^{i-1}}{p\frac{(1-p)^{i-1}}{1-(1-p)}}\\
+ &=\frac{p(1-p)^{i-1}}{(1-p)^{i-1}}\\
+ &=p
+\end{align*}
+Ergo the probability of dying, conditional on being chosen is $p$.
+
+\wamba{
+This should makes sense to us within the narrative that, if you are selected to play in any specific round then the odds of you losing that round is determined by a fair dice roll made for that round and your odds of losing are $p=\frac{1}{36}$. No matter which round you are selected to play in, if you play you will only observe one roll of the dice and, since the dice rolls are independent, the process and your observation are memory-less.
+}
+
+\end{document} % END HERE FOR LORXUS SUBMISSION
 
 \vspace{2em}
 \noindent
@@ -771,11 +852,15 @@ and so P(T|G) = 157/162 and P(F|G) = 5/162
 The conditional probability we seek is conditioned only upon being selected, "G", not on both being selected and the game ending "G$\land$F".
 I did not find any published articles that directly take on the methods or conclusions draw by the Bartha 1999 authors in The Shooting-Room Paradox and Conditionalizing on Measurably Challenged Sets.
 
-%\end{document}
+\end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% SCRATCH NOTES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Conclusions from Bartha&Hitchcock:
+https://manifold.markets/dreev/is-the-probability-of-dying-in-the#WgrfvE39vqhFClPxWQzh
+
 
 To review, the uncapped version of the problem is not well posed because we have to condition on something (being chosen to play out of an infinite pool) that has probability zero.
 Relatedly, the expected value of the number of people chosen to play is infinite, as is the expected number of deaths.
@@ -788,8 +873,6 @@ The probability of exhausting the pool is $(1-p)^N$ -- not rolling snake eyes $N
 The key intuition here is that, first, if there's a small pool of people then there's a good chance we exhaust the pool and everyone survives.
 Second, if the pool is huge then probably you won't be chosen but \emph{if} you're chosen, that's Bayesian evidence that a lot of the pool got used up, which is Bayesian evidence that everyone survives.
 The probability of both you being chosen and everyone surviving go to zero as the pool size grows, but the conditional probability stays fixed.
-In the limit you have a 0\% chance of being chosen and
-... I seem to be repeating myself here...
 
 This really is quite subtle. 
 I think that if we condition on some group dying then you do get an answer of 1/2. 
@@ -802,22 +885,25 @@ And I think the answer is that it does matter.
 
 https://link.springer.com/article/10.1023/A:1005100407551
 
-Reply to Martin Randall that dreev started drafting:
-Thanks for writing this up! And I like your epistemic snake version but the spirit of the original is a decision theory question. Namely, should you volunteer to play this game? We take it as an assumption that you do want to play in the one-shot version with a 1/36 chance of dying. If it were closer to a coin flip then you would not want to. 
-
-(We could make this more concrete/specific and say you have utility -100 for dying and utility 10 for the bajillion dollars -- that makes it positive expected value (EV) for 1/36 and negative EV if the probability of death is anywhere close to 1/2. But we can also just focus on the probability of dying conditional on being chosen to play, i.e., being in one of the groups, i.e., rolling the dice. That's what the EV calculation hinges on.)
-
-So what's the optimal choice?
-
-There's a compelling argument for playing which is that you're either chosen for one of the doubling groups or you're not. If not, then your utility is zero. If you are then you'll go into the room with a group of people and you'll die iff snake eyes are rolled. That's independent of all past rolls and your EV in this scenario is the same positive number as in the one-shot version.
+There's a compelling argument for playing which is that you're either chosen for one of the doubling groups or you're not. 
+If not, then your utility is zero. 
+If you are then you'll go into the room with a group of people and you'll die iff snake eyes are rolled. 
+That's independent of all past rolls and your EV in this scenario is the same positive number as in the one-shot version.
 
 The seeming paradox is that half the people who roll the dice die.
 
 The resolution of the paradox is that it's possible (in the technical sense of "possible") for no one to ever die. We can just keep rolling non-snake-eyes indefinitely. 
+
+How is something that happens with probability zero possibly relevant? Because it's only probability zero unconditionally. If we condition on being chosen, it's actually quite likely!
+
+A: Suppose you're chosen to play out of an infinite pool...
+B: Well I definitely won't be if I'm one out of literal infinity.
+A: But hypothetically, say you're chosen. What's the probability of rolling not-snake-eyes forever?
+
+For any huge-but-finite pool, the extremely unlikely event of being chosen is a massive Bayesian update that we exhausted the whole pool without ever rolling snake eyes.
 
 ~~
 
 "Roughly, of the people chosen, what fraction die?"
 
 But what about the inescapable fact that half the people die?
-

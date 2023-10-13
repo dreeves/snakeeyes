@@ -70,7 +70,7 @@
 \newcommand{\snakedivider}{
 \vspace{.2em}
 \begin{center}
-\includegraphics[width=.25\linewidth]{snake}
+\includegraphics[width=.25\linewidth]{cute-snake-divider}
 \end{center}
 \vspace{.1em}
 }
@@ -132,7 +132,7 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MAIN DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter*{Problem Statement}
+\chapter{Problem Statement}
 
 You are offered a gamble.
 A pair of six-sided dice are rolled and unless they come up snake eyes you get a bajillion dollars. 
@@ -199,7 +199,7 @@ In the unbounded case there's a 0\% chance of infinitely many people being chose
 
 \newpage
 
-\chapter*{Solution}
+\chapter{Solution (With Limits)}
 
 We want the probability that you die given that you are chosen to play, 
 $\Pr(\text{death} \mid \text{chosen})$.
@@ -296,7 +296,8 @@ The limit as $N$ goes to infinity is just...
 $p$ or 1/36, the probability of rolling snake eyes.
 \qedsymbol{}
 
-\chapter*{Discussion and Dead-Horse Beating}
+%\chapter*{Discussion and Dead-Horse Beating}
+\chapter{Can We Roll Not-Snake-Eyes Forever?}
 
 What about the argument that, with unlimited people, there will necessarily be a finite round $n$ at which snake eyes is rolled?
 And for every possible such $n$, at least half of the chosen players die.
@@ -387,13 +388,15 @@ Which contradicts $\Pr(\text{snake eyes}) = 1$.
 %So within the context of conditioning upon being chosen, these two events cannot be independent.
 The temptation to treat $\Pr(X)$ as $\Pr(X \mid \text{snake eyes})$ since $\Pr(\text{snake eyes}) = 1$ leads us astray!
 
-\appendix
+%\appendix
 
 %\part*{Appendices}
 
-\chapter*{Appendix: To Infinity And Beyond}
+\chapter{To Infinity And Beyond (With A Nonuniform Prior)}
 
-What if we reject the whole idea of defining a finite version of Snake Eyes?
+What if we reject the whole idea of defining a finite version of Snake Eyes to take a limit of?
+Can we math out an answer for the infinite game directly?
+Yes!
 The only monkey wrench is that we can't have a uniform prior over an infinite set.\footnote{
 Not in standard analysis anyway.
 If infinitely many things are all equally likely then they all have zero probability.
@@ -412,11 +415,11 @@ $\rightarrow\leftarrow$
 So let's just say we don't \emph{quite} have a uniform prior.
 Maybe you think you're equally likely to be in any of the first trillion groups chosen to play and that it gradually becomes less likely after that.
 We can make that "trillion" as high as we like.
-The key is that as long as the probability of being chosen isn't exactly zero, we can math out the answer for the infinite game directly.
+The key is that as long as the probability of being chosen isn't exactly zero, there's no division-by-zero problem like before.
 
-Is that fair, to reject the stipulation in the problem statement that you're chosen uniformly?
-It's not too crazy (certainly no crazier than what we need to reject to get the NO answer) to reject or tweak an impossible part of the problem statement.
-You're not quite chosen uniformly because you can't be and have any probability of being chosen at all.
+Is that fair though, to reject the stipulation in the problem statement that you're chosen uniformly?
+Well, it's arguably less of a leap than we made before in defining a finite version of the game where it's possible for no one to die.
+We're just saying you're not quite chosen uniformly because you \emph{can't} be and have any probability of being chosen at all.
 But we can get arbitrarily close to uniform!
 We can even consider the limit as the distribution approaches uniform.
 Great, let's get to it!
@@ -480,7 +483,7 @@ Now we use~\eqref{pcs} to expand that to
 $$
 \frac{\Pr(\text{CH}_c)\cdot(1-p)^{c-1}\cdot p}{\sum\limits_{s=c}^\infty \Pr(\text{CH}_c)(1-p)^{s-1} p}
 $$
-and cancel common factors to get this:
+and cancel common factors (notice we're summing over $s$, not $c$) to get this:
 $$
 \frac{(1-p)^{c-1}}{\sum\limits_{s=c}^\infty (1-p)^{s-1}}.
 $$
@@ -513,7 +516,10 @@ $$
 \frac{\sum\limits_{i=1}^\infty p_{ii}}{\sum\limits_{c=1}^\infty\frac{p_{cc}}{p}}.
 $$
 And we're home free.
-Factor out the $1/p$ and the sums are the same sum.
+Factor out the $1/p$ and the sums are the same sum:
+$$
+\frac{\sum\limits_{i=1}^\infty p_{ii}}{\frac{1}{p}\sum\limits_{c=1}^\infty p_{cc}}.
+$$
 They cancel and the $1/p$ flips to the top as $p$ and we're done! \qed
 
 Amazingly, we didn't need to define a finite version of the game.
@@ -521,7 +527,8 @@ We just need a consistent prior on when you're chosen.
 And even more amazingly, the answer is completely independent of what that prior is.
 Call it uniform for the first $N$ possible values of when you're chosen and then compute 
 $\Pr(\text{death}\mid\text{chosen})$ in terms of $N$.
-The answer, as we just saw, is $p$, no $N$ in sight.
+The answer, as we just saw, is $p$.
+No $N$ in sight.
 So in the limit as our prior approaches uniform?
 Still $p$.
 Paradox: resolved and double-resolved.

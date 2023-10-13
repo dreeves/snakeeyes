@@ -136,18 +136,33 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
 \begin{itemize}
     \item Why should I believe that the “true” Snake Eyes setup, which is intrinsically infinitary, will behave nicely as a limit of its suitably defined (finite) initial segments? After all, there’s things that can happen in any finite case that never can - they’re literally impossible - or never will - they have probability 0 - in the infinitary case! The fact that your final expression for P r(death|chosen) has no N-dependence is a promising data point, but on its own it’s not enough.
 
-    {\color{red} 
+    {\color{violet} 
         RESPONSE: 
         \wamba{Why doesn't Bartha Hitchcock paper look at the problem this way? This seems easier than constructing the non-standard analysis framework, so ostensibly there is a flaw in this approach as well, unless the non-standard analysis framework was only needed to reconcile the Shooting Room Paradox's $\frac{9}{10}$ and $\frac{1}{36}$ death rates since their preamble says that $\frac{1}{36}$ is correct in all cases}
         If we shift to looking at the probability of losing, if you are chosen in Round i, with out making any assumption about any finiteness of the game I believe we will have allowed for the intrinsically infinitary nature of the game.
         Let $\Pr(i,j)$ be the mutually exclusive absolute odds of an individual being selected in Round $i$ of a game that rolls snake eyes in Round $j$, let $\Pr(C_i)$ be the probability of being selected in Round $i$ and let $\Pr(E_j)$ be the probability of the game ending in snake-eyes rolled in Round $j$.
+
+        Where
+        $$\Pr(E_j) = p(1-p)^{j-1}$$
+        This is precisely the odds of rolling $j-1$ not snake eyes results and then finally rolling snake eyes in the $j^\text{th}$ round and satisfies the countable additivity property of probability 
+        $$\sum_{j=1}^\infty \Pr(E_j) =\sum_{j=1}^\infty p(1-p)^{j-1}= \frac{p}{1-(1-p)}=1$$
+        
+        Where
+        $$\Pr(C_i) = \lim_{m\to\infty}\frac{2^{i-1}}{2^m-1}$$
+        This represents the doubling population that plays in each successive round of the game, however the limit is an infinitesimal and in order to have a semblance of retaining the countable additivity property of probability we have to constrain the total population, which is ultimately infinite, to 1 less than a power of two, which we allow to grow with out bound in the limit to still have an infinite population. 
+        $$\sum_{i=1}^\infty \Pr(C_i) = \lim_{m\to\infty}\sum_{i=1}^m\frac{2^{i-1}}{2^m-1}=\lim_{m\to\infty}\frac{2^m-1}{2^m-1}=1$$ 
+        then
             \begin{align*}
               \Pr(i,j) & = \Pr(C_i)\Pr(E_j)\\
-              \Pr(E_j) & = p(1-p)^{j-1}\\
               \Pr(i,j) & = \Pr(C_i)p(1-p)^{j-1}
             \end{align*}
+        We note that in the limit each $\Pr(C_i)$ is infinitesimal however the sum across all $C_i$ is still 1 in the limit.
         
-        It is only possible to be chosen to play in Round $i$ if $i\leq j$.  You die when $j=i$ otherwise you live for all $j>i$. 
+        The sum of all possible $\Pr(i,j)$ is also 1 as a disjoint covering of the probability space.
+        $$\sum_{i=1}^\infty\sum_{j=1}^\infty \Pr(i,j) =\sum_{i=1}^\infty \Pr(C_i)\sum_{j=1}^\infty\Pr(E_j) = 1 $$
+        The sum of any subset of these disjoint $Pr(i,j)$ must therefore in all cases be within the range $[0,1]$, and actually we can refine this range to $(0,1]$ provided that we consider $i>j$ cases to be where you would have played in Round $i$ if the game had not ended in the earlier Round $j$.
+        
+        You only play in Round $i$ if $i\leq j$.  You die when $j=i$ otherwise you live for all $j>i$. 
             \begin{align*}
                  \Pr(E_i|C_i)&=\frac{\Pr(E_i\land C_i)}{\Pr(C_i)}\\ 
                  &=\frac{\Pr(i,i)}{\sum_{j=i}^\infty \Pr(i,j)}\\
@@ -168,7 +183,7 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
           \sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j) = \sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j) \label{chosen} 
         \end{equation}
         
-        The odds of dying, conditioned upon being selected is simply the ratio of \ref{die} over \ref{chosen}
+        The odds of dying, conditioned upon being selected is simply the ratio of eq. \ref{die} over eq. \ref{chosen}
         \begin{equation}
           \frac{\sum_{j=1}^{\infty} \Pr(j,j)}{\sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j)} = \frac{\sum_{i=1}^{\infty} \Pr(i,i)}{\sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j)}\label{theAnswer}
         \end{equation}
@@ -186,42 +201,18 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
             $$\frac{\sum_{i=1}^{\infty} \Pr(i,i)}{\sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j)}=p$$
     }
 
+
 \item More broadly, there’s issues in how your write up handles expressions that roughly cash out as something like 0∗∞ - at the moment, it seems to tacitly assume that all such expressions should be evaluated as 0.
     
-    {\color{red}
+    {\color{violet}
         RESPONSE: 
         0*$\infty$ or 0/0 is undefined, not zero, in standard analysis setting which is why the YES write-up shifts to taking the limit of a finitary starting population.
     }
     \wamba{Need to re-read the YES write up to see what assumption evaluates expressions as 0.}
 \item What conditions, if any, need to be placed on the finitary starting population size M in order to avoid problems when you pass to the infinitary case? Here I’m mostly worried about St. Petersburg’s Paradox-flavored problems.
 
-   {\color{red}
-        RESPONSE: 
-        In the St. Petersburg Paradox we have a game with an EV of
-        \begin{align*}
-            \text{EV}(\text{winnings})&=\frac{1}{2}2 + \frac{1}{4}4 + \frac{1}{8}8 + \frac{1}{16}16 + ...\\
-            &=1 + 1 + 1 + 1 + ...\\
-            &=\infty
-        \end{align*}
-        So the question is what would you pay for a chance to win $EV(winnings)=\infty$?  Lets say you are willing to pay $b$ which maximizes your EV(net winnings) for the chance to play.
-        \begin{align*}
-            \text{EV}(\text{net winnings})&=\text{EV}(\text{winnings})-b\\ 
-             &=\infty-b \\
-             &= \infty\\
-        \end{align*}
-        So we should be good paying any amount $b$? But what about
-        \begin{align*}
-             &\text{EV}(\text{net winnings})\\
-             &=\text{EV}(\text{winnings}-b)\\ 
-            & =\frac{(2-b)}{2} + \frac{(4-b)}{4} + \frac{(8-b)}{8} + \frac{(16-b)}{16} + ...\\
-            & =1 + 1 + 1 + ... -b(\frac{1}{2}+\frac{1}{4}+\frac{1}{8}+\frac{1}{16}+...)\\
-            & =\infty-b\\
-            \text{so}\\
-           b & = \text{  ?  }
-        \end{align*}
-        It doesn't matter what you would pay, the EV(net winnings) = EV(winnings) = $\infty$
-
-        Does a similar scenario arise in the finitary starting population sizes M passing into the infinitary case?  I perceive the St. Petersburg Paradox to arise from comparing unbound infinite sums. Clearly the YES write up's 
+   {\color{violet}
+        RESPONSE:
         \begin{align*}
             \Pr(\text{chosen}) &= \sum_{i=1}^{N} \tfrac{1}{M} 2^{i-1}(1-p)^{i-1}\\
             &= \frac{1}{M} \sum_{i=1}^{N} \bigg(\frac{35}{18}\bigg)^{i-1}\\
@@ -248,13 +239,13 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
     
 \item Suppose Team No’s objection to Clarification 3 - namely, that it’s incoherent due to under-specification - is spot-on, and you really do need to motivate bounded-escape over bounded death as the natural finitary analogue. How?
 
-    {\color{red}
+    {\color{violet}
         RESPONSE: 
         To motivate bounded-escape over bounded death as the natural finitary analogue, one looks only to the algorithm. The game described is non-adversarial, and the dice are independent, and the dice are rolled in every round.  Each round you take a disjoint cohort, roll the dice, if it is snake eyes you kill the cohort and stop recruiting any new cohorts because the game has ended, if it is not snake eyes the cohort lives(wins) and you proceed to recruit the next disjoint cohort.  To motivate the bounded-escape case you need only follow the algorithm until you cannot, Recruit a disjoint cohort, if you can, and roll the dice, repeat as necessary, any one who plays and lives, only lives because they observed non-snake eyes in their round. Whereas NO's bounded-death game introduces a new rule/mechanism which must necessarily ignore the roll of any dice for the final cohort, "If after recruiting a cohort it is apparent that there will be insufficient population left to recruit any further cohorts, then do not roll dice, just kill this cohort."  If you need a new rule which must supersede the previous "rule" that independent dice are rolled to determine the outcome of each round, then you have changed the game.
     }
 \item What, precisely, should be meant by “chosen”? Chosen for round i? For at least one of the rounds? Something else?
     \wamba{I am not sure about the consequences of any of these,  with the reformulated by Chosen in Round $i$ if feel like we could shift to a Pr(chosen)=1 world such as, only minds which play exist.}
-    {\color{red}
+    {\color{violet}
         RESPONSE: 
         The game described is drawing from a population at random. The conditional question must then be over the total probability that you are drawn from the population at random. NO's position requires that the conditional event equal 1 in the absolute sense for it to work because they cannot address the lack of a uniform prior probability of being selected at random from a population with out non-standard analysis.  YES's position holds regardless if we are in a non-standard setting or a standard setting with a countably additive probability.
     }
@@ -266,7 +257,7 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
 
 \wamba{per Lorxus: Yes, that is supposed to refer to the  probability of never rolling snake eyes conditioned upon being chosen. There's some algebra there but it's a little incomplete, and the narrative is lacking.}
     
-    {\color{red}
+    {\color{violet}
         RESPONSE: 
         \wamba{ This feels, increasingly, like blowing smoke. I am inclined to abandon everything at resort exclusively to the reformulated YES argument, constructed in the vein of NO's construction, in which case we might want to look at the NO questions and preemptively address such issues.}
 
@@ -274,29 +265,35 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
         
         So the question is that if rolling snake eyes happens with probability of 1, how can the zero measure event of never rolling snake eyes be $\frac{17}{18}$.  The claim is not made in the naked context of absolute probability but rather conditioned upon the also zero measure event of having been chosen at random from the countably infinite population.
 
-         $$\Pr(\text{chosen})= \frac{18}{17}\frac{\big(\frac{35}{18}\big)^N-1}{2^N-1}$$
-         $$\Pr(\text{roll snake eyes})=\underset{n\to\infty}{\lim}1-\frac{35}{36}^n=1$$
+         $$\Pr(\text{chosen})= \lim_{n\to\infty}\frac{18}{17}\frac{\big(\frac{35}{18}\big)^n-1}{2^n-1}$$
+         $$\Pr(\text{roll snake})=\underset{n\to\infty}{\lim}1-\bigg(\frac{35}{36}\bigg)^n=1$$
+         $0<\bigg|\Pr(\text{rol snake)}-1\bigg|<\epsilon\text{,   }\forall\text{   } n>\frac{\ln{\epsilon}}{\ln{35}-\ln{36}}$
+         $$\Pr(\text{never roll snake})=\lim_{n\to\infty}\bigg(\frac{35}{36}\bigg)^n$$
          \begin{align*}
-             &\Pr(\text{roll snake eyes|chosen})\\
-             &=\frac{\Pr(\text{roll snake eyes}\land\text{chosen})}{\Pr(\text{chosen})}\\
-             &=\frac{\Pr(\text{chosen|roll snake eyes})\Pr(\text{roll snake eyes})}{\Pr(\text{chosen})}
+             &\Pr(\text{never roll snake|chosen})\\
+             &=\frac{\Pr(\text{never roll snake}\land\text{chosen})}{\Pr(\text{chosen})}\text{, or alternatively}\\
+             &=\frac{\Pr(\text{chosen|never roll snake})\Pr(\text{never roll snake})}{\Pr(\text{chosen})}\\
+             &=\frac{1 * \Pr(\text{never roll snake})}{\Pr(\text{chosen})}\\
+             &=\frac{\lim_{n\to\infty}\bigg(\frac{35}{36}\bigg)^n}{\lim_{n\to\infty}\frac{18}{17}\frac{\big(\frac{35}{18}\big)^n-1}{2^n-1}} = \lim_{n\to\infty}\frac{17}{18}\frac{35^n(36^n-18^n)}{36^n(35^n-18^n)}\\
+             %%&\text{for }\epsilon>0, \bigg|\Pr(\text{never roll snake|chosen})-\frac{17}{18}\bigg|<\epsilon\\
+             %%&\forall \text{  }n>
+             &=\frac{17}{18}
          \end{align*}
         
         Nearly every game ends in snake eyes before you are selected.  These games would fall outside of the probability space used to calculate the conditional probability of your death conditioned upon the unlikely even that you are chosen to play.   Of the games you are selected to play in, there are infinitely many games that end in snake eyes and therefor have a finite number of players, and there  games that, improbable as it may be, never rolls snake eyes.  If instead of thinking of it as 2d6 we think of it as a binary distribution with $p=\frac{1}{36}$ then we might say there is exactly one game that never ends
     }
 \item You appear to start by postulating an already-existing countably infinite population to draw from, such that you can experience not having been chosen. Why is this relevant to a question for which having been chosen should be true by assumption? And if we do assume infinite starting population, why isn’t the answer immediately 0? I need to see some more discussion of how you handle infinities here.
 
-    {\color{red}
+    {\color{violet}
         RESPONSE: 
         
     }
 \item Suppose we keep the Snake Eyes Game going forever, continuing to pull larger and larger (disjoint) cohorts from our countably infinite population and killing all and only the cohorts that roll snake-eyes. Is there anything different about the probabilities of this game’s expected outcomes for any given player? Why or why not?
 
-    {\color{red}
+    {\color{violet}
         RESPONSE: 
-        This continuous Snake-Eyes variant would seem to be prone to the St. Petersburg Paradox, at least for the NO argument.  
-
-        We now in all cases have that the chance that you are chosen to play is 1, everyone plays.  On the one hand, for YES, we could look at the odds of rolling snake-eyes given that you are playing in Round $i$ and we would find that the player observes a single dice roll and therefore should have an expectation of $p$ for death.  The fact that everyone plays does not mess things up here.
+       
+        We now in all cases have that the chance that you are chosen to play is 1, everyone plays.  On the one hand, for YES, we could look at the odds of rolling snake-eyes given that you are playing in Round $i$ and we would find that the player observes a single dice roll and therefore should have an expectation of $p$ for death.  The fact that everyone plays does not mess things up here for the YES rational.
 
         On the other hand, for NO, looking at the game from the perspective of the rounds which resulted in snake-eyes and therefore death, there are infinitely many snake eyes rounds in contrast to the original game's single game ending round, and there are infinitely many non-snake eyes rounds in contrast to the finitely(?) many non-snake rounds in the original game setting.  So we have $\frac{\infty}{\infty}$ which is undefined, but in this context we have no way of setting up any similitude of a limit in the standard analysis sense.
 

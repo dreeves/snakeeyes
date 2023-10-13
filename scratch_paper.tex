@@ -76,7 +76,7 @@ The odds of dying, conditioned upon being selected is simply the ratio of \ref{d
 \end{equation}
 
 NO asserts that the following is the odds of dying, conditioned upon being selected:
-$$\sum_{j=1}^{\infty} \frac{\Pr(j,j)}{\sum_{i=1}^{j} \Pr(i,j)} = \frac{1}{1}p + \frac{2}{3}p(1-p) + \frac{4}{7}p(1-p)^2 + ... \approx 0.5218873$$
+$$\sum_{j=1}^{\infty} \frac{\Pr(j,j)p(1-p)^{j-1}}{\sum_{i=1}^{j} \Pr(i,j)} = \frac{1}{1}p + \frac{2}{3}p(1-p) + \frac{4}{7}p(1-p)^2 + ... \approx 0.5218873$$
 
 It is generally accepted that 
 $$\frac{\sum_{i=1}^{n} a_i}{\sum_{i=1}^{n} b_i}\nLeftrightarrow \sum_{i=1}^{n} \frac{a_i}{b_i}$$
@@ -111,4 +111,31 @@ Ergo the probability of dying, conditional on being chosen is $p$.
 \mycomment{
 This should makes sense to us within the narrative that, if you are selected to play in any specific round then the odds of you losing that round is determined by a fair dice roll made for that round and your odds of losing are $p=\frac{1}{36}$. No matter which round you are selected to play in, if you play you will only observe one roll of the dice and, since the dice rolls are independent, the process and your observation are memory-less.
 }
+
+RESPONSE: 
+        In the St. Petersburg Paradox we have a game with an EV of
+        \begin{align*}
+            \text{EV}(\text{winnings})&=\frac{1}{2}2 + \frac{1}{4}4 + \frac{1}{8}8 + \frac{1}{16}16 + ...\\
+            &=1 + 1 + 1 + 1 + ...\\
+            &=\infty
+        \end{align*}
+        So the question is what would you pay for a chance to win $EV(winnings)=\infty$?  Lets say you are willing to pay $b$ which maximizes your EV(net winnings) for the chance to play.
+        \begin{align*}
+            \text{EV}(\text{net winnings})&=\text{EV}(\text{winnings})-b\\ 
+             &=\infty-b \\
+             &= \infty\\
+        \end{align*}
+        So we should be good paying any amount $b$? But what about
+        \begin{align*}
+             &\text{EV}(\text{net winnings})\\
+             &=\text{EV}(\text{winnings}-b)\\ 
+            & =\frac{(2-b)}{2} + \frac{(4-b)}{4} + \frac{(8-b)}{8} + \frac{(16-b)}{16} + ...\\
+            & =1 + 1 + 1 + ... -b(\frac{1}{2}+\frac{1}{4}+\frac{1}{8}+\frac{1}{16}+...)\\
+            & =\infty-b\\
+            \text{so}\\
+           b & = \text{  ?  }
+        \end{align*}
+        It doesn't matter what you would pay, the EV(net winnings) = EV(winnings) = $\infty$
+
+        Does a similar scenario arise in the finitary starting population sizes M passing into the infinitary case?  I perceive the St. Petersburg Paradox to arise from comparing unbound infinite sums. Clearly the YES write up's 
 \end{document}

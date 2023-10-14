@@ -207,6 +207,53 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
     {\color{violet}
         RESPONSE: 
         0*$\infty$ or 0/0 is undefined, not zero, in standard analysis setting which is why the YES write-up shifts to taking the limit of a finitary starting population.
+
+        Indeed I would aruge that it is the NO argument which tacitly assumes that all such expressions 0∗∞ should be evaluated as 0.
+
+        No argues that the following summation answers the snake eyes question
+        $$\sum_{j=1}^{\infty} \frac{\Pr(j,j)p(1-p)^{j-1}}{\sum_{i=1}^{j} \Pr(i,j)} $$
+        $$= \frac{1}{1}p + \frac{2}{3}p(1-p) + \frac{4}{7}p(1-p)^2 + ...$$
+        $$\approx 0.5218873$$
+        There are issues with this still because they are taking the average of individual games rather than the average of the system. If we try to repair this for NO and look at the average of the whole game state then we end up with the follwing:
+
+        On average how many people played [in games that end]?
+        We add up all the players from all the games, weighted by the probability the game ended in that round.
+        $$\sum_{i=1}^\infty p(1-p)^{i-1}(2^i-1)$$
+        
+        On average how many people died [in games that end]?
+        We add up all the dead players from all the games, weighted by the probability that the game end in that round.
+        $$dead=\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}$$
+        $$\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35*2}{36}\bigg)^{i-1}$$
+        $$\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}$$
+        Because $\frac{35}{18}>1$ $dead$ is unbounded and will be infinite.
+        
+        What is the ratio of dead people to people that played [in games that end]?
+        $$\frac{\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}}{\sum_{i=1}^\infty p(1-p)^{i-1}(2^i-1)}$$
+        $$\frac{\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}}{2\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}-\sum_{i=1}^\infty p(1-p)^{i-1}}$$
+        $$\frac{dead}{2dead-1} = \frac{1}{2}$$
+        As we might have expected this is tantamount to the limit of the "largest" game that ends in snake eyes.  But what about the zero probability game that never rolls snake eyes? How many people are chosen in such an impossible game? Well.... all the people.
+        $$\lim_{n\to\infty}(1-p)^n(2^{n+1}-1)$$
+        Here we have our missing 0∗∞ expression and YES argues that this is not zero, whereas NO ignores this term's contribution to the to denominator because surely all games end, and therefore this never ending game is impossible.
+
+        $$\lim_{n\to\infty}2^{n+1}(1-p)^n - (1-p)^n$$
+        $$\text{For }p=\frac{1}{36}\text{, }\lim_{n\to\infty}2*\frac{35^n}{18^n} - \frac{35^n}{36^n}\text{ is unbounded}$$
+        so we can say that the "infinite" game contributes to the denominator
+        $$2\lim_{n\to\infty}\bigg(\frac{35}{18}\bigg)^n$$
+
+        If we return to our dead over 2 dead minus 1 ratio and add in the chosen from an infinite game we get the following
+        $$\frac{\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}}{\frac{1}{18}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}+2\lim_{n\to\infty}\bigg(\frac{35}{18}\bigg)^n -2}$$
+
+        
+        Consider the limit of the following ratio
+        $$\lim_{n\to\infty}\frac{\frac{35^n}{18^n}}{\sum_{i=0}^{n-1}\frac{35^i}{18^i}}$$
+        $$\lim_{n\to\infty}\frac{1}{\sum_{i=0}^{n-1}\frac{18^{n-i}}{35^{n-i}}}$$
+        since 18/35 < 1 we can solve for this after we reindex
+        $$\lim_{n\to\infty}\frac{1}{-1+\sum_{i=0}^{n}\frac{18^{i}}{35^{i}}}$$
+        $$\lim_{n\to\infty}\frac{1}{-1+\frac{1-(\frac{18}{35})^{n+1}}{1-\frac{18}{35}}}$$
+        $$\frac{1-\frac{18}{35}}{-1+\frac{18}{35}+1} = \frac{17}{18}$$
+        so adding in this term that NO argues we should ignore because it has probability zero we have
+        $$\frac{\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}}{\frac{2}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}+\frac{17}{18}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}-2}$$
+        $$\frac{1}{2+\frac{17*36}{18}}=\frac{1}{36}$$
     }
     \wamba{Need to re-read the YES write up to see what assumption evaluates expressions as 0.}
 \item What conditions, if any, need to be placed on the finitary starting population size M in order to avoid problems when you pass to the infinitary case? Here I’m mostly worried about St. Petersburg’s Paradox-flavored problems.
@@ -241,7 +288,9 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
 
     {\color{violet}
         RESPONSE: 
-        To motivate bounded-escape over bounded death as the natural finitary analogue, one looks only to the algorithm. The game described is non-adversarial, and the dice are independent, and the dice are rolled in every round.  Each round you take a disjoint cohort, roll the dice, if it is snake eyes you kill the cohort and stop recruiting any new cohorts because the game has ended, if it is not snake eyes the cohort lives(wins) and you proceed to recruit the next disjoint cohort.  To motivate the bounded-escape case you need only follow the algorithm until you cannot, Recruit a disjoint cohort, if you can, and roll the dice, repeat as necessary, any one who plays and lives, only lives because they observed non-snake eyes in their round. Whereas NO's bounded-death game introduces a new rule/mechanism which must necessarily ignore the roll of any dice for the final cohort, "If after recruiting a cohort it is apparent that there will be insufficient population left to recruit any further cohorts, then do not roll dice, just kill this cohort."  If you need a new rule which must supersede the previous "rule" that independent dice are rolled to determine the outcome of each round, then you have changed the game.
+        To motivate bounded-escape over bounded death as the natural finitary analogue, one looks only to the algorithm. The game described is non-adversarial, and the dice are independent, and the dice are rolled in every round.  Each round you take a disjoint cohort, roll the dice, if it is snake eyes you kill the cohort and stop recruiting any new cohorts because the game has ended, if it is not snake eyes the cohort lives(wins) and you proceed to recruit the next disjoint cohort.  To motivate the bounded-escape case you need only follow the algorithm until you cannot, Recruit a disjoint cohort, if you can, and roll the dice, repeat as necessary, any one who plays and lives, only lives because they observed non-snake eyes in their round. Whereas NO's bounded-death game introduces a new rule/mechanism which must necessarily ignore the roll of any dice for the final cohort, "If after recruiting a cohort it is apparent that there will be insufficient population left to recruit any further cohorts, then do not roll dice, just kill this cohort."  If you need a new rule which must supersede the previous "rule" that independent dice are rolled to determine the outcome of each round, then you have changed the game.  
+
+        What about a version of bounded-death that simply discards any games that never roll snake eyes, because surely this is more representative of the infinite case where the odds of rolling snake eyes is 1.  This argument is seductive, however it is cherry picking games where both the player is chosen in N time and the game ends in N time.  
     }
 \item What, precisely, should be meant by “chosen”? Chosen for round i? For at least one of the rounds? Something else?
     \wamba{I am not sure about the consequences of any of these,  with the reformulated by Chosen in Round $i$ if feel like we could shift to a Pr(chosen)=1 world such as, only minds which play exist.}

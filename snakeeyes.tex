@@ -168,14 +168,24 @@ Your chances of death are the chances of snake eyes on your round: 1/36.
 
 So which is it? 
 What's your probability of dying, conditional on being chosen to play?
+If you learn that your friend was chosen to play in this game and the game is now over, how worried are you?
+If you wanted to play the one-shot version, do you still want to play the doubling groups version?
+
+\vspace{1em}
+
+\emph{Fine print: 
+The game is not adversarial and the dice rolls are independent and truly random.
+Groups are chosen uniformly and without replacement.
+Void where prohibited.
+}
 
 \newpage
 
-Some clarifications:
+\chapter{Solution (With Limits)}
 
+\iffalse
 \begin{enumerate}
-\item The game is not adversarial and the dice rolls are independent and truly random.
-\item Choosing each group also happens uniformly randomly and without replacement.
+\item Choosing each group happens uniformly randomly.
 \item This is technically undefined with an infinite pool of people but we can cap it and say that if no one has died after $N$ rounds then the game ends and no one dies. 
 We just need to then find the limit as $N$ goes to infinity. 
 %That way, instead of a 0\% chance of infinitely many people being chosen and none dying, we have a tiny chance of huge number of people being chosen and none dying.
@@ -186,20 +196,8 @@ Just that the probability of that approaches zero as the size of the pool approa
 In other words, of the people chosen, what fraction, in expectation, die?
 In the unbounded case there's a 0\% chance of infinitely many people being chosen and none dying; in the bounded case it's a tiny chance of a huge number chosen and none dying.
 \end{enumerate}
+\fi
 
-% Let's not sound all presumptuous while getting the Manifold market resolution. 
-% Commenting out the following for now:
-%\vspace{2em}
-%\noindent
-%\emph{Don't turn the page until you're ready for the solution!}
-%
-%\vspace{2em}
-%\noindent
-%\emph{(Btw, this is only a veridical paradox. There's an unambiguously correct answer.)}
-
-\newpage
-
-\chapter{Solution (With Limits)}
 
 We want the probability that you die given that you are chosen to play, 
 $\Pr(\text{death} \mid \text{chosen})$.
@@ -213,12 +211,11 @@ It seems like we can ignore the 0\% chance of rolling not-snake-eyes forever and
 \end{split}
 \end{equation*}
 
-In the uncapped case, that conditional probability is undefined. 
-You're part of an infinite pool so you have a 0\% chance of being chosen and a 0\% chance of dying. 
+But if you're part of an infinite pool, you have a 0\% chance of being chosen and a 0\% chance of dying. 
 The probability we want is 0/0. 
 \emph{*robot-with-smoke-coming-out-of-its-ears-emoji*}
 
-Since we can't directly calculate the probability in the infinite case, we have to take a limit.
+Since we can't directly calculate the probability in the infinite case, a natural thing to do is to take a limit.
 
 \snakedivider
 
@@ -245,7 +242,7 @@ So even with an absurdly huge pool of people, where there's \emph{essentially} a
 Enough hand-waving and appeals to intuition.
 Let's Bayes it out to see what 
 $\Pr(\text{death} \mid \text{chosen})$
-is exactly, in the version where we stop after $N$ rounds.
+is exactly, in a finite version where we stop after $N$ rounds.
 Once we have that, we can take the limit as $N$ goes to infinity.
 
 First, let $M$ be the size of the pool:

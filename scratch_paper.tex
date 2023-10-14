@@ -138,4 +138,46 @@ RESPONSE:
         It doesn't matter what you would pay, the EV(net winnings) = EV(winnings) = $\infty$
 
         Does a similar scenario arise in the finitary starting population sizes M passing into the infinitary case?  I perceive the St. Petersburg Paradox to arise from comparing unbound infinite sums. Clearly the YES write up's 
+
+\section{Shouldn't NO be arguing for 0.5 rather than ~0.52...?}
+The game has ended. 
+
+On average how many people played?
+We add up all the players from all the games, weighted by the probability the game ended in that round.
+$$\sum_{i=1}^\infty p(1-p)^{i-1}(2^i-1)$$
+
+On average how many people died?
+We add up all the dead players from all the games, weighted by the probability that the game end in that round.
+$$dead=\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}$$
+$$p\sum_{i=1}^\infty \bigg(\frac{35*2}{36}\bigg)^{i-1}$$
+$$p\sum_{i=1}^\infty \frac{35}{18}^{i-1}$$
+Because $\frac{35}{18}>1$ $dead$ is unbounded and will be infinite.
+
+What is the ratio of dead people to people that played?
+$$\frac{\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}}{\sum_{i=1}^\infty p(1-p)^{i-1}(2^i-1)}$$
+$$\frac{\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}}{2\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}-\sum_{i=1}^\infty p(1-p)^{i-1}}$$
+$$\frac{dead}{2dead-1} = \frac{1}{2}$$
+
+\section{NO is silly}
+What if the game still ended when ever snake eyes were rolled but only killed people if the round index was even?
+
+NO would come up with a death rate of
+$$\sum_{i=1}^\infty \frac{2^{2i}}{2^{2i+1}-1}p(1-p)^{2i-1}$$
+
+\section{Does YES even/odd repair to the full sum?}
+Actually segregating the problem by round parity is silly, both NO and YES of them are sums of series and both should repair to the original, however I am curious if YES splits up 1:1 on even odd, or 2:1 since the odd rounds starting with 1 person in round 1 have half as many as the subsequent even round.ACTUALLY this segregation and comparison of rounds by parity could get us into trouble,  if we start with the even rounds we could map to +1 or -1 rounds... and compare... if we compare with the round before, we have a complete covering and the sum of evens are exactly twice as much as the odds.  if we compare to the round subsequent the events are half as as much and we have a residual odd round in round 1 so the events are 1 less than exactly half of the odds.
+Odds you die in an even round
+$$\sum_{i=1}^\infty \Pr(2i,2i)$$
+The absolute odds of being chosen are the games where  $i\leq j \text{ }\forall \text{ } i\text{,}j \in \mathbf{N}$ is still:
+\begin{equation}
+   \sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j) = \sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j)\\
+   = \lim_{n\to\infty}\frac{18}{17}\frac{\big(\frac{35}{18}\big)^n-1}{2^n-1}
+\end{equation}
+
+The ratio of these for the odds of dying in an even round given you are chosen to play would be
+$$\frac{\sum_{i=1}^\infty\Pr(2i,2i)}{\sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j)}$$
+$$\lim_{n\to\infty}\frac{\sum_{i=1}^{n/2} \frac{2^{2i-2}}{2^n-1}\frac{35^{2i-2}}{36^{2i-1}}}{\frac{18}{17}\frac{\big(\frac{35}{18}\big)^n-1}{2^n-1}}$$
+$$\frac{17*18}{18*36*35*35}\lim_{n\to\infty}\frac{\sum_{i=1}^{n/2} \frac{35^{2i}}{18^{2i}}}{\big(\frac{35}{18}\big)^n-1}<\frac{17}{36*35*35}\lim_{n\to\infty}\sum_{i=1}^{n/2} \frac{18^{n-2i}}{35^{n-2i}}$$
+
+
 \end{document}

@@ -367,6 +367,8 @@ In conclusion, the probability of eventually rolling snake eyes, conditional on 
 Which is to say that the conditional probability of rolling not-snake-eyes literally forever is $17/18$.
 \emoji{exploding-head}
 
+(Or to say it less sensationally: For any finite $N$, the conditional probability of taking more than $N$ rolls to hit snake eyes is greater than $17/18$.)
+
 This vindicates our initial intuitive argument that being chosen is Bayesian evidence---strong Bayesian evidence, it turns out!---of never rolling snake eyes.
 And it invalidates the intuition that we can safely condition on snake eyes being rolled just because it definitely will be rolled (unconditionally).
 Another version of that intuition is that any event with probability 1, such as rolling snake eyes eventually, must be independent of any other event.
@@ -520,14 +522,23 @@ $$
 They cancel and the $1/p$ flips to the top as $p$ and we're done! \qed
 
 Amazingly, we didn't need to define a finite version of the game.
-We just need a consistent prior on when you're chosen.
+We just need a valid prior on when you're chosen.
 And even more amazingly, the answer is completely independent of what that prior is.
-Call it uniform for the first $N$ possible values of when you're chosen and then compute 
-$\Pr(\text{death}\mid\text{chosen})$ in terms of $N$.
+For example, say it's uniform for the first $N$ possible values of where you are in the queue of people in the pool.
+Now compute $\Pr(\text{death}\mid\text{chosen})$ in terms of $N$.
 The answer, as we just saw, is $p$.
 No $N$ in sight.
 So in the limit as our prior approaches uniform?
 Still $p$.
+
+Or maybe you don't like that the above prior has a finite cutoff.
+No problem.
+Here's a prior that's both arbitrarily close to uniform and puts positive probability on all infinitely many future rounds in which you could be picked:
+\begin{itemize}
+\item Your probability of being chosen first is 1 in a million
+\item Your probability of being $n$th in the queue is 99.9999\% as much as your probability of being chosen $n-1$st
+\end{itemize}
+In the limit as that "million" goes to infinity (and the 99.9999\% correspondingly goes to 1) we again have a uniform prior.
 Paradox: resolved and double-resolved.
 
 \end{document}

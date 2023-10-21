@@ -19,10 +19,22 @@ jobs:
       env:
         TZ: 'America/Los_Angeles' # this also doesn't seem to do anything :(
 
-    - name: Commit PDF
+    # Also do Lorxus doc
+    - name: Compile lorxus-cross-exam-response.tex
+      uses: xu-cheng/latex-action@v2
+      with:
+        root_file: lorxus-cross-exam-response.tex
+        latexmk_use_lualatex: true
+    # End Lorxus doc
+
+    - name: Commit PDFs
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add snakeeyes.pdf
-        git commit -m "Add generated PDF" -a || echo "No changes to commit"
+        git add lorxus-cross-exam-response.pdf
+        git commit -m "Add generated PDFs" -a || echo "No changes to commit"
         git push https://${{ secrets.PAT }}@github.com/dreeves/snakeeyes.git
+
+    - name: Push changes
+      run: git push https://${{ secrets.PAT }}@github.com/dreeves/snakeeyes.git

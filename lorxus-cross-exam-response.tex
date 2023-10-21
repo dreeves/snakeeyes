@@ -45,7 +45,7 @@
 \newcommand{\dreev} [1]{\ifnum\Chatty=1 \textcolor{red} {dreev:  [#1]} \fi}
 \newcommand{\wamba} [1]{\ifnum\Chatty=1 \textcolor{blue}{wamba:  [#1]} \fi}
 % Available colors: red, blue, purple, orange, teal, etc
-
+\newcommand{\mycomment}[1]{}
 % Utter black magic for doing timezone conversion for the draft timestamp...
 % Via https://tex.stackexchange.com/questions/634804/how-to-change-the-timezone
 \newcommand{\datetimemagic}[2]{\DTMsavenow{now}\DTMtozulu{now}{cz}
@@ -94,7 +94,6 @@
 %\end{center}
 %}
 
-
 \hfuzz=2pt % Don't bother to report overfull hboxes if over-edge is < 2pt
 \vfuzz=2pt % Same for overfull vboxes (maybe just works for hfuzz?)
 
@@ -104,10 +103,10 @@
 %%%%%%%%%%%%%%%%%%%%%% TITLE, AUTHORS, ABSTRACT, KEYWORDS %%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\longtitle}{The Snake Eyes Paradox}
-\newcommand{\shorttitle}{A response to Lorxus' Questions for Team YES} % for page headers
+\newcommand{\longtitle}{The Snake Eyes Paradox:\\A Response to Lorxus's Questions for Team YES}
+\newcommand{\shorttitle}{Team YES's Response to Lorxus}
 
-\title{\HUGE\textbf{\longtitle}\\ \textbf{\shorttitle}}
+\title{\HUGE\textbf{\longtitle}}
 \author{Daniel M. Reeves\\manifold.markets/dreev
 \and
 Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
@@ -126,242 +125,489 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
 
 \begin{document}
 \pagestyle{headings}
+\makeoddhead{headings}{\MakeUppercase{\shorttitle}}{}{\thepage}
 \maketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% MAIN DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter*{Questions for Team YES}
+%\chapter*{Questions for Team YES}
+\chapter{Does the infinite game behave nicely as a limit?}
+
+\emph{Why should I believe that the "true" Snake Eyes setup, which is intrinsically infinitary, will behave nicely as a limit of its suitably defined (finite) initial segments? 
+After all, there are things that can happen in any finite case that never can---they’re literally impossible---or never will---they have probability 0---in the infinitary case! 
+The fact that your final expression for 
+$\Pr(\text{death}\mid\text{chosen})$
+has no $N$-dependence is a promising data point, but on its own it's not enough.}
+
+\vspace{1em}
+
+\dreev{We believe the following answer is now subsumed by section 4 of our write-up.
+We even managed to avoid any limits there, except to point out that the nonuniform distribution we use can be chosen to be arbitrarily close to uniform.}
+
+Consider this alternative derivation of the snake eyes conditional probability.
+We use a limit here, but only to establish what we are defining to be a uniform prior distribution for the selection of an individual to play the game from an infinite population, and do not need to make any assertion on the cap of the rounds left to be played or get involved with a bounded escape or bounded death argument.
+        
+Let's look at the probability of losing, if you are chosen in round $i$, without making any assumption about any finiteness of the game.
+This should allow the intrinsically infinitary nature of the game.
+In fact more so than the NO rational which can only consider games after they have finished.
+
+Let $\Pr(i,j)$ be the mutually exclusive absolute probability of an individual being selected in round $i$ of a game that rolls snake eyes in round $j$, 
+let $\Pr(C_i)$ be the probability of being selected in round $i$, and 
+let $\Pr(E_j)$ be the probability of the game ending in snake-eyes rolled in round $j$.
+
+We have
+$$\Pr(E_j) = (1-p)^{j-1}p$$
+because ending in round $j$ requires rolling $j-1$ not-snake-eyes and then finally rolling snake eyes in the $j^\text{th}$ round.
+It satisfies the countably additive property of probability:
+$$\sum_{j=1}^\infty \Pr(E_j) =\sum_{j=1}^\infty p(1-p)^{j-1}= \frac{p}{1-(1-p)}=1$$
+
+Now consider this:
+$$\Pr(C_i) = \lim_{m\to\infty}\frac{2^{i-1}}{2^m-1}.$$
+This represents the doubling population that plays in each successive round of the game, however the limit is an infinitesimal and in order to have a semblance of retaining the countably additive property of probability we have to constrain the total population, which is ultimately infinite, to 1 less than a power of two, which we allow to grow without bound in the limit to still have an infinite population.
+$$\sum_{i=1}^\infty \Pr(C_i) = \lim_{m\to\infty}\sum_{i=1}^m\frac{2^{i-1}}{2^m-1}=\lim_{m\to\infty}\frac{2^m-1}{2^m-1}=1$$
+then
+\begin{align*}
+\Pr(i,j) & = \Pr(C_i)\Pr(E_j)\\
+\Pr(i,j) & = \Pr(C_i)p(1-p)^{j-1}.
+\end{align*}
+We note that in the limit each $\Pr(C_i)$ is infinitesimal however the sum across all $C_i$ is still 1 in the limit.
+        
+The sum of all possible $\Pr(i,j)$ is also 1 as a disjoint covering of the probability space.
+$$\sum_{i=1}^\infty\sum_{j=1}^\infty \Pr(i,j) =\sum_{i=1}^\infty \Pr(C_i)\sum_{j=1}^\infty\Pr(E_j) = 1$$
+The sum of any subset of these disjoint $Pr(i,j)$ must therefore in all cases be within the range $[0,1]$, and actually we can refine this range to $(0,1]$ provided that we consider $i>j$ cases to be where you would have played in round $i$ if the game had not ended in the earlier round $j$.
+
+You only play in round $i$ if $i\leq j$.
+You die when $j=i$, otherwise you live for all $j>i$.
+\begin{align*}
+\Pr(E_i|C_i)&=\frac{\Pr(E_i\land C_i)}{\Pr(C_i)}\\ 
+&=\frac{\Pr(i,i)}{\sum_{j=i}^\infty \Pr(i,j)}\\
+&=\frac{\Pr(C_i)p(1-p)^{i-1}}{\sum_{n=i}^{\infty} \Pr(C_i)p(1-p)^{n-1}}\\
+&=\frac{p(1-p)^{i-1}}{\sum_{n=i}^{\infty}p(1-p)^{n-1}}\\
+&=\frac{p(1-p)^{i-1}}{p\frac{(1-p)^{i-1}}{1-(1-p)}}\\
+&=\frac{p(1-p)^{i-1}}{(1-p)^{i-1}}\\
+&=p.
+\end{align*}
+Ergo the probability of dying in round $i$, conditional on being chosen in round $i$, is $p$.
+
+The absolute probability of dying is found by adding up all the possible games where we are selected in the final round:
+\begin{equation}\label{die}
+\sum_{j=1}^{\infty} \Pr(j,j). 
+\end{equation} 
+
+Now we are prepared to return to the general setting knowing what we know about any finite round i in which you may play.
+        
+The absolute probability of being chosen we get by summing over all games where 
+$i\leq j \text{ }\forall \text{ } i\text{,}j \in \mathbb{N}$:
+\begin{equation}\label{chosen}
+\sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j) = \sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j).
+\end{equation}
+        
+The probability of dying, conditioned upon being selected, is simply the ratio of~\eqref{die} over~\eqref{chosen}:
+\begin{equation}
+\frac{\sum_{j=1}^{\infty} \Pr(j,j)}{\sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j)} = \frac{\sum_{i=1}^{\infty} \Pr(i,i)}{\sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j)}\label{theAnswer}.
+\end{equation}
+
+Generally 
+$$\frac{\sum_{i=1}^{n} a_i}{\sum_{i=1}^{n} b_i}\nLeftrightarrow \sum_{i=1}^{n} \frac{a_i}{b_i}.$$
+
+However we do know that if 
+$$\frac{a_i}{b_i}=\frac{a_j}{b_j} \text{   } \forall \text{ } i\text{,}j$$
+then
+$$\frac{\sum_{i=1}^{n} a_i}{\sum_{i=1}^{n} b_i} = \frac{a_j}{b_j}\text{   } \forall \text{ } i\text{,}j$$
+and we have just shown that 
+$$\frac{\Pr(i,i)}{\sum_{j=i}^\infty \Pr(i,j)} = p \text{   } \forall \text{ } i\text{,}j$$
+therefore 
+$$\frac{\sum_{i=1}^{\infty} \Pr(i,i)}{\sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j)}=p.$$
+
+
+\chapter{Do we treat zero times infinity as equal to zero?}
+
+\emph{More broadly, there are issues in how your write-up handles expressions that roughly cash out as something like $0\times\infty$---at the moment, it seems to tacitly assume that all such expressions should be evaluated as 0.}
+
+\vspace{1em}
+
+Since $0\times\infty$ or $0/0$ is undefined, not zero, in standard analysis setting, the YES write-up shifts to taking the limit of a finitary starting population.
+
+We argue that it is the NO argument which tacitly assumes 
+$0\times\infty=0$.
+
+Team NO argues that the following summation answers the snake eyes question:
+$$\sum_{j=1}^{\infty} \frac{\Pr(j,j)p(1-p)^{j-1}}{\sum_{i=1}^{j} \Pr(i,j)} $$
+$$= \frac{1}{1}p + \frac{2}{3}p(1-p) + \frac{4}{7}p(1-p)^2 + ...$$
+$$\approx 0.5218873.$$
+There are issues with this still because they are taking the average of individual games rather than the average of the system. 
+If we try to repair this for NO and look at the average of the whole game state then we end up with the following:
+
+On average how many people played [in games that end]?
+We add up all the players from all the games, weighted by the probability the game ended in that round.
+$$\sum_{i=1}^\infty p(1-p)^{i-1}(2^i-1).$$
+        
+On average how many people died [in games that end]?
+We add up all the dead players from all the games, weighted by the probability that the game end in that round.
+$$\text{dead}=\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}$$
+$$\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35\cdot 2}{36}\bigg)^{i-1}$$
+$$\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}$$
+Because $\frac{35}{18}>1$, $\text{dead}$ is unbounded and will be infinite.
+        
+What is the ratio of dead people to people that played [in games that end]?
+$$\frac{\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}}{\sum_{i=1}^\infty p(1-p)^{i-1}(2^i-1)}$$
+$$\frac{\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}}{2\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}-\sum_{i=1}^\infty p(1-p)^{i-1}}$$
+$$\frac{\text{dead}}{2\text{dead}-1} = \frac{1}{2}$$
+As we might have expected, this is tantamount to the limit of the "largest" game that ends in snake eyes.
+But what about the "zero" probability game that never rolls snake eyes? 
+How many people are chosen in such an impossible game? 
+Well... all the people.
+$$\lim_{n\to\infty}(1-p)^n(2^{n+1}-1).$$
+Here is the $0\times\infty$ expression which NO discards and YES argues that this is not zero, whereas NO ignores this term's contribution to the to denominator because surely all games end, and therefore this never-ending game is impossible.
+
+To be clear, since the game is determined by random dice rolls, it is possible, if infinitely improbable, that an infinite game occurs.
+For example, rolling an infinite sequence of double sixes is one of the possible infinite sequences of dice rolls and one that never results in snake eyes.
+
+We distribute the $(1-p)^n$ factor across the $d^{n+1}-1$ factor to arrive at
+$$\lim_{n\to\infty}2^{n+1}(1-p)^n - (1-p)^n.$$
+$$\text{For }p=\frac{1}{36}\text{, }\lim_{n\to\infty}2\cdot\frac{35^n}{18^n} - \frac{35^n}{36^n}\text{ is unbounded}$$
+so we can say that the "infinite" game contributes the following to the denominator:
+$$2\lim_{n\to\infty}\bigg(\frac{35}{18}\bigg)^n.$$
+
+If we return to our dead over 2 dead minus 1 ratio and add in the chosen from an infinite game we get the following
+$$\frac{\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}}{\frac{1}{18}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}+2\lim_{n\to\infty}\bigg(\frac{35}{18}\bigg)^n -2}.$$
+
+Let  
+$$x= \sum_{i=0}^{n-1}\frac{35^i}{18^i}$$
+and consider the following ratio in the limit
+$$\lim_{n\to\infty}\frac{\frac{35^n}{18^n}}{\sum_{i=0}^{n-1}\frac{35^i}{18^i}}$$
+$$\lim_{n\to\infty}\frac{1}{\sum_{i=0}^{n-1}\frac{18^{n-i}}{35^{n-i}}}$$
+since $18/35 < 1$ we can solve for this after we re-index.
+We note that the exponents in the summation range from $n$ to 1 so we re-index to go from 1 to $n$ but so that we can have our index start from 0 we subtract 1 in the denominator to account for the extra summation term with a zero exponent.
+$$\lim_{n\to\infty}\frac{1}{-1+\sum_{i=0}^{n}\frac{18^{i}}{35^{i}}}$$
+$$\lim_{n\to\infty}\frac{1}{-1+\frac{1-(\frac{18}{35})^{n+1}}{1-\frac{18}{35}}}$$
+$$\frac{1-\frac{18}{35}}{-1+\frac{18}{35}+1} = \frac{17}{18}$$
+Now we can rewrite the dead over 2 dead minus 1 ratio adding in the chosen from an infinite game in terms of $x$.
+$$\frac{\frac{x}{36}}{\frac{2x}{36}+\frac{17x}{18}-2}.$$
+Multiply the numerator and denominator by $\frac{36}{x}$ which obliterates the 2 on the far right in the deonminator
+$$\frac{1}{2+\frac{17\cdot36}{18}}=\frac{1}{36}.$$
+
+
+\chapter{Any constraints on the population size?}
+
+\emph{What conditions, if any, need to be placed on the finitary starting population size $M$ in order to avoid problems when you pass to the infinitary case? 
+Here I'm mostly worried about St.~Petersburg's Paradox-flavored problems.}
+
+\vspace{1em}
+
+\begin{align*}
+\Pr(\text{chosen}) &= \sum_{i=1}^{N} \tfrac{1}{M} 2^{i-1}(1-p)^{i-1}\\
+&= \frac{1}{M} \sum_{i=1}^{N} \bigg(\frac{35}{18}\bigg)^{i-1}\\
+&= \frac{1}{M} \frac{1-\bigg(\frac{35}{18}\bigg)^{N}}{1-\frac{35}{18}}\\
+&= \frac{1}{M} \frac{18}{17}\bigg(\big(\frac{35}{18}\big)^N-1\bigg)
+\end{align*}
+can grow unbounded with $N$ if there are no conditions on the starting population size $M$.
+The YES write up already conditions $M = 2^N-1$.
+So by substitution of $M$
+\begin{equation}\label{chosenALT}
+\Pr(\text{chosen})= \frac{18}{17}\frac{\big(\frac{35}{18}\big)^N-1}{2^N-1} \text{  }\forall\text{  }N \in \mathbb{N}.
+\end{equation}
+        
+$\Pr(\text{chosen})$ clearly is not a quantity growing without bound but rather is bound within the range 
+$$\frac{18}{17}\bigg(\frac{35}{36}\bigg)^N\geq \frac{18}{17}\frac{\big(\frac{35}{18}\big)^N-1}{2^N-1}  = \underset{\text{as }N\to\infty }{\text{infinitesimal}} \geq 0.$$
+The constraint that $M = 2^N-1$ is sufficient, but not necessary. 
+$M$ can be allowed to grow up to $2^{N+1}-2$.
+Beyond this upper bound for $M$ we would have enough population to fill at least an $N+1$ cohort so if we are to say that $N$ is the upper bound of rounds we can play before we terminate then $M\geq 2^{N+1}-1$ would contradict this definition of $N$.
+
+Now we need to address the fact that when we divide by $\Pr(\text{chosen})$ in the context of the conditional probability it is equivalent to multiplying by $\infty$.
+
+\begin{align*}
+\Pr(\text{death})& = \sum_{i=1}^{N} \Pr(i,i)= \sum_{i=1}^{N} \tfrac{1}{M} 2^{i-1}p(1-p)^{i-1}\\
+& \text{by factoring out the constant factor p} \\
+& = p\Pr(\text{chosen}).
+\end{align*}
+
+The numerator is approaching an infinitesimal quantity at rate proportional to the rate the denominator is approaching an infinitesimal quantity.
+Their ratio is p.
+
+\chapter{How do we justify a truncated version of the game?}
+    
+\emph{Suppose Team NO's objection to Clarification 3---namely, that it's incoherent due to under-specification---is spot-on, and you really do need to motivate bounded-escape over bounded-death as the natural finitary analogue. How?}
+
+\vspace{1em}
+
+\dreev{Short version:
+In the infinite game, it's implied that if we never roll snake eyes then an infinite number of people all play and all survive.
+The finite counterpart is that if you never roll snake eyes then all the people \emph{that there are} all survive.}
+
+To motivate bounded-escape over bounded death as the natural finitary analogue, one looks only to the algorithm.
+The game described is non-adversarial, and the dice are independent, and the dice are rolled in every round.
+Each round you take a disjoint cohort, roll the dice, if it is snake eyes you kill the cohort and end the game, if it is not snake eyes the cohort lives (wins) and you proceed to recruit the next disjoint cohort.
+[If you are unable to fill the next cohort the game ends.]
+
+To motivate the bounded-escape case you need only follow the algorithm until you cannot. 
+Recruit a disjoint cohort, if you can, and roll the dice, repeat as necessary.
+Anyone who plays and lives, only lives because they observed non-snake eyes in their round.
+Whereas NO's bounded-death game introduces a new rule/mechanism which must necessarily ignore the roll of any dice for the final cohort:
+\begin{quote}
+If after recruiting a cohort it is apparent that there will be insufficient population left to recruit any further cohorts, then do not roll dice, just kill this cohort.
+\end{quote}
+If you need a new rule which must supersede the previous "rule" that independent dice are rolled to determine the outcome of each round, then you have changed the game.
+NO's bounded death would be the natural finitary analogue if the game algorithm were instead described thus: 
+Each round you take a disjoint cohort, roll the dice, if it is snake eyes the game ends.
+When the game ends kill the final cohort to have played the game, otherwise the game continues and proceed to recruit the next disjoint cohort.
+If you are unable to fill the next cohort the game ends, see prior instruction regarding game end.
+
+What about a version of bounded-death that simply discards any games that never roll snake eyes, because surely this is more representative of the infinite case where the probability of rolling snake eyes is 1.
+This argument is seductive, however it is cherry-picking games where both the player is chosen in $N$ time and the game ends in $N$ time.
+And the ratio of a player being chosen in $N$ time vs being chosen after $N$ time is 1:17, or in other words NO is constraining their analysis to just $1/18$ of the possible games.
+
+\chapter{What precisely does "chosen" mean?}
+
+\emph{What, precisely, should be meant by “chosen”? 
+Chosen for round $i$? 
+For at least one of the rounds? 
+Something else?}
+
+\vspace{1em}
+
+The game described is drawing from a population at random.
+There is a possibility that you can experience NOT being chosen in a specific round, or by the game at all.
+The conditional question must then be over the total probability that you are drawn from the population at random. 
+NO's construction assumes that you are chosen in every finite game that ends with a probability of 1.
+YES's constructions are independent of the prior distribution and work equally well with a uniform prior which requires either limits in the standard setting or infinitesimals from a non-standard setting or with a decaying prior that is necessary in a standard setting with a countably additive probability.
+
+\chapter{What's up with that 17/18?}
+
+\emph{How do you reconcile the fact that you get a value of $\frac{17}{18}$ for the probability of never rolling snake-eyes [conditioned upon being chosen] with the direct calculation of $\underset{n\to\infty}{\lim}1-\frac{35}{36}^n=1$}
+
+\vspace{1em}
+
+So the question is that if rolling snake eyes happens with probability of 1, how can the zero measure event of never rolling snake eyes be $\frac{17}{18}$.
+The claim is not made in the naked context of absolute probability but rather conditioned upon the also zero measure event of having been chosen at random from the countably infinite population, and it is better characterized as we have described it earlier in this response.
+Given any fixed $N\in\mathbb{N}$ a player is 17 times more likely to be selected after $N$ rounds than within $N$ rounds.
+Since $N$ is an arbitrary natural number this gives the appearance that which conditioned upon your unlikely selection, snake eyes might never be rolled.
+However once you have been selected and played the game, that conditional drops away and your future expectation for the length of the game is the typical naked expectation you would have, which is 36 rounds, which makes sense since in any given round there is a $1/36$ chance that the game ends.
+
+From~\eqref{chosenALT} we have
+$$\Pr(\text{chosen})= \lim_{n\to\infty}\frac{18}{17}\frac{\big(\frac{35}{18}\big)^n-1}{2^n-1}$$
+and naturally
+$$\Pr(\text{roll snake})=\underset{n\to\infty}{\lim}1-\bigg(\frac{35}{36}\bigg)^n=1$$
+\mycomment{$0<\bigg|\Pr(\text{roll snake)}-1\bigg|<\epsilon\text{,   }\forall\text{   } n>\frac{\ln{\epsilon}}{\ln{35}-\ln{36}}$}
+but perhaps more relevantly
+$$\Pr(\text{never roll snake})=\lim_{n\to\infty}\bigg(\frac{35}{36}\bigg)^n.$$
+Now
+\begin{align*}
+&\Pr(\text{never roll snake|chosen})\\
+&=\frac{\Pr(\text{never roll snake}\land\text{chosen})}{\Pr(\text{chosen})}\text{, or alternatively}\\
+&=\frac{\Pr(\text{chosen|never roll snake})\Pr(\text{never roll snake})}{\Pr(\text{chosen})}\\
+&\text{because everyone plays if we never roll snake eyes}\\
+&=\frac{1 * \Pr(\text{never roll snake})}{\Pr(\text{chosen})}\\
+&=\frac{\lim_{n\to\infty}\bigg(\frac{35}{36}\bigg)^n}{\lim_{n\to\infty}\frac{18}{17}\frac{\big(\frac{35}{18}\big)^n-1}{2^n-1}} = \lim_{n\to\infty}\frac{17}{18}\frac{35^n(36^n-18^n)}{36^n(35^n-18^n)}\\
+%%&\text{for }\epsilon>0, \bigg|\Pr(\text{never roll snake|chosen})-\frac{17}{18}\bigg|<\epsilon\\
+%%&\forall \text{  }n>
+&=\frac{17}{18}.
+\end{align*}
+
+It is counter-intuitive if you phrase it conditional upon you being selected the probability of you being in a game that rolls snake eyes is $1/18$.
+Such phrasing opens up the result to absurd arguments such as, 
+"So if you are selected, do you expect the game to go on forever more with $17/18$ credence?"
+Obviously not. 
+Once you are selected you expect the game to end on your turn with $1/36$ chance and so on and so forth in future rounds.
+It is better to characterize the $17/18$ result like so:
+"Conditional upon [the unlikely] event that you are selected to play the game, you should expect the game to last greater than $N$ rounds, where $N$ is any fixed natural number, before rolling snake eyes with a credence of $17/18$."
+Once you are selected you have no further expectation regarding the future state of the game than the naked frequency distribution you would expect from $p(1-p)^i$ for the current and future rounds.
+
+The probability that both you will be selected to play and that the game will roll snake eyes within $N$ rounds, conditional upon you be selected at all, is $1/18$.
+Conditional upon you being selected at all, there is a $17/18$ chance that snake eyes is not rolled in the first $N$ rounds.
+The first statement only appears as an AND statement because you cannot be selected after the game rolls snake eyes.
+This means that the cherry-picking performed by NO described earlier is actually cherry-picking $1/18$ of the games that "you" play in.
+
+\chapter{Is the answer just zero since you won't be chosen anyway?}
+
+\emph{You appear to start by postulating an already-existing countably infinite population to draw from, such that you can experience not having been chosen. 
+Why is this relevant to a question for which having been chosen should be true by assumption? 
+And if we do assume infinite starting population, why isn't the answer immediately 0? 
+I need to see some more discussion of how you handle infinities here.}
+
+\vspace{1em}
+
+\section*{Dreev's answer}
+
+\subsection{Can we avoid the notion of a pool?}
+
+Suppose we have neither an infinite pool nor a finite cutoff.
+Instead we simply create people as necessary for each group. 
+No such thing as running out of people, no truncation of the game. 
+Then the question becomes: 
+Given you exist, what's your probability of death?
+
+This is a very different question.
+And it side-steps the whole paradox!
+
+Considering only ultimately-conjured people, we all agree that the fraction of such people who die after snake eyes is eventually rolled is \~{}$1/2$.
+That's just the "Argument for NO" in the original problem statement. 
+The point of the paradox is to reconcile that with the "Argument for YES".
+
+\begin{quote}
+\textbf{Argument for NO:}
+Due to the doubling, the final group of people that die is slightly bigger than all the surviving groups put together. 
+So if you're chosen to play you have about a 50\% chance of dying!
+\emoji{grimacing-face}
+\emoji{snake}
+
+\vspace{1em}
+
+\textbf{Argument for YES:}
+The dice rolls are independent and whenever you're chosen, what happened in earlier rounds is irrelevant.
+Your chances of death are the chances of snake eyes on your round: 1/36.
+\emoji{grinning-face-with-sweat}
+\end{quote}
+
+In other words, there's a frequency argument and a one-fair-roll argument. 
+Unless we find a flaw in one of those arguments, we haven't resolved the paradox. 
+Team NO says the one-fair-roll argument is answering a different question and we should focus on what fraction of people end up dead when the game is over.
+
+No no no. 
+\emph{The whole point is that they are the same question!}
+Does the one-fair-roll argument mean you'll probably survive if you roll the dice or does the frequency argument mean you'll \~{}probably die?
+
+\subsection{Is the answer just "undefined" or just zero?}
+
+Another way to side-step the paradox is to say 0/0 is undefined, end of story.
+You won't be chosen from an infinite pool so who cares?
+Well, \emph{we} care! 
+That's the question before us. 
+IF (call it a crazy thought-experiment hypothetical) we're somehow chosen out of that infinite pool, then how worried are we? 
+Less worried because it's still one fair dice roll? 
+Or more worried because we'll be part of a population \~{}1/2 of whom are dead?
+
+Also, it matters what motivates the problem in the real world.
+In this case, is it possible to make this game better or worse by putting people in groups?
+We have a compelling, if magical-seeming, argument that we can move the probability from 1/36 to 1/2.
+Is it right? 
+Since an infinite pool of people is not a coherent thing in the real world, what we really want to ask is whether we can approach such a probability shift with a big enough pool. 
+That's an interesting question in the spirit of many similar classic questions: 
+Can you approach a guarantee of profit with Martingale betting? 
+Are you willing to pay an unbounded amount to play the St Petersburg game?
+
+\section*{Wamba's answer}
+
+Why isn't the answer immediately 0?
+Because you exist, and therefore it is possible to be selected.
+Why is it relevant to how you are chosen, when we are conditioning on being chosen? 
+This is an excellent question.
+I perceive this question to drive at the fact that NO seems to assume that you are chosen, rather than conditioning upon you being chosen. 
+This is relevant when it comes to how you weight or evaluate cases.
+NO analyses by games that end in finite time, and weights them only by the frequency by which they occur without any weighting by the likelihood that you would be selected for such a game.
+The very first term of the NO summation is $p$ for round 1, which I understand to mean a game ends in round 1 $p$ of the time and has a 100\% chance of death.
+From NO's perspective $p$ of the times you play you will die in round 1.
+This only make sense if NO believes that you always play in round 1, in which case you can never die in rounds 2 and later, in which case NO should agree with YES.
+But this violates the given uniform distribution for selection.
+
+To some degree YES cheats the uniform distribution across the countably infinite population.
+% TODO: sentence doesn't parse:
+In each of our approaches to the derivation that the conditional expectation of death the probability of being selected, infinitesimal as it may be, divides out with itself.
+Which leads to the invariant in the conditional expectation over any prior distribution.
+% TODO: run-on sentence:
+The probability of you being selected is zero in the limit or standard analysis sense since it is smaller than any real number, it can only be zero in that context, but "you exist" so it is possible to be selected, if improbable, and therefore it is not immediately and absolutely zero, but arbitrarily close to being zero.
+
+Anecdotally, the infinite population is more of a red herring to give some legs to the intuition pump that the probability of dying should be considered to be the ratio of the final round to the sum of all the prior rounds, which in the limit would be $1/2$ because in the end each person observes a single independent dice roll so their expectation of death must be $p$.
+If the game were finite, we would be forced into the "truncated" games and starting in that setting, it would be necessary to explicitly spell out additional instructions on what to do if you have no more people to play with and there would be no "paradox" as it would clearly be approaching $1/2$ if you added the bounded death rule or exactly $1/36$ if you take the much more natural halt state, which NO characterizes as adding a bounded escape rule.
+
+If NO were forced to abandon the uniform prior in favor of a countably additive distribution for what round you play in and still make it possible for you play in any position in the natural numbers then they would have to have an exponential decay distribution which is decreasing as $n$ increases which would mean you are far more likely to play in the small rounds than the large rounds and suddenly you are less likely to play in the final death round.
+\mycomment{
+            Using standard analysis we cannot have a uniform prior at infinity, and would need to instead assign "you" an some other prior probability distribution in order to not violate the countable additivity of the probability of being selected.
+    
+            Suppose there is a secret draft number assigned to everyone that identifies the order in which they will be selected.  If "you" where to have a non-zero probability to be assigned any natural number, we would need something like an exponential decay distribution to cover all of $\mathbb{N}$ and not exceed a cumulative probability of 1.
+    
+            Say that the probability of being assigned draft number n is $D(n)$
+            $$ D(n) = k(1-k)^{n-1} \text{ for some } k\in (0,1)$$
+            Each round $i$ of snake eyes admits $2^{i-1}$ people into the round, namely draft numbers $2^{i-1}$ through $2^i-1$, so the probability that your randomly assigned draft number seats you in round i is
+            \begin{align*}
+                \Pr(\text{chosen = round i}) &= \sum_{n=2^{i-1}}^{2^{i}-1}k(1-k)^n\\
+                &=k\frac{1-(1-k)^{2^{i}}}{1-(1-k)}-k\frac{1-(1-k)^{2^{i-1}+1}}{1-(1-k)}\\
+                &=k\frac{(1-k)^{2^{i-1}+1}-(1-k)^{2^{i}}}{k}\\
+                &=(1-k)^{2^{i-1}+1}(1-(1-k)^{2^{i-1}-1})
+            \end{align*}
+            The probability of being chosen in a game that has reached round i is simply
+            $$\Pr(\text{chosen } \leq \text{ round i}) = \sum_{n=1}^{2^{i}-1}k(1-k)^n = {1-(1-k)^{2^i}}$$
+            $$\Pr(\text{chosen } \geq \text{ round i}) = \sum_{n=2^{i-1}}^{\infty}k(1-k)^n = {(1-k)^{2^{i-1}+1}}$$
+            then
+            \begin{align*}
+                \Pr(\text{chosen = round i}|\text{chosen } \leq \text{ round i}) &= \\
+                 \frac{(1-k)^{2^{i-1}+1}}{1-(1-k)^{2^i}}(1-(1-k)^{2^{i-1}-1})
+            \end{align*}
+            
+            \begin{align*}
+                \Pr(\text{chosen = round i}|\text{chosen } \geq \text{ round i}) &= \\
+                 1-(1-k)^{2^{i-1}-1}
+            \end{align*}
+}
+
+\chapter{Infinitely Repeating Snake Eyes}
+
+\emph{Suppose we keep the Snake Eyes Game going forever, continuing to pull larger and larger (disjoint) cohorts from our countably infinite population and killing all and only the cohorts that roll snake-eyes. 
+Is there anything different about the probabilities of this game’s expected outcomes for any given player? 
+Why or why not?}
+
+\vspace{1em}
+
+The probability of being chosen is now 1---everyone plays.
+You can be selected even after snake eyes has been rolled.
+On the one hand, for YES, we could look at the odds of rolling snake-eyes given that you are playing in round $i$ and intuitively observe that any given player observes a single dice roll and therefore should have an expectation of $p$ for death.
+The fact that everyone plays does not mess things up here for YES's intuition, however the analytical setup for this continuous game would require some rethinking.
+All the deaths come in $\Pr(i,i)$, however the rule set no longer requires $(1-p)$ chance of non-snake eyes to continue, you continue to the next round with probability 1 and kill everyone in the round with probability $p$.
+Selection is probability 1 also.
+So in many ways the YES argument for the expectation of death becomes much simpler since there is no round distribution, all rounds are guaranteed, there is no selection distribution---all people are selected.
+It is just $p$.
+
+The NO argument might try to form a disjoint partition of the infinite population such that each partition contains exactly one round that resulted in snake eyes, and then argue that within each partition it is analogous to one of their summation terms, with the exception that the total number of players that played and died are scaled by some factor of $2^n$ such that the internal death rate within that partition that runs for n games since the prior snake eyes corresponds to the $n$th term of the summation, and similarly is weighted by the frequency of such runs of $n$ length, which due to the law of big numbers would be expected to average out to their analytical frequency.
+The way NO constructs their answer to approach $\approx 0.52...$ the scaling factor of $2^n$, which transposes the game away from the very first round with a single person, would factor out so they would not be persuaded that the shift to a continuous snake eyes game changes anything. 
+However this partitioning of the infinite population after the fact would necessarily need to be able to address a potentially infinite string of non-snake eyes occurring after the "last" snake eye, and NO would be forced to either address the possibility of an infinite game or be forced to discard it.
+
+\subsection{Proof that the answer is always $p$ in Infinitely Repeating Snake Eyes}
+
+(We're not sure what this means yet but the math checks out!)
+
+As we play through Infinitely Repeating Snake Eyes, keep a running tally of dead ($D$) and played ($C$, for chosen so far)---initially both zero---and initialize a counter, $n$, to 1.
+Now do this:
 \begin{itemize}
-    \item Why should I believe that the “true” Snake Eyes setup, which is intrinsically infinitary, will behave nicely as a limit of its suitably defined (finite) initial segments? After all, there’s things that can happen in any finite case that never can - they’re literally impossible - or never will - they have probability 0 - in the infinitary case! The fact that your final expression for P r(death|chosen) has no N-dependence is a promising data point, but on its own it’s not enough.
-
-    {\color{violet} 
-        RESPONSE: 
-        \wamba{Why doesn't Bartha Hitchcock paper look at the problem this way? This seems easier than constructing the non-standard analysis framework, so ostensibly there is a flaw in this approach as well, unless the non-standard analysis framework was only needed to reconcile the Shooting Room Paradox's $\frac{9}{10}$ and $\frac{1}{36}$ death rates since their preamble says that $\frac{1}{36}$ is correct in all cases}
-        If we shift to looking at the probability of losing, if you are chosen in Round i, with out making any assumption about any finiteness of the game I believe we will have allowed for the intrinsically infinitary nature of the game.
-        Let $\Pr(i,j)$ be the mutually exclusive absolute odds of an individual being selected in Round $i$ of a game that rolls snake eyes in Round $j$, let $\Pr(C_i)$ be the probability of being selected in Round $i$ and let $\Pr(E_j)$ be the probability of the game ending in snake-eyes rolled in Round $j$.
-
-        Where
-        $$\Pr(E_j) = p(1-p)^{j-1}$$
-        This is precisely the odds of rolling $j-1$ not snake eyes results and then finally rolling snake eyes in the $j^\text{th}$ round and satisfies the countable additivity property of probability 
-        $$\sum_{j=1}^\infty \Pr(E_j) =\sum_{j=1}^\infty p(1-p)^{j-1}= \frac{p}{1-(1-p)}=1$$
-        
-        Where
-        $$\Pr(C_i) = \lim_{m\to\infty}\frac{2^{i-1}}{2^m-1}$$
-        This represents the doubling population that plays in each successive round of the game, however the limit is an infinitesimal and in order to have a semblance of retaining the countable additivity property of probability we have to constrain the total population, which is ultimately infinite, to 1 less than a power of two, which we allow to grow with out bound in the limit to still have an infinite population. 
-        $$\sum_{i=1}^\infty \Pr(C_i) = \lim_{m\to\infty}\sum_{i=1}^m\frac{2^{i-1}}{2^m-1}=\lim_{m\to\infty}\frac{2^m-1}{2^m-1}=1$$ 
-        then
-            \begin{align*}
-              \Pr(i,j) & = \Pr(C_i)\Pr(E_j)\\
-              \Pr(i,j) & = \Pr(C_i)p(1-p)^{j-1}
-            \end{align*}
-        We note that in the limit each $\Pr(C_i)$ is infinitesimal however the sum across all $C_i$ is still 1 in the limit.
-        
-        The sum of all possible $\Pr(i,j)$ is also 1 as a disjoint covering of the probability space.
-        $$\sum_{i=1}^\infty\sum_{j=1}^\infty \Pr(i,j) =\sum_{i=1}^\infty \Pr(C_i)\sum_{j=1}^\infty\Pr(E_j) = 1 $$
-        The sum of any subset of these disjoint $Pr(i,j)$ must therefore in all cases be within the range $[0,1]$, and actually we can refine this range to $(0,1]$ provided that we consider $i>j$ cases to be where you would have played in Round $i$ if the game had not ended in the earlier Round $j$.
-        
-        You only play in Round $i$ if $i\leq j$.  You die when $j=i$ otherwise you live for all $j>i$. 
-            \begin{align*}
-                 \Pr(E_i|C_i)&=\frac{\Pr(E_i\land C_i)}{\Pr(C_i)}\\ 
-                 &=\frac{\Pr(i,i)}{\sum_{j=i}^\infty \Pr(i,j)}\\
-                 &=\frac{\Pr(C_i)p(1-p)^{i-1}}{\sum_{n=i}^{\infty} \Pr(C_i)p(1-p)^{n-1}}\\
-                 &=\frac{p(1-p)^{i-1}}{\sum_{n=i}^{\infty}p(1-p)^{n-1}}\\
-                 &=\frac{p(1-p)^{i-1}}{p\frac{(1-p)^{i-1}}{1-(1-p)}}\\
-                 &=\frac{p(1-p)^{i-1}}{(1-p)^{i-1}}\\
-                 &=p
-            \end{align*}
-            Ergo the probability of dying in Round $i$, conditional on being chosen in Round $i$ is $p$.
-
-        The absolute odds of dying is found by adding up all the possible games where we are selected in the final round:
-        \begin{equation}
-          \sum_{j=1}^{\infty} \Pr(j,j) \label{die}
-        \end{equation} 
-        The absolute odds of being chosen are the games where  $i\leq j \text{ }\forall \text{ } i\text{,}j \in \mathbf{N}$:
-        \begin{equation}
-          \sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j) = \sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j) \label{chosen} 
-        \end{equation}
-        
-        The odds of dying, conditioned upon being selected is simply the ratio of eq. \ref{die} over eq. \ref{chosen}
-        \begin{equation}
-          \frac{\sum_{j=1}^{\infty} \Pr(j,j)}{\sum_{j=1}^{\infty} \sum_{i=1}^{j} \Pr(i,j)} = \frac{\sum_{i=1}^{\infty} \Pr(i,i)}{\sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j)}\label{theAnswer}
-        \end{equation}
-
-        Generally 
-            $$\frac{\sum_{i=1}^{n} a_i}{\sum_{i=1}^{n} b_i}\nLeftrightarrow \sum_{i=1}^{n} \frac{a_i}{b_i}$$
-
-        However we do know that if 
-            $$\frac{a_i}{b_i}=\frac{a_j}{b_j} \text{   } \forall \text{ } i\text{,}j$$
-        then
-            $$\frac{\sum_{i=1}^{n} a_i}{\sum_{i=1}^{n} b_i} = \frac{a_j}{b_j}\text{   } \forall \text{ } i\text{,}j$$
-        and we have just shown that 
-            $$\frac{\Pr(i,i)}{\sum_{j=i}^\infty \Pr(i,j)} = p \text{   } \forall \text{ } i\text{,}j$$
-        therefore 
-            $$\frac{\sum_{i=1}^{\infty} \Pr(i,i)}{\sum_{i=1}^{\infty} \sum_{j=i}^{\infty} \Pr(i,j)}=p$$
-    }
-
-
-\item More broadly, there’s issues in how your write up handles expressions that roughly cash out as something like 0∗∞ - at the moment, it seems to tacitly assume that all such expressions should be evaluated as 0.
-    
-    {\color{violet}
-        RESPONSE: 
-        0*$\infty$ or 0/0 is undefined, not zero, in standard analysis setting which is why the YES write-up shifts to taking the limit of a finitary starting population.
-
-        Indeed I would aruge that it is the NO argument which tacitly assumes that all such expressions 0∗∞ should be evaluated as 0.
-
-        No argues that the following summation answers the snake eyes question
-        $$\sum_{j=1}^{\infty} \frac{\Pr(j,j)p(1-p)^{j-1}}{\sum_{i=1}^{j} \Pr(i,j)} $$
-        $$= \frac{1}{1}p + \frac{2}{3}p(1-p) + \frac{4}{7}p(1-p)^2 + ...$$
-        $$\approx 0.5218873$$
-        There are issues with this still because they are taking the average of individual games rather than the average of the system. If we try to repair this for NO and look at the average of the whole game state then we end up with the follwing:
-
-        On average how many people played [in games that end]?
-        We add up all the players from all the games, weighted by the probability the game ended in that round.
-        $$\sum_{i=1}^\infty p(1-p)^{i-1}(2^i-1)$$
-        
-        On average how many people died [in games that end]?
-        We add up all the dead players from all the games, weighted by the probability that the game end in that round.
-        $$dead=\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}$$
-        $$\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35*2}{36}\bigg)^{i-1}$$
-        $$\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}$$
-        Because $\frac{35}{18}>1$ $dead$ is unbounded and will be infinite.
-        
-        What is the ratio of dead people to people that played [in games that end]?
-        $$\frac{\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}}{\sum_{i=1}^\infty p(1-p)^{i-1}(2^i-1)}$$
-        $$\frac{\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}}{2\sum_{i=1}^\infty p(1-p)^{i-1}2^{i-1}-\sum_{i=1}^\infty p(1-p)^{i-1}}$$
-        $$\frac{dead}{2dead-1} = \frac{1}{2}$$
-        As we might have expected this is tantamount to the limit of the "largest" game that ends in snake eyes.  But what about the zero probability game that never rolls snake eyes? How many people are chosen in such an impossible game? Well.... all the people.
-        $$\lim_{n\to\infty}(1-p)^n(2^{n+1}-1)$$
-        Here we have our missing 0∗∞ expression and YES argues that this is not zero, whereas NO ignores this term's contribution to the to denominator because surely all games end, and therefore this never ending game is impossible.
-
-        $$\lim_{n\to\infty}2^{n+1}(1-p)^n - (1-p)^n$$
-        $$\text{For }p=\frac{1}{36}\text{, }\lim_{n\to\infty}2*\frac{35^n}{18^n} - \frac{35^n}{36^n}\text{ is unbounded}$$
-        so we can say that the "infinite" game contributes to the denominator
-        $$2\lim_{n\to\infty}\bigg(\frac{35}{18}\bigg)^n$$
-
-        If we return to our dead over 2 dead minus 1 ratio and add in the chosen from an infinite game we get the following
-        $$\frac{\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}}{\frac{1}{18}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}+2\lim_{n\to\infty}\bigg(\frac{35}{18}\bigg)^n -2}$$
-
-        
-        Consider the limit of the following ratio
-        $$\lim_{n\to\infty}\frac{\frac{35^n}{18^n}}{\sum_{i=0}^{n-1}\frac{35^i}{18^i}}$$
-        $$\lim_{n\to\infty}\frac{1}{\sum_{i=0}^{n-1}\frac{18^{n-i}}{35^{n-i}}}$$
-        since 18/35 < 1 we can solve for this after we reindex
-        $$\lim_{n\to\infty}\frac{1}{-1+\sum_{i=0}^{n}\frac{18^{i}}{35^{i}}}$$
-        $$\lim_{n\to\infty}\frac{1}{-1+\frac{1-(\frac{18}{35})^{n+1}}{1-\frac{18}{35}}}$$
-        $$\frac{1-\frac{18}{35}}{-1+\frac{18}{35}+1} = \frac{17}{18}$$
-        so adding in this term that NO argues we should ignore because it has probability zero we have
-        $$\frac{\frac{1}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}}{\frac{2}{36}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}+\frac{17}{18}\sum_{i=1}^\infty \bigg(\frac{35}{18}\bigg)^{i-1}-2}$$
-        $$\frac{1}{2+\frac{17*36}{18}}=\frac{1}{36}$$
-    }
-    \wamba{Need to re-read the YES write up to see what assumption evaluates expressions as 0.}
-\item What conditions, if any, need to be placed on the finitary starting population size M in order to avoid problems when you pass to the infinitary case? Here I’m mostly worried about St. Petersburg’s Paradox-flavored problems.
-
-   {\color{violet}
-        RESPONSE:
-        \begin{align*}
-            \Pr(\text{chosen}) &= \sum_{i=1}^{N} \tfrac{1}{M} 2^{i-1}(1-p)^{i-1}\\
-            &= \frac{1}{M} \sum_{i=1}^{N} \bigg(\frac{35}{18}\bigg)^{i-1}\\
-            &= \frac{1}{M} \frac{1-\bigg(\frac{35}{18}\bigg)^{N}}{1-\frac{35}{18}}\\
-            &= \frac{1}{M} \frac{18}{17}\bigg(\big(\frac{35}{18}\big)^N-1\bigg)
-        \end{align*}
-        can grow unbounded with $N$ if there are no conditions on the starting population size $M$.  The YES write up already conditions $M = 2^N-1$.  So by substitution of $M$
-        $$\Pr(\text{chosen})= \frac{18}{17}\frac{\big(\frac{35}{18}\big)^N-1}{2^N-1} \text{  }\forall\text{  }N \in \mathbf{N}$$
-        $\Pr(\text{chosen})$ clearly is not a quantity growing with out bound but rather is bound within the range 
-        $$\frac{18}{17}\bigg(\frac{35}{36}\bigg)^N\geq \frac{18}{17}\frac{\big(\frac{35}{18}\big)^N-1}{2^N-1}  = \underset{\text{as }N\to\infty }{\text{infinitesimal}} \geq 0$$
-        The constraint that $M = 2^N-1$ is sufficient, but not necessary. $M$ can be allowed to grow up to $2^{N+1}-2$, beyond this upper bound for $M$ we would have enough population to fill at least an $N+1$ cohort so if we are to say that $N$ is the upper bound of rounds we can play before we terminate then $M\geq 2^{N+1}-1$ would contradict this definition of $N$.
-
-        Now we need to address the fact that when we divide by $\Pr(\text{chosen})$ in the context of the conditional probability it is equivalent to multiplying by $\infty$.
-
-        \wamba{How do you get a St. Petersburg Paradox where you are looking exclusively at the odds, not at expected values?}
-        \begin{align*}
-            \Pr(\text{death})& = \sum_{i=1}^{N} \Pr(i,i)= \sum_{i=1}^{N} \tfrac{1}{M} 2^{i-1}p(1-p)^{i-1}\\
-            & \text{by factoring out the constant factor p} \\
-            & = p\Pr(\text{chosen})
-        \end{align*}
-
-        The numerator is approaching an infinitesimal quantity in at rate proportional to the the rate the denominator is approaching an infinitesimal quantity.  Their ratio is p.
-    }
-    
-\item Suppose Team No’s objection to Clarification 3 - namely, that it’s incoherent due to under-specification - is spot-on, and you really do need to motivate bounded-escape over bounded death as the natural finitary analogue. How?
-
-    {\color{violet}
-        RESPONSE: 
-        To motivate bounded-escape over bounded death as the natural finitary analogue, one looks only to the algorithm. The game described is non-adversarial, and the dice are independent, and the dice are rolled in every round.  Each round you take a disjoint cohort, roll the dice, if it is snake eyes you kill the cohort and stop recruiting any new cohorts because the game has ended, if it is not snake eyes the cohort lives(wins) and you proceed to recruit the next disjoint cohort.  To motivate the bounded-escape case you need only follow the algorithm until you cannot, Recruit a disjoint cohort, if you can, and roll the dice, repeat as necessary, any one who plays and lives, only lives because they observed non-snake eyes in their round. Whereas NO's bounded-death game introduces a new rule/mechanism which must necessarily ignore the roll of any dice for the final cohort, "If after recruiting a cohort it is apparent that there will be insufficient population left to recruit any further cohorts, then do not roll dice, just kill this cohort."  If you need a new rule which must supersede the previous "rule" that independent dice are rolled to determine the outcome of each round, then you have changed the game.  
-
-        What about a version of bounded-death that simply discards any games that never roll snake eyes, because surely this is more representative of the infinite case where the odds of rolling snake eyes is 1.  This argument is seductive, however it is cherry picking games where both the player is chosen in N time and the game ends in N time.  
-    }
-\item What, precisely, should be meant by “chosen”? Chosen for round i? For at least one of the rounds? Something else?
-    \wamba{I am not sure about the consequences of any of these,  with the reformulated by Chosen in Round $i$ if feel like we could shift to a Pr(chosen)=1 world such as, only minds which play exist.}
-    {\color{violet}
-        RESPONSE: 
-        The game described is drawing from a population at random. The conditional question must then be over the total probability that you are drawn from the population at random. NO's position requires that the conditional event equal 1 in the absolute sense for it to work because they cannot address the lack of a uniform prior probability of being selected at random from a population with out non-standard analysis.  YES's position holds regardless if we are in a non-standard setting or a standard setting with a countably additive probability.
-    }
-    
-        \wamba{[TOD?O: add countably additive probability in lieu of a non-standard uniform prior, steal from Bartha-Hitchcock]}
-        
-        \wamba{[Do we even need to choose from an infinite population?  What if we simply say. With probability 1, you play in Round $i$, then what are the odds that the game ends in Round $i$ vs the odds that the game ends in Round $j>i$, again we ignore all the $j<i$]}
-\item How do you reconcile the fact that you get a value of $\frac{17}{18}$ for the probability of never rolling snake-eyes [conditioned upon being chosen] with the direct calculation of $\underset{n\to\infty}{\lim}1-\frac{35}{36}^n=1$
-
-\wamba{per Lorxus: Yes, that is supposed to refer to the  probability of never rolling snake eyes conditioned upon being chosen. There's some algebra there but it's a little incomplete, and the narrative is lacking.}
-    
-    {\color{violet}
-        RESPONSE: 
-        \wamba{ This feels, increasingly, like blowing smoke. I am inclined to abandon everything at resort exclusively to the reformulated YES argument, constructed in the vein of NO's construction, in which case we might want to look at the NO questions and preemptively address such issues.}
-
-        \wamba{ So with the clarification from Lorxus, I guess we just need to make the math easier to follow, and improve the narrative.}
-        
-        So the question is that if rolling snake eyes happens with probability of 1, how can the zero measure event of never rolling snake eyes be $\frac{17}{18}$.  The claim is not made in the naked context of absolute probability but rather conditioned upon the also zero measure event of having been chosen at random from the countably infinite population.
-
-         $$\Pr(\text{chosen})= \lim_{n\to\infty}\frac{18}{17}\frac{\big(\frac{35}{18}\big)^n-1}{2^n-1}$$
-         $$\Pr(\text{roll snake})=\underset{n\to\infty}{\lim}1-\bigg(\frac{35}{36}\bigg)^n=1$$
-         $0<\bigg|\Pr(\text{rol snake)}-1\bigg|<\epsilon\text{,   }\forall\text{   } n>\frac{\ln{\epsilon}}{\ln{35}-\ln{36}}$
-         $$\Pr(\text{never roll snake})=\lim_{n\to\infty}\bigg(\frac{35}{36}\bigg)^n$$
-         \begin{align*}
-             &\Pr(\text{never roll snake|chosen})\\
-             &=\frac{\Pr(\text{never roll snake}\land\text{chosen})}{\Pr(\text{chosen})}\text{, or alternatively}\\
-             &=\frac{\Pr(\text{chosen|never roll snake})\Pr(\text{never roll snake})}{\Pr(\text{chosen})}\\
-             &=\frac{1 * \Pr(\text{never roll snake})}{\Pr(\text{chosen})}\\
-             &=\frac{\lim_{n\to\infty}\bigg(\frac{35}{36}\bigg)^n}{\lim_{n\to\infty}\frac{18}{17}\frac{\big(\frac{35}{18}\big)^n-1}{2^n-1}} = \lim_{n\to\infty}\frac{17}{18}\frac{35^n(36^n-18^n)}{36^n(35^n-18^n)}\\
-             %%&\text{for }\epsilon>0, \bigg|\Pr(\text{never roll snake|chosen})-\frac{17}{18}\bigg|<\epsilon\\
-             %%&\forall \text{  }n>
-             &=\frac{17}{18}
-         \end{align*}
-        
-        It is counter intuitive if you phrase it conditional upon you being selected the odds of you being in a game that rolls snake eyes is $1/18$.  Such phrasing opens up the result to absurd arguments such as, "So if you are selected, do you expect the game to go on forever more with $17/18$ credence?"  Obviously not. Once you are selected you expect the game to end on your turn with $1/36$ chance and so on and so forth in future rounds.  It is better to characterize the $17/18$ result like so:  "Conditional upon [the unlikely] event that you are selected to play the game, you should expect the game to last greater than N rounds, where N is any fixed natural number, before rolling snake eyes with a credence of $17/18$."  Once you are selected you have no further expectation regarding the future state of the game than the naked frequency distribution you would expect from $p(1-p)^i$ for the current and future rounds.  
-
-        The odds that both you will be selected to play and that the game will roll snake eyes within N rounds, conditional upon you be selected at all, is $1/18$.  Conditional upon you being selected at all, there is a $17/18$ chance that snake eyes is not rolled in the first $N$ rounds.   The first statement only appears as an AND statement because you cannot be selected after the game rolls snake eyes.
-    }
-\item You appear to start by postulating an already-existing countably infinite population to draw from, such that you can experience not having been chosen. Why is this relevant to a question for which having been chosen should be true by assumption? And if we do assume infinite starting population, why isn’t the answer immediately 0? I need to see some more discussion of how you handle infinities here.
-
-    {\color{violet}
-        RESPONSE: 
-        To some degree YES cheats the uniform distribution across the countably infinite population.  In each of our approaches to the derivation that the conditional expectation of death is $p$ the probability of being selected, infinitesimal as it may be, divides you with itself.  Which leads to the invariance in the conditional expectation over any prior distribution.  The odds of you being selected are zero in the limit or standard analysis sense since it is smaller than any real number, it can only be zero in that context, but "you exist" so it is possible to be selected, if improbable, and therefore it is not immediately and absolutely zero, but arbitrarily close to being zero.
-
-        Anecdotally, the infinite population is more of a red herring to give some legs to the intuition pump that the odds of dying should be considered to be the ratio of the final round to the sum of all the prior rounds, which in the limit would be $1/2$ because in the end each person observes a single independent dice roll so their expectation of death must be $p$.  If the game were finite, we would be forced into the "truncated" games and starting in that setting, it would be necessary to explicitly spell out additional instructions on what to do if you have no more people to play with and there would be no "paradox" as it would clearly be approaching $1/2$ if you added the bounded death rule or exactly $1/36$ if you take the much more natural halt state, which NO characterizes as adding a bounded escape rule.
-    }
-\item Suppose we keep the Snake Eyes Game going forever, continuing to pull larger and larger (disjoint) cohorts from our countably infinite population and killing all and only the cohorts that roll snake-eyes. Is there anything different about the probabilities of this game’s expected outcomes for any given player? Why or why not?
-
-    {\color{violet}
-        RESPONSE: 
-        
-        We now have that in all cases have that the chance that you are chosen to play is 1, everyone plays.  You can be selected even after snake eyes has been rolled.  On the one hand, for YES, we could look at the odds of rolling snake-eyes given that you are playing in Round $i$ and intuitively observe that any given player observes a single dice roll and therefore should have an expectation of $p$ for death.  The fact that everyone plays does not mess things up here for the YES's intuition, however the analytical setup for this continuous game would require some rethinking.  All the deaths come in $\Pr(i,i)$ however the rule set no longer requires $(1-p)$ chance of non-snake eyes to continue, you continue to the next round with probability 1 and kill in the around with probability $p$.  Selection is probability 1 also.  So in many ways the YES argument for the expectation of death becomes much simpler since there is no round distribution, all rounds are guaranteed, there is no selecttion distribution all people are selected.  It is just $p$.
-
-        On the other hand, for NO, looking at the game from the perspective of the rounds which resulted in snake-eyes and therefore death, there are infinitely many snake eyes rounds in contrast to the original game's single game ending round, and there are infinitely many non-snake eyes rounds in contrast to the finitely(?) many non-snake rounds in the original game setting.  So we have $\frac{\infty}{\infty}$ which is undefined, but in this context we have no way of setting up any similitude of a limit in the standard analysis sense.
-
-        Any given player plays with probability 1.  The game progressing to any particular round also has probability 1.  The "random" events are which round did you play in, and did that round roll snake eyes.  Did the round you play in result in snake eyes?  You can only play in one round since they are disjoint cohorts, so the possibility of death must be $p$.
-
-        The NO argument might try to form a disjoint partition of the infinite population such that each partition contains exactly one round that resulted in snake eyes, and then argue that within each partition it is analogous to one of their summation terms, with the exception that the total number of players that played and died are scaled by some factor of $2^n$ such that the internal death rate within that partition that runs for n games since the prior snake eyes corresponds to the nth term of the summation, and similarly is weighted by the frequency of such runs of n length, which due to the law of big numbers would be expected to average out to their analytical frequency.  The way NO constructs their answer to approach $\approx 0.52...$ the scaling factor of $2^n$, which transposes the game away from the very first round with a single person, would factor out so they would not be persuaded that the shift to a continuous snake eyes game changes any thing. 
-    }
+\item Roll the dice for $2^{n-1}$ people.
+If they get snake eyes, add $2^{n-1}$ to both $D$ and $C$.
+If they don't get snake eyes, add $2^{n-1}$ to just $C$.
+\item Increment $n$.
 \end{itemize}
 
-\chapter*{Lorxus' Takaways}
-As it stands, both of these writeups, while good, have some serious flaws and gaps in them. The ones I have noted here are only the first few that stood out to me on reading through. The major points of remaining confusion or disagreement that I see are two closely-related ones. 
-\begin{itemize}
-    \item The first is over the nature of the word “chosen” - if we construe it to mean something like “start with a countably infinite population and draw from it”, we get one answer, and if we construe it to mean “only minds that actually play some round of the Snake Eyes Game”, then we get another. 
+We can compute the expectation of the initial $D/C$ ratio after round 1 like so:
+$$p\cdot 1/1 + (1-p)\cdot 0/1 = p.$$
 
-        \wamba{So yeah I guess the NO formulation, assumes that "you" play in all games, so they take an average of all games. Any possible game has a finite end approaching 1/2.  But you have to play in some specific round so we can formulate YES around you play in Round i.}
-    \item The second is over the nature of the starting population, and who among the set of all minds gets to count as having been chosen for the game - again, we could decide that this means that the entire infinite set of possible minds counts as having been chosen - they might enter the game, and in some universe any given mind does! - and we could also decide that this means that only some finite population that actually did pass through the game counts.
-\end{itemize}
+That's just saying that we get 1/1 dead if the first person rolls snake eyes, otherwise 0/1 dead.
+
+Now suppose that we're about to roll for round $n$ and so far we have $D$ dead out of $2^{n-1}-1$ who've played. 
+(After any round $i$ there are always $2^i-1$ who've played cumulatively, $2^{i-1}$ of whom played in round $i$ itself.)
+
+That means the previous $D/C$ ratio is $\dfrac{D}{2^{n-1}-1}$.
+Call that $r$ for short.
+
+So with probability $p$ the new ratio will be 
+$$\frac{D + 2^{n-1}}{2^n-1}$$
+and with probability $1-p$  the new ratio will be 
+$$\frac{D}{2^n-1}.$$
+That means the new expected ratio is $p$ times the first thing plus $1-p$ times the second thing, which, after a somewhat painful amount of algebra can be turned into this:
+$$\frac{2^{n-1}}{2^n - 1} \cdot (r + p) - \frac{r}{2^n-1}.$$
+
+And, lo, if we take the limit of that as $n$ goes to infinity we get $(r+p)/2$ which is just the average of $r$, the previous ratio, and p.
+So the expected (note: not actual, just expected) dead/played ratio approaches $p$ as we play more and more rounds of Infinitely Repeating Snake Eyes.
+\qed
+
 \end{document}
+
+\chapter*{Lorxus's Takeaways}
+\emph{
+As it stands, both of these write-ups, while good, have some serious flaws and gaps in them.
+The ones I have noted here are only the first few that stood out to me on reading through.
+The major points of remaining confusion or disagreement that I see are two closely-related ones.
+\begin{itemize}
+\item The first is over the nature of the word "chosen"---if we construe it to mean something like "start with a countably infinite population and draw from it", we get one answer, and if we construe it to mean "only minds that actually play some round of the Snake Eyes Game", then we get another.
+\item The second is over the nature of the starting population, and who among the set of all minds gets to count as having been chosen for the game---again, we could decide that this means that the entire infinite set of possible minds counts as having been chosen---they might enter the game, and in some universe any given mind does!---and we could also decide that this means that only some finite population that actually did pass through the game counts.
+\end{itemize}
+}
+

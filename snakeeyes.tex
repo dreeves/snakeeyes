@@ -94,6 +94,8 @@
 %\end{center}
 %}
 
+% Conditional probability: \textpr{foo}{bar} -> \Pr(\text{foo}\mid\text{bar})
+%\newcommand{\probc}[2]{\ensuremath{\Pr(\text{#1}\mid\text{#2})}}
 
 \hfuzz=2pt % Don't bother to report overfull hboxes if over-edge is < 2pt
 \vfuzz=2pt % Same for overfull vboxes (maybe just works for hfuzz?)
@@ -105,7 +107,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newcommand{\longtitle}{The Snake Eyes Paradox}
-%\newcommand{\shorttitle}{Snake Eyes} % for page headers
+\newcommand{\shorttitle}{Snake Eyes} % for page headers
 
 \title{\HUGE\textbf{\longtitle}}
 \author{Daniel M. Reeves\\manifold.markets/dreev
@@ -126,6 +128,7 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
 
 \begin{document}
 \pagestyle{headings}
+\makeoddhead{headings}{\MakeUppercase{\shorttitle}}{}{\thepage}
 \maketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -200,7 +203,7 @@ In the unbounded case there's a 0\% chance of infinitely many people being chose
 
 
 We want the probability that you die given that you are chosen to play, 
-$\Pr(\text{death} \mid \text{chosen})$.
+$\Pr(\text{death}\mid\text{chosen})$.
 It seems like we can ignore the 0\% chance of rolling not-snake-eyes forever and say that eventually about half the people who are chosen die, but let's Bayes it out carefully:
 
 \begin{equation*}
@@ -412,9 +415,10 @@ So that's no good either.
 $\rightarrow\leftarrow$
 }
 So let's just say we don't \emph{quite} have a uniform prior.
-Maybe you think you're equally likely to be in any of the first trillion groups chosen to play and that it gradually becomes less likely after that.
+Maybe you think you're equally likely to be any of the first trillion people chosen to play and that it gradually becomes less likely after that.
 We can make that "trillion" as high as we like.
-The key is that as long as the probability of being chosen isn't exactly zero, there's no division-by-zero problem like before.
+
+As long as the probability of being chosen isn't exactly zero, there's no division-by-zero problem like before.
 
 Is that fair though, to reject the stipulation in the problem statement that you're chosen uniformly?
 Well, it's arguably less of a leap than we made before in defining a finite version of the game where it's possible for no one to die.
@@ -536,7 +540,7 @@ No problem.
 Here's a prior that's both arbitrarily close to uniform and puts positive probability on all infinitely many future rounds in which you could be picked:
 \begin{itemize}
 \item Your probability of being chosen first is 1 in a million
-\item Your probability of being $n$th in the queue is 99.9999\% as much as your probability of being chosen $n-1$st
+\item Your probability of being $n$th in the queue is 99.9999\% as much as your probability of being $n-1$st.
 \end{itemize}
 In the limit as that "million" goes to infinity (and the 99.9999\% correspondingly goes to 1) we again have a uniform prior.
 Paradox: resolved and double-resolved.

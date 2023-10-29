@@ -177,7 +177,7 @@ If you wanted to play the one-shot version, do you still want to play the doubli
 \vspace{1em}
 
 \emph{Fine print: 
-The game is not adversarial and the dice rolls are independent and truly random.
+The game is not adversarial; the dice rolls are independent and fair.
 Groups are chosen uniformly and without replacement.
 Void where prohibited.
 }
@@ -427,23 +427,31 @@ But we can get arbitrarily close to uniform!
 We can even consider the limit as the distribution approaches uniform.
 Great, let's get to it!
 
-Let $\text{CH}_c$ be the event that you're chosen to play in round $c$ and let $\text{SE}_s$ be the event that snake eyes is rolled in round $s$.
-Define 
-$p_{cs} = \Pr(\text{CH}_c\land \text{SE}_s)$ 
-as the probability of a game where you're chosen in round $c$ and snake eyes is rolled in round $s$.
-In this formulation, $\text{CH}_c$ and $\text{SE}_s$ are independent for all $c$ and $s$.
-So $c>s$ is possible, just that it means a game where you're not chosen because snake eyes was rolled before we got to you.
+First, think of every player in the pool being lined up in an infinite queue.
+This ordering is established once, before any dice rolls, and is independent of the dice rolls.
+Now we can let 
+$\text{QR}_c$ be the event that you're positioned in the queue such that, if the game gets far enough, you'll be in round $c$.
+(QR for "queued for round".)
+Let $\text{SE}_s$ be the event that snake eyes is rolled in round $s$.
+Again, with QR defined purely in terms of your position in the pool, it's independent of SE.
+
+Now define 
+$$p_{cs} = \Pr(\text{QR}_c\land \text{SE}_s)$$
+as the probability of a game where you're positioned to be chosen in round $c$ and snake eyes is rolled in round $s$.
+%Saying it once again:
+%$\text{QR}_c$ and $\text{SE}_s$ are independent for all $c$ and $s$.
+(So $c>s$ is possible, just that it means a game where you don't end up chosen because snake eyes was rolled before we got to you.)
 Summing $p_{cs}$ over every possible $c$ and $s$---every possible game---necessarily gives us 1:
 $$
 \sum_{s=1}^\infty \sum_{c=1}^\infty p_{cs} = 1.
 $$
 
-The independence of $\text{CH}_c$ and $\text{SE}_s$ gives us the following:
+The independence of $\text{QR}_c$ and $\text{SE}_s$ gives us the following:
 \begin{align}\label{pcs}
 \begin{split}
-p_{cs} & = \Pr(\text{CH}_c\land\text{SE}_s) \\
-       & = \Pr(\text{CH}_c)\cdot\Pr(\text{SE}_s) \\
-       & = \Pr(\text{CH}_c)\cdot(1-p)^{s-1}\cdot p.
+p_{cs} & = \Pr(\text{QR}_c\land\text{SE}_s) \\
+       & = \Pr(\text{QR}_c)\cdot\Pr(\text{SE}_s) \\
+       & = \Pr(\text{QR}_c)\cdot(1-p)^{s-1}\cdot p.
 \end{split}
 \end{align}
 That final line is because the only way to get snake eyes on round $s$ is by rolling not-snake-eyes $s-1$ times in a row followed by one snake eyes.
@@ -466,25 +474,26 @@ In the second double sum, the outer sum iterates over every round $c$ in which y
 Eventually we want to find the probability of death given that you're chosen.
 As we saw in the original derivation, Bayes' Law tells us that this is 
 $\Pr(\text{death}) / \Pr(\text{chosen})$.
-But first let's compute $\Pr(\text{death}\mid\text{CH}_c)$, your probability of death given that you're chosen on a particular round $c$.
+But first let's compute $\Pr(\text{death}\mid\text{chosen} \land \text{QR}_c)$, your probability of death given that you're chosen on a particular round $c$.
 We expect that to be $p=1/36$ because it amounts to the one-shot scenario:
 a specific round $c$ when you're chosen means there's exactly one way to die, namely, rolling snake eyes on that specific round.
 To be totally sure, and to sanity-check our $p_{cs}$ definition, let's now compute it rigorously.
 We start with the definition of conditional probability:
 $$
-\Pr(\text{death}\mid\text{CH}_c) = 
-\frac{\Pr(\text{death}\land\text{CH}_c)}{\Pr(\text{CH}_c)}.
+\Pr(\text{death}\mid\text{chosen} \land \text{QR}_c) = 
+\frac{\Pr(\text{death}\land\text{chosen}\land\text{QR}_c)}{\Pr(\text{chosen}\land\text{QR}_c)}.
 $$
-The numerator can also be written $\Pr(\text{SE}_c\land\text{CH}_c)$ or
+The numerator can also be written $\Pr(\text{SE}_c\land\text{QR}_c)$ or
 $p_{cc}$, the probability that you're both chosen in round $c$ and that snake eyes is rolled on round $c$.
-And we can write the denominator in terms of $p_{cs}$ by summing over all the ways you can be chosen in round $c$:
+And we can write the denominator in terms of $p_{cs}$ by summing over all the ways you can be chosen in round $c$, 
+namely by snake eyes being rolled on or after round $c$:
 \begin{equation}\label{cc}
 \frac{p_{cc}}{\sum\limits_{s=c}^\infty p_{cs}}.
 \end{equation}
 
 Now we use~\eqref{pcs} to expand that to
 $$
-\frac{\Pr(\text{CH}_c)\cdot(1-p)^{c-1}\cdot p}{\sum\limits_{s=c}^\infty \Pr(\text{CH}_c)(1-p)^{s-1} p}
+\frac{\Pr(\text{QR}_c)\cdot(1-p)^{c-1}\cdot p}{\sum\limits_{s=c}^\infty \Pr(\text{QR}_c)(1-p)^{s-1} p}
 $$
 and cancel common factors (notice we're summing over $s$, not $c$) to get this:
 $$
@@ -939,7 +948,7 @@ But this implies that $\Pr(\text{game ends})=\frac{1}{18}$ which is a contradict
 So the event of being "chosen" must not be independent of the "inevitable" event of the "game ends", which is counter intuitive in the sense that surely the game must end, but by conditioning upon the infinitesimal likelihood of "chosen" it is no longer the case.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%  Definitly move to Apendix  %%%%%%%%%
+%%%%%%%  Definitely move to Apendix  %%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%  Fixed and reinstated  %%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

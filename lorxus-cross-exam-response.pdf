@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,5 +9,21 @@
 <body>
 Moved to 
 <a href="https://dreeves.github.io/snakeeyes/cross-exam-and-questions.pdf">https://dreeves.github.io/snakeeyes/cross-exam-and-questions.pdf</a>.
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+</head>
+<body>
+    <script>
+        window.location.href = "https://dreeves.github.io/snakeeyes/cross-exam-and-questions.pdf";
+    </script>
+    If the download doesn't start, here's a direct link:
+    <a href="https://dreeves.github.io/snakeeyes/cross-exam-and-questions.pdf" download>https://dreeves.github.io/snakeeyes/cross-exam-and-questions.pdf</a>
 </body>
 </html>

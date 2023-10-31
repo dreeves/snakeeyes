@@ -26,7 +26,7 @@
 \usepackage{tikz}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\hypersetup{colorlinks=true,urlcolor=blue}
+\hypersetup{colorlinks=true, allcolors=blue, urlcolor=blue}
 \usepackage{emoji}
 %\usepackage{decorule} % makes a cool squiggly divider
 %\usepackage{fourier-orns} % for fancy decorations
@@ -37,6 +37,9 @@
 \MakeOuterQuote{"}               %   of the LaTeX style ``like this''.
 %\usepackage[normalem]{ulem}     % Underlining? Did Wamba need this?
 \usepackage{flushend}            % Balance the columns on the last page
+\usepackage{natbib} % for citations
+\bibliographystyle{apalike}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% COMMANDS AND MACROS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -97,6 +100,9 @@
 % Conditional probability: \textpr{foo}{bar} -> \Pr(\text{foo}\mid\text{bar})
 %\newcommand{\probc}[2]{\ensuremath{\Pr(\text{#1}\mid\text{#2})}}
 
+% not using this yet:
+\newcommand{\skull}{\ensuremath{\text{\emoji{skull}}}}
+
 \hfuzz=2pt % Don't bother to report overfull hboxes if over-edge is < 2pt
 \vfuzz=2pt % Same for overfull vboxes (maybe just works for hfuzz?)
 
@@ -137,42 +143,42 @@ Wamba Ivanhoe\\manifold.markets/ShitakiIntaki
 
 \chapter{Problem Statement}
 
-You are offered a gamble.
-A pair of six-sided dice are rolled and unless they come up snake eyes you get a bajillion dollars. 
-If they do come up snake eyes, you're devoured by snakes.
+Our protagonist, Euclid, is offered a gamble.
+A pair of six-sided dice are rolled and unless they come up snake eyes he gets a bajillion dollars.
+If they do come up snake eyes, he's devoured by snakes.
 
-So far it sounds like you have a 1/36 chance of dying, right?
+So far it sounds like Euclid has a 1/36 chance of dying, right?
 
 Now the twist. 
-First, I gather up an unlimited number of people willing to play the game, including you. 
-I take 1 person from that pool and let them play. 
-Then I take 2 people and have them play together, where they share a dice roll and either get the bajillion dollars each or both get devoured. 
-Then I do the same with 4 people, and then 8, 16, and so on.
+First, we gather up an unlimited number of people willing to play the game, including Euclid.
+We take 1 person from that pool and let them play.
+Then we take 2 people and have them play together, where they share a dice roll and either get the bajillion dollars each or both get devoured.
+Then we do the same with 4 people, and then 8, 16, and so on, doubling each time.
 
-As soon as (and as seems inevitable) one of those groups is devoured by snakes, I stop.
-Is the probability that you'll die, given that you're chosen to play, still 1/36?
+We keep going until one of those groups is devoured by snakes, then the game stops.
+Is the probability that Euclid will die, given that he's chosen to play, still 1/36?
 
 \vspace{1em}
 
-\textbf{Argument for NO:}
+\textbf{Argument for NO aka the frequency argument:}
 Due to the doubling, the final group of people that die is slightly bigger than all the surviving groups put together. 
-So if you're chosen to play you have about a 50\% chance of dying!
+So if Euclid's chosen to play he has about a 50\% chance of dying!
 \emoji{grimacing-face}
 \emoji{snake}
 
 \vspace{1em}
 
-\textbf{Argument for YES:}
-The dice rolls are independent and whenever you're chosen, what happened in earlier rounds is irrelevant.
-Your chances of death are the chances of snake eyes on your round: 1/36.
+\textbf{Argument for YES aka the one-fair-roll argument:}
+The dice rolls are independent and whenever Euclid's chosen, what happened in earlier rounds is irrelevant.
+His chances of death are the chances of snake eyes on his round: 1/36.
 \emoji{grinning-face-with-sweat}
 
 \vspace{1em}
 
 So which is it? 
-What's your probability of dying, conditional on being chosen to play?
-If you learn that your friend was chosen to play in this game and the game is now over, how worried are you?
-If you wanted to play the one-shot version, do you still want to play the doubling groups version?
+What's Euclid's probability of dying, conditional on being chosen to play?
+If Euclid's mom learns that Euclid was chosen to play in this game and the game is now over, how worried is she?
+If Euclid wanted to play the one-shot version, does he still want to play the doubling groups version?
 
 \vspace{1em}
 
@@ -180,41 +186,25 @@ If you wanted to play the one-shot version, do you still want to play the doubli
 The game is not adversarial; the dice rolls are independent and fair.
 Groups are chosen uniformly and without replacement.
 Void where prohibited.
+See \citet{barth} for details.
 }
 
 \newpage
 
 \chapter{Solution (With Limits)}
 
-\iffalse
-\begin{enumerate}
-\item Choosing each group happens uniformly randomly.
-\item This is technically undefined with an infinite pool of people but we can cap it and say that if no one has died after $N$ rounds then the game ends and no one dies. 
-We just need to then find the limit as $N$ goes to infinity. 
-%That way, instead of a 0\% chance of infinitely many people being chosen and none dying, we have a tiny chance of huge number of people being chosen and none dying.
-% SCHDEL in which case the probability that no one dies goes to zero.
-\item Importantly, in the finite version it's possible for no one to die. 
-Just that the probability of that approaches zero as the size of the pool approaches infinity.
-\item Again, we want the conditional probability that you die given that you are chosen to play.
-In other words, of the people chosen, what fraction, in expectation, die?
-In the unbounded case there's a 0\% chance of infinitely many people being chosen and none dying; in the bounded case it's a tiny chance of a huge number chosen and none dying.
-\end{enumerate}
-\fi
-
-
-We want the probability that you die given that you are chosen to play, 
+We want the probability that Euclid dies given that he is chosen to play,
 $\Pr(\text{death}\mid\text{chosen})$.
 It seems like we can ignore the 0\% chance of rolling not-snake-eyes forever and say that eventually about half the people who are chosen die, but let's Bayes it out carefully:
-
 \begin{equation*}
 \begin{split}
-\Pr(\text{death} \mid \text{chosen}) & =
-\frac{\Pr(\text{chosen} \mid \text{death}) \Pr(\text{death})}{\Pr(\text{chosen})} \\
+\Pr(\text{death}\mid\text{chosen}) & =
+\frac{\Pr(\text{chosen}\mid\text{death}) \Pr(\text{death})}{\Pr(\text{chosen})} \\
 & = \frac{1\cdot\Pr(\text{death})}{\Pr(\text{chosen})}.
 \end{split}
 \end{equation*}
 
-But if you're part of an infinite pool, you have a 0\% chance of being chosen and a 0\% chance of dying. 
+But if Euclid's part of an infinite pool, he has a 0\% chance of being chosen and a 0\% chance of dying.
 The probability we want is 0/0. 
 \emph{*robot-with-smoke-coming-out-of-its-ears-emoji*}
 
@@ -222,43 +212,41 @@ Since we can't directly calculate the probability in the infinite case, a natura
 
 \snakedivider
 
-To get a feel for where we're going, suppose you're one person in a huge but finite pool.
-Now suppose you are actually chosen. 
+To get a feel for where we're going, suppose Euclid's one person in a huge but finite pool.
+Now suppose he is actually chosen. 
 There are two ways that can happen: 
 \begin{enumerate}
 \item The pool runs out and everyone survives.
-\item The pool doesn't run out and you have about a 50\% chance of dying. 
+\item The pool doesn't run out and Euclid has about a 50\% chance of dying.
 \end{enumerate}
-But knowing that you are chosen is Bayesian evidence that we had many, many rounds of survival. 
-If an early group died then most of the pool wasn't chosen, so probably you weren't chosen.
+But knowing that Euclid is chosen is Bayesian evidence that we had many, many rounds of survival.
+If an early group died then most of the pool wasn't chosen, so probably Euclid wasn't chosen.
 
 Thinking like a Bayesian means shifting your probability in light of evidence by seeing how surprised you'd be in various universes by that evidence.
-If an early group died then most people aren't chosen and in that universe you're surprised to be chosen. 
-If \emph{no} group died then everyone was chosen and in that universe you're fully unsurprised that you were chosen. 
-That's the sense in which being chosen is Bayesian evidence that more people survived. 
+If an early group died then most people aren't chosen and in that universe Euclid is surprised to be chosen.
+If \emph{no} group died then everyone was chosen and in that universe Euclid is fully unsurprised that he was chosen.
+That's the sense in which being chosen is Bayesian evidence that more people survived.
 In particular it's at least weak evidence that everyone survived.
 
-So even with an absurdly huge pool of people, where there's \emph{essentially} a 0\% chance of everyone surviving, if you know you were chosen (which itself has near zero probability, but, you know, \emph{if}) then that means you're more likely to be in that essentially-0\%-probability universe where everyone survives.
+So even with an absurdly huge pool of people, where there's \emph{essentially} a 0\% chance of everyone surviving, if Euclid knows he was chosen (which itself has near zero probability, but, you know, \emph{if}) then that means Euclid is more likely to be in that essentially-0\%-probability universe where everyone survives.
 
 \snakedivider
 
 Enough hand-waving and appeals to intuition.
-Let's Bayes it out to see what 
-$\Pr(\text{death} \mid \text{chosen})$
-is exactly, in a finite version where we stop after $N$ rounds.
+Let's Bayes it out to see what
+$\Pr(\text{death}\mid\text{chosen})$
+is exactly, in a truncated game where we stop after $N$ rounds.
 Once we have that, we can take the limit as $N$ goes to infinity.
 
 First, let $M$ be the size of the pool:
-
 $$M = \sum_{i=1}^{N} 2^{i-1} = 2^N-1.$$
 
 And let $p$ be the probability of snake eyes, 1/36.
-We can now compute the probability of being chosen by summing up 
-(1) the probability you're chosen for the first round, $1/M$, plus 
-(2) the probability that the first group survives, $1-p$, and that you're chosen for the 2nd round, $2/M$, plus 
-(3) the probability that the first two groups survive and you're chosen for the 3rd round, etc.
+We can now compute the probability of Euclid being chosen by summing up 
+(1) the probability he's chosen for the first round, $1/M$, plus 
+(2) the probability that the first group survives, $1-p$, and that he's chosen for the 2nd round, $2/M$, plus 
+(3) the probability that the first two groups survive and he's chosen for the 3rd round, etc.
 Writing that out as an equation gives this:
-
 \begin{align*}
 \Pr(\text{chosen}) & = 
 \begin{aligned}[t]
@@ -272,19 +260,16 @@ Writing that out as an equation gives this:
 \end{align*}
 
 For $\Pr(\text{death})$ the calculation is very similar but every term is multiplied by $p$.
-To die, you have to be chosen and then roll snake eyes.
+To die, Euclid has to be chosen and then roll snake eyes.
 This can happen on any round, all of which are mutually exclusive.
 We can then factor that $p$ out and we have
-
-$$
-\Pr(\text{death}) = p\cdot\Pr(\text{chosen}).
-$$
+$$\Pr(\text{death}) = p\cdot\Pr(\text{chosen}).$$
 
 Working out that expression for $\Pr(\text{chosen})$ wasn't even necessary!
-We compute $\Pr(\text{death} \mid \text{chosen})$ like so:
+We compute $\Pr(\text{death}\mid\text{chosen})$ like so:
 \begin{equation*}
 \begin{split}
-\Pr(\text{death} \mid \text{chosen}) & = 
+\Pr(\text{death}\mid\text{chosen}) & = 
 \frac{\Pr(\text{death})}{\Pr(\text{chosen})} \\
 & = \frac{p\cdot\Pr(\text{chosen})}{\Pr(\text{chosen})} = 
 p.
@@ -293,33 +278,32 @@ p.
 
 It doesn't depend on $N$ at all!
 The limit as $N$ goes to infinity is just... 
-$p$ or 1/36, the probability of rolling snake eyes.
+$p$, or 1/36, the probability of rolling snake eyes.
 \qedsymbol{}
 
-%\chapter*{Discussion and Dead-Horse Beating}
 \chapter{Can We Roll Not-Snake-Eyes Forever?}
 
 What about the argument that, with unlimited people, there will necessarily be a finite round $n$ at which snake eyes is rolled?
 And for every possible such $n$, at least half of the chosen players die.
-After all, the probability of rolling not-snake-eyes forever is zero. 
+After all, the probability of rolling not-snake-eyes forever is zero.
 (More precisely, in the limit as $n$ goes to infinity, the probability of rolling not-snake-eyes $n$ times in a row goes to zero.)
 
-That's all true but let's work out the probability of rolling not-snake-eyes forever \emph{conditional on you being chosen}.
+That's all true but let's work out the probability of rolling not-snake-eyes forever \emph{conditional on Euclid being chosen}.
 Starting with $\Pr(\text{snake eyes})$ as the probability that a game rolls snake eyes---unambiguously 1---we have, by the definition of conditional probability:
 \begin{equation*}
-\Pr(\text{snake eyes} \mid \text{chosen})
+\Pr(\text{snake eyes}\mid\text{chosen})
 = \frac{\Pr(\text{chosen} \land \text{snake eyes})}{\Pr(\text{chosen})}.
 \end{equation*}
 
 In the infinite setting that's
 $\tfrac{0}{0}$
-because you have a 0\% chance of being chosen from an infinite pool.
+because Euclid has a 0\% chance of being chosen from an infinite pool.
 So let's work it out in the limit with a cap of $N$ rounds and finite pool $M$ as before:
 $$\dfrac
 {\sum\limits_{i=1}^{N}(1-p)^{i-1}p \cdot\dfrac{2^i-1}{M}}
 {\sum\limits_{i=1}^{N}\tfrac{1}{M} 2^{i-1}(1-p)^{i-1}}.
 $$
-In the numerator we're summing over every possible round $i$ at which we could roll snake eyes, saying that we need to roll not-snake-eyes $i-1$ times followed by one snake eyes \emph{and} that we are chosen in any round from 1 through $i$.
+In the numerator we're summing over every possible round $i$ at which we could roll snake eyes, saying that we need to roll not-snake-eyes $i-1$ times followed by one snake eyes \emph{and} that Euclid is chosen in any round from 1 through $i$.
 The denominator, $\Pr(\text{chosen})$, is the same as in the previous section.
 
 Now algebra ensues.
@@ -340,8 +324,10 @@ $$\dfrac{
 \left(\sum\limits_{i=1}^{N}2^i(1-p)^{i-1}p\right) - 1
 }{\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}}.
 $$
+(We can also get the answer of 1 for that summation by pulling out the $p$ to leave a geometric series with common ratio $1-p$, which sums in the limit to $1/p$.)
+
 Almost there!
-Pull a $2p$ out of the sum in the numerator to get this:
+Pull a $2p$ out of the remaining sum in the numerator to get this:
 $$\dfrac{
 2p\left(\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}\right) - 1
 }{\sum\limits_{i=1}^{N}2^{i-1}(1-p)^{i-1}}.
@@ -355,27 +341,26 @@ and combine the terms in the sum,
 $$2p - \dfrac{1} 
 {\sum\limits_{i=1}^{N}\left(2(1-p)\right)^{i-1}},
 $$
-to see that the denominator is a finite geometric series with common ratio $2(1-p)$.
-As long as the common ratio is greater than or equal to 1, 
-%(i.e., $p\leq 1/2$ which for us is the case, namely $p=1/36$), 
-the denominator diverges and the above approaches $2p$ in the limit as $N$ goes to infinity.
+to see that the denominator is a geometric series with common ratio $2(1-p)$.
+As long as the common ratio is greater than or equal to 1, the denominator diverges and the above approaches $2p$ in the limit as $N$ goes to infinity.
 How do we know $2(1-p) \geq 1$?
 Because we can rearrange it as $p\leq 1/2$ and that's true for us, namely $p=1/36$.\footnote{
 What would happen if we had $p>1/2$?
-In that case, by the preceding derivation, $\Pr(\text{snake eyes} \mid \text{chosen}) = 1$ so no chance of everyone surviving.
+In that case, by the preceding derivation, $\Pr(\text{snake eyes}\mid\text{chosen}) = 1$ so no chance of everyone surviving.
 That makes sense because the nature of the paradox changes if $p>1/2$:
-The probability of dying in the one-shot version is already greater than the fraction of people who die when the game ends in snake eyes.}
+The probability of dying in the one-shot version is already greater than the fraction of people who die when the game ends in snake eyes.
+The frequency argument and the one-fair-roll argument aren't necessarily in conflict when $p>1/2$.}
 
-In conclusion, the probability of eventually rolling snake eyes, conditional on you being chosen to play, approaches $2p=1/18$ in the limit.
+In conclusion, the probability of eventually rolling snake eyes, conditional on Euclid being chosen to play, approaches $2p=1/18$ in the limit.
 Which is to say that the conditional probability of rolling not-snake-eyes literally forever is $17/18$.
 \emoji{exploding-head}
 
-(Or to say it less sensationally: For any finite $N$, the conditional probability of taking more than $N$ rolls to hit snake eyes is greater than $17/18$.)
+(Or to say it less sensationally: 
+For any finite $N$, the conditional probability of taking more than $N$ rolls to hit snake eyes is greater than $17/18$.)
 
 This vindicates our initial intuitive argument that being chosen is Bayesian evidence---strong Bayesian evidence, it turns out!---of never rolling snake eyes.
 And it invalidates the intuition that we can safely condition on snake eyes being rolled just because it definitely will be rolled (unconditionally).
 Another version of that intuition is that any event with probability 1, such as rolling snake eyes eventually, must be independent of any other event.
-%When we condition upon this zero measure event, we can no longer assume that rolling snake eyes is independent from being chosen!
 But if being chosen and rolling snake eyes were independent then, by definition of independence,
 $\Pr(\text{chosen} \land \text{snake eyes}) = \Pr(\text{chosen})\cdot\Pr(\text{snake eyes})$.
 And if that were true, we'd conclude from the above derivation of $\Pr(\text{snake eyes}\mid\text{chosen})$ that
@@ -387,16 +372,11 @@ And if that were true, we'd conclude from the above derivation of $\Pr(\text{sna
  = & 1/18.
 \end{align*}
 Which contradicts $\Pr(\text{snake eyes}) = 1$.
-%So within the context of conditioning upon being chosen, these two events cannot be independent.
-The temptation to treat $\Pr(X)$ as $\Pr(X \mid \text{snake eyes})$ since $\Pr(\text{snake eyes}) = 1$ leads us astray!
-
-%\appendix
-
-%\part*{Appendices}
+The temptation to treat $\Pr(X)$ as $\Pr(X\mid\text{snake eyes})$ since $\Pr(\text{snake eyes}) = 1$ leads us astray!
 
 \chapter{To Infinity And Beyond (With A Nonuniform Prior)}
 
-What if we reject the whole idea of defining a finite version of Snake Eyes to take a limit of?
+What if we reject the whole idea of defining a truncated version of Snake Eyes to take a limit of?
 Can we math out an answer for the infinite game directly?
 Yes!
 The only monkey wrench is that we can't have a uniform prior over an infinite set.\footnote{
@@ -415,36 +395,31 @@ So that's no good either.
 $\rightarrow\leftarrow$
 }
 So let's just say we don't \emph{quite} have a uniform prior.
-Maybe you think you're equally likely to be any of the first trillion people chosen to play and that it gradually becomes less likely after that.
+Maybe Euclid thinks he's equally likely to be any of the first trillion people chosen to play and that it gradually becomes less likely after that.
 We can make that "trillion" as high as we like.
 
-As long as the probability of being chosen isn't exactly zero, there's no division-by-zero problem like before.
+As long as the probability of being chosen isn't exactly zero, there's no 0/0 problem like before.
 
-Is that fair though, to reject the stipulation in the problem statement that you're chosen uniformly?
-Well, it's arguably less of a leap than we made before in defining a finite version of the game where it's possible for no one to die.
-We're just saying you're not quite chosen uniformly because you \emph{can't} be and have any probability of being chosen at all.
+Is that fair though, to reject the stipulation in the problem statement that Euclid is chosen uniformly?
+Well, it's arguably less of a leap than we made before in defining a truncated version of the game where it's possible for no one to die.
+We're just saying Euclid is not quite chosen uniformly because he \emph{can't} be and have any probability of being chosen at all.
 But we can get arbitrarily close to uniform!
 We can even consider the limit as the distribution approaches uniform.
 Great, let's get to it!
 
 First, think of every player in the pool being lined up in an infinite queue.
 This ordering is established once, before any dice rolls, and is independent of the dice rolls.
-Now we can let 
-$\text{QR}_c$ be the event that you're positioned in the queue such that, if the game gets far enough, you'll be in round $c$.
+Now we can let $\text{QR}_c$ be the event that Euclid is positioned in the queue such that, if the game gets far enough, he'll be in round $c$.
 (QR for "queued for round".)
 Let $\text{SE}_s$ be the event that snake eyes is rolled in round $s$.
-Again, with QR defined purely in terms of your position in the pool, it's independent of SE.
+Again, with QR defined purely in terms of Euclid's position in the pool, it's independent of SE.
 
 Now define 
 $$p_{cs} = \Pr(\text{QR}_c\land \text{SE}_s)$$
-as the probability of a game where you're positioned to be chosen in round $c$ and snake eyes is rolled in round $s$.
-%Saying it once again:
-%$\text{QR}_c$ and $\text{SE}_s$ are independent for all $c$ and $s$.
-(So $c>s$ is possible, just that it means a game where you don't end up chosen because snake eyes was rolled before we got to you.)
+as the probability of a game where Euclid is positioned to be chosen in round $c$ and snake eyes is rolled in round $s$.
+(So $c>s$ is possible, just that it means a game where Euclid doesn't end up chosen because snake eyes was rolled before we got to him.)
 Summing $p_{cs}$ over every possible $c$ and $s$---every possible game---necessarily gives us 1:
-$$
-\sum_{s=1}^\infty \sum_{c=1}^\infty p_{cs} = 1.
-$$
+$$\sum_{s=1}^\infty \sum_{c=1}^\infty p_{cs} = 1.$$
 
 The independence of $\text{QR}_c$ and $\text{SE}_s$ gives us the following:
 \begin{align}\label{pcs}
@@ -460,7 +435,7 @@ We can write the unconditional probability of death like this:
 \begin{equation}\label{d}
 \Pr(\text{death}) = \sum_{i=1}^\infty p_{ii}.
 \end{equation}
-That's just summing up all the infinite ways you can be chosen on the same round that snake eyes is rolled.
+That's just summing up all the infinite ways Euclid can be chosen on the same round that snake eyes is rolled.
 
 For the unconditional probability of being chosen to play, we can get it two ways:
 \begin{equation}\label{c}
@@ -468,15 +443,15 @@ For the unconditional probability of being chosen to play, we can get it two way
 \sum_{s=1}^\infty\sum_{c=1}^s p_{cs} =
 \sum_{c=1}^\infty\sum_{s=c}^\infty p_{cs}.
 \end{equation}
-In the first double sum, the outer sum iterates over every round $s$ on which we might roll snake eyes and the inner sum covers all the cases where you're chosen on or before $s$.
-In the second double sum, the outer sum iterates over every round $c$ in which you can be chosen and the inner sum covers all the cases where snake eyes is rolled on or after $c$.
+In the first double sum, the outer sum iterates over every round $s$ on which we might roll snake eyes and the inner sum covers all the cases where Euclid is chosen on or before $s$.
+In the second double sum, the outer sum iterates over every round $c$ in which Euclid can be chosen and the inner sum covers all the cases where snake eyes is rolled on or after $c$.
 
-Eventually we want to find the probability of death given that you're chosen.
-As we saw in the original derivation, Bayes' Law tells us that this is 
+Eventually we want to find the probability of death given that Euclid is chosen.
+As we saw in the original derivation, Bayes' Law tells us that this is
 $\Pr(\text{death}) / \Pr(\text{chosen})$.
-But first let's compute $\Pr(\text{death}\mid\text{chosen} \land \text{QR}_c)$, your probability of death given that you're chosen on a particular round $c$.
-We expect that to be $p=1/36$ because it amounts to the one-shot scenario:
-a specific round $c$ when you're chosen means there's exactly one way to die, namely, rolling snake eyes on that specific round.
+But first let's compute $\Pr(\text{death}\mid\text{chosen} \land \text{QR}_c)$, Euclid's probability of death given that he is chosen on a particular round $c$.
+We expect that probability to be $p=1/36$ because it amounts to the one-shot scenario:
+a specific round $c$ when Euclid is chosen means there's exactly one way for him to die, namely, rolling snake eyes on that specific round.
 To be totally sure, and to sanity-check our $p_{cs}$ definition, let's now compute it rigorously.
 We start with the definition of conditional probability:
 $$
@@ -484,8 +459,8 @@ $$
 \frac{\Pr(\text{death}\land\text{chosen}\land\text{QR}_c)}{\Pr(\text{chosen}\land\text{QR}_c)}.
 $$
 The numerator can also be written $\Pr(\text{SE}_c\land\text{QR}_c)$ or
-$p_{cc}$, the probability that you're both chosen in round $c$ and that snake eyes is rolled on round $c$.
-And we can write the denominator in terms of $p_{cs}$ by summing over all the ways you can be chosen in round $c$, 
+$p_{cc}$, the probability that Euclid is both chosen in round $c$ and that snake eyes is rolled on round $c$.
+And we can write the denominator in terms of $p_{cs}$ by summing over all the ways Euclid can be chosen in round $c$, 
 namely by snake eyes being rolled on or after round $c$:
 \begin{equation}\label{cc}
 \frac{p_{cc}}{\sum\limits_{s=c}^\infty p_{cs}}.
@@ -511,11 +486,11 @@ Knowing that~\eqref{cc} equals $p$ implies that
 \sum\limits_{s=c}^\infty p_{cs} = \frac{p_{cc}}{p}.
 \end{equation}
 
-Finally we have everything we need to work out your chances of dying if you're chosen to play.
+Finally we have everything we need to work out Euclid's chances of dying if he's chosen to play.
 Recall that
 \begin{align*}
-\Pr(\text{death} \mid \text{chosen}) 
-& = \frac{\Pr(\text{chosen} \mid \text{death}) \Pr(\text{death})}{\Pr(\text{chosen})} \\
+\Pr(\text{death}\mid\text{chosen}) 
+& = \frac{\Pr(\text{chosen}\mid\text{death}) \Pr(\text{death})}{\Pr(\text{chosen})} \\
 & = \frac{\Pr(\text{death})}{\Pr(\text{chosen})}. \\
 \end{align*}
 By~\eqref{d} and~\eqref{c}, that becomes
@@ -535,9 +510,9 @@ $$
 They cancel and the $1/p$ flips to the top as $p$ and we're done! \qed
 
 Amazingly, we didn't need to define a finite version of the game.
-We just need a valid prior on when you're chosen.
+We just need a valid prior on when Euclid is chosen.
 And even more amazingly, the answer is completely independent of what that prior is.
-For example, say it's uniform for the first $N$ possible values of where you are in the queue of people in the pool.
+For example, say it's uniform for the first $N$ possible values of where Euclid is in the queue of people in the pool.
 Now compute $\Pr(\text{death}\mid\text{chosen})$ in terms of $N$.
 The answer, as we just saw, is $p$.
 No $N$ in sight.
@@ -546,13 +521,15 @@ Still $p$.
 
 Or maybe you don't like that the above prior has a finite cutoff.
 No problem.
-Here's a prior that's both arbitrarily close to uniform and puts positive probability on all infinitely many future rounds in which you could be picked:
+Here's a prior that's both arbitrarily close to uniform and puts positive probability on all infinitely many future rounds in which Euclid could be picked:
 \begin{itemize}
-\item Your probability of being chosen first is 1 in a million
-\item Your probability of being $n$th in the queue is 99.9999\% as much as your probability of being $n-1$st.
+\item Euclid's probability of being chosen first is 1 in a million
+\item Euclid's probability of being $n$th in the queue is 99.9999\% as much as his probability of being $n-1$st.
 \end{itemize}
-In the limit as that "million" goes to infinity (and the 99.9999\% correspondingly goes to 1) we again have a uniform prior.
+In the limit as that "million" goes to infinity (and the $99.9999\% = 1-1/10^6$ correspondingly goes to 1) we again have a uniform prior.
 Paradox: resolved and double-resolved.
+
+\bibliography{snakeeyes}
 
 \end{document}
 
@@ -1070,3 +1047,42 @@ For any huge-but-finite pool, the extremely unlikely event of being chosen is a 
 "Roughly, of the people chosen, what fraction die?"
 
 But what about the inescapable fact that half the people die?
+
+~~
+
+Original sentence:
+
+> At some point one of those groups will be devoured by snakes and then I stop.
+
+Controversy, that I think turns out to be moot unless we go down the hyperreal rabbit hole, is which of the following that sentence means:
+
+(a) We keep going until one of those groups is devoured by snakes, then the game stops.
+(b) Assume that snake eyes is rolled in a finite number of rolls and stop when that happens.
+
+The subtle difference is that I didn't mean to stipulate that snake eyes is rolled in a finite number of rolls, just that there's a probability 1 of that happening.
+
+~~
+
+Clarifications in the market description as of 2023-10-30:
+
+1. The game is not adversarial; the dice rolls are independent and fair.
+
+2. Choosing each group also happens uniformly randomly and without replacement.
+
+3. The question is about the unrealistic case of an unbounded number of people but we can cap it and say that if no one has died after N rounds then the game ends and no one dies. We just need to then find the limit as N goes to infinity, in which case the probability that no one dies goes to zero. [ANTI-EDIT: This is back to its original form since a couple people had concerns about whether my attempts to clarify actually changed the question. A previous edit called the answer "technically undefined" in the infinite case, which I still believe is true. The other edit removed the part about how the probability of no one dying goes to zero. That was because I noticed it was redundant with item 5 below.]
+
+4. We're asking for a conditional probability: given that you're chosen to play, what is the probability that you die? I.e., what fraction of people chosen to play die [in expectation]?
+
+5. Importantly, in the finite version it's possible for no one to die. But the probability of that approaches zero as the size of the pool approaches infinity.
+
+6. What if "the fraction of people chosen to play who die in expectation" is different from the conditional probability? Answer: we're talking about the conditional probability. We're treating this as a decision theory problem: assuming you want to play the one-shot version, do you still want to play the doubling-groups version?
+
+7. What if the most correct answer is "undefined"? If we went by just the title of this market, that would be NO, but from the beginning we clarified that NO requires the probability to be strictly greater than 1/36, which "undefined" is not. I failed to consider the possible answer of "undefined" when creating this market! So if that's the answer it's going to be hard to have a satisfactory resolution but I think N/A will be the least unsatisfactory in that case.
+
+8. "At some point one of those groups will be devoured by snakes and then I stop" has an implicit "unless I roll non-snake-eyes forever". I.e., we are not conditioning on the game ending with snake eyes. The probability of an infinite sequences of non-snake-eyes is zero and that's the sense in which it's correct to say "at some point snake eyes will happen" but non-snake-eyes forever is possible in the technical sense of "possible".
+
+9. Via David Pennock: The word "given" is being used in the sense of standard conditional probability: what is the probability that you die in the case where you happen, by random chance, to be chosen. "Given" here does not mean being somehow forced to be chosen. (Corollary: The probability of being chosen is zero in the infinite population case.)
+
+(FAQs 6-9 were added as clarifications based on questions in the comments. NO bettors have objected to this so we plan to adjudicate this as if those weren't there.)
+
+PS: To expand on FAQ8, "probability zero" and "impossible" are mathematically distinct concepts. For example, consider flipping a coin an infinite number of times. Every infinite sequence like HHTHTTHHHTHT... is a possible outcome but each one has probability zero.
